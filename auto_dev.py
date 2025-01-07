@@ -1,4 +1,4 @@
-
+File: auto_dev.py
 #!/usr/bin/env python3
 """
 auto_dev.py
@@ -22,7 +22,12 @@ Additional improvements implemented:
 15. Dry-run mode to simulate the process without writing/committing.
 19. Improved template handling checks to ensure new templates are referenced.
 
-Note: Service restarts (gunicorn-theseus.service, nginx) have been removed per request.
+Latest fixes:
+- Remove triple backticks and any ```python lines before parsing filenames.
+- If *any* .py file fails syntax, we discard the entire set of files (all-or-nothing approach).
+- Strip trailing '-->' from filenames to avoid creating files like 'index.html -->'.
+- Service restarts removed (gunicorn-theseus.service, nginx).
+
 """
 
 import os
@@ -33,7 +38,6 @@ import time
 import logging
 import requests
 import subprocess
-import tempfile
 import ast
 from datetime import datetime
 from logging.handlers import RotatingFileHandler
@@ -70,7 +74,7 @@ GITHUB_REPO = config.get("github_repo", "")
 BRANCH_NAME = config.get("branch_name", "main")
 RETRY_LIMIT = config.get("retry_limit", 5)
 ENABLE_AUTODEV = config.get("enable_autodev", True)
-DRY_RUN = config.get("dry_run", False)  # Added for improvement #15
+DRY_RUN = config.get("dry_run", False)  # For improvement #15
 
 SYSTEM_PROMPT = config.get(
     "system_prompt",
@@ -188,14 +192,14 @@ def generate_code_change(current_code, failure_reason=""):
         ],
         "temperature": 0,
         "max_tokens": MAX_TOKENS,
-    }
+    ]
 
     result = call_deepseek_api(payload)
     if not result:
         return "# [DeepSeek ERROR] Could not generate new code.\n"
     try:
         ai_message = result["choices"][0]["message"]["content"].strip()
-        logger.debug(f"RAW AI RESPONSE:\n{ai_message}\n")  # Debug-level log for diagnostic
+        logger.debug(f"RAW AI RESPONSE:\n{ai_message}\n")  # Debug-level log
         return ai_message
     except (KeyError, IndexError) as e:
         logger.error(f"Invalid DeepSeek response structure: {e}")
@@ -219,21 +223,32 @@ def is_valid_python_syntax(code_str):
 def parse_ai_response_into_files(ai_response):
     """
     The AI may return multiple 'File:' blocks. Each block can appear with or without code fences.
-    We use a regex approach to capture blocks labeled with 'File: x'.
-    We skip or ignore any file that references website/tests.
-    We also strip inline HTML if it appears in .py code blocks.
+    Steps taken:
+      1) Remove all triple backticks (e.g., ```python or ```).
+      2) Use a regex approach to capture blocks labeled 'File: ...'.
+      3) For each file:
+         - Strip trailing '-->' if present (in case the AI included HTML comments).
+         - Skip if referencing website/tests.
+         - Remove inline <html> from .py blocks if found.
+      4) Perform syntax checks on all .py files. If any fail, discard the entire set.
     """
-    files_dict = {}
-    # We'll look for lines that start with "File: some/path"
-    # Then capture everything until the next "File: " or end of string.
-    # Regex approach to handle various code fence usage.
-    pattern = r"(File:\s*([^\n]+))(.*?)(?=File:|$)"
-    matches = re.findall(pattern, ai_response, flags=re.DOTALL)
 
+    # Remove triple backticks like ``` or ```python
+    cleaned_response = re.sub(r"```[a-zA-Z]*", "", ai_response)
+    cleaned_response = cleaned_response.replace("```", "")  # Just in case
+
+    pattern = r"(File:\s*([^\n]+))(.*?)(?=File:|$)"
+    matches = re.findall(pattern, cleaned_response, flags=re.DOTALL)
+
+    temp_files = {}
     for match in matches:
-        filename_line = match[0]  # e.g. "File: website/app.py"
+        filename_line = match[0]  # e.g., "File: website/app.py"
         file_path = match[1].strip()
         code_block = match[2].strip()
+
+        # Remove trailing --> if AI appended it in the filename
+        if file_path.endswith("-->"):
+            file_path = file_path.replace("-->", "").strip()
 
         if file_path.startswith("website/tests"):
             logger.warning(f"AI attempted to modify tests file '{file_path}'. Skipping.")
@@ -253,14 +268,18 @@ def parse_ai_response_into_files(ai_response):
                     end_idx += len("</html>")
                     code_block = code_block[:start_idx] + "# [HTML REMOVED]\n" + code_block[end_idx:]
 
-            # Now validate python syntax before saving
-            if not is_valid_python_syntax(code_block):
-                logger.error(f"Skipping file {file_path} due to invalid Python syntax.")
-                continue
+        temp_files[file_path] = code_block
 
-        files_dict[file_path] = code_block
+    # All-or-nothing syntax check
+    for fp, code_str in temp_files.items():
+        if fp.endswith(".py"):
+            if not is_valid_python_syntax(code_str):
+                logger.error(
+                    f"Syntax check failed for {fp}. Discarding entire AI response set."
+                )
+                return {}
 
-    return files_dict
+    return temp_files
 
 # -------------------------------------------------------------------------
 #  Template Handling Checks
@@ -268,8 +287,7 @@ def parse_ai_response_into_files(ai_response):
 def template_references_check(files_dict):
     """
     Ensure any new templates have at least one referencing route in .py updates.
-    We do a simple check: if a .html file is introduced, see if any .py file references that filename.
-    This is to prevent orphaned templates from being added.
+    Very simple approach: if a .html file is introduced, see if any .py code references that filename.
     """
     html_files = [fp for fp in files_dict if fp.endswith(".html")]
     if not html_files:
@@ -300,10 +318,9 @@ def check_tests_exist(test_path="website/tests/"):
 def run_test_commands():
     """
     Install dependencies from website/requirements.txt, then run pytest.
-    Run basic security scan with bandit if available.
+    Run basic security scan with bandit if installed.
     Return True if tests pass, False otherwise.
     """
-    # Install dependencies
     req_file = "website/requirements.txt"
     if not os.path.exists(req_file):
         logger.warning("requirements.txt not found. Dependencies may be incomplete.")
@@ -322,7 +339,7 @@ def run_test_commands():
 
     check_tests_exist()
 
-    # Security scan with bandit if installed
+    # Attempt a bandit scan if available
     bandit_installed = False
     try:
         subprocess.run(["bandit", "--version"], check=True, capture_output=True, text=True)
@@ -334,18 +351,14 @@ def run_test_commands():
     if bandit_installed:
         try:
             logger.info("Running security scan with bandit...")
-            bandit_proc = subprocess.run(
-                ["bandit", "-r", "website"],
-                capture_output=True,
-                text=True
-            )
+            bandit_proc = subprocess.run(["bandit", "-r", "website"], capture_output=True, text=True)
             logger.info(bandit_proc.stdout)
             if bandit_proc.returncode != 0:
                 logger.warning("bandit detected potential issues. Review recommended.")
         except Exception as e:
             logger.error(f"Error running bandit: {e}")
 
-    # Run tests
+    # Finally, run tests
     try:
         subprocess.check_call(["pytest", "website/tests/", "--maxfail=1"])
         return True
@@ -381,13 +394,12 @@ def main_loop():
         logger.info("AUTO-DEV is disabled in config.yaml. Exiting.")
         return
 
-    # Add file handler only for auto runs (avoid double-logging in manual run):
-    logger.addHandler(console_handler)
+    logger.addHandler(console_handler)  # Ensure console output for auto runs
 
-    # Pull the latest code
+    # 1. Pull latest code
     git_command("pull", "origin", BRANCH_NAME)
 
-    # Keep the old version of app.py for reference
+    # 2. Ensure website/app.py is present
     app_path = "website/app.py"
     if not os.path.exists(app_path):
         logger.error(f"{app_path} does not exist! Cannot proceed.")
@@ -400,29 +412,31 @@ def main_loop():
     success = False
     failure_reason = ""
 
+    # Attempt multiple times
     for attempt in range(1, RETRY_LIMIT + 1):
         logger.info(f"Generation attempt #{attempt} of {RETRY_LIMIT}.")
         if attempt > 1:
             logger.info("Pausing briefly before next AI request (rate limit).")
-            time.sleep(3 * attempt)  # Simple backoff
+            time.sleep(3 * attempt)
 
         ai_response = generate_code_change(current_code, failure_reason=failure_reason)
-
         files_dict = parse_ai_response_into_files(ai_response)
+
         if not files_dict:
-            failure_reason = "No valid file changes were returned by AI."
+            failure_reason = "No valid (or fully valid) file changes returned by AI."
             logger.warning(failure_reason)
             continue
 
+        # 3. Check for template references
         template_references_check(files_dict)
 
+        # 4. Dry-run skip actual writes/tests
         if DRY_RUN:
-            logger.info("[DRY RUN] Would update files, but skipping actual writes.")
-            # We skip testing and commits in dry-run mode to avoid side effects
+            logger.info("[DRY RUN] Would update files, but skipping actual writes/tests.")
             success = True
             break
         else:
-            # Write the updated files
+            # Write changes
             for filepath, code_str in files_dict.items():
                 if filepath == "website/app.py":
                     current_code = code_str
@@ -439,6 +453,7 @@ def main_loop():
                 failure_reason = "Tests failed for generated code."
                 logger.warning(failure_reason)
 
+    # 5. Commit or revert
     if success:
         ATTEMPTED_COMMITS += 1
         git_command("add", ".")
