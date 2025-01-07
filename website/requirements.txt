@@ -1,4 +1,5 @@
 Flask==2.2.5
+Werkzeug==2.2.3     # or 2.2.x
 pytest==7.4.0
 pytest-cov==4.1.0
 unittest-xml-reporting==3.2.0
