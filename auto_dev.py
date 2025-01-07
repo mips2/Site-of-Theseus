@@ -369,9 +369,23 @@ def git_command(*args):
         logger.info(f"Git command success: {result.stdout.strip()}")
     return result
 
-def revert_to_previous_commit():
-    logger.info("Reverting to the previous commit with git reset --hard HEAD~1.")
-    git_command("reset", "--hard", "HEAD~1")
+def revert_to_latest_remote_commit():
+    """
+    Revert to the latest commit on the remote repository.
+    This ensures the local repository matches the remote state.
+    """
+    logger.info("Fetching latest changes from remote...")
+    fetch_result = git_command("fetch", "origin")
+    if fetch_result.returncode != 0:
+        logger.error("Failed to fetch latest changes from remote. Cannot revert.")
+        return
+
+    logger.info(f"Resetting local branch '{BRANCH_NAME}' to match remote...")
+    reset_result = git_command("reset", "--hard", f"origin/{BRANCH_NAME}")
+    if reset_result.returncode != 0:
+        logger.error("Failed to reset local branch to match remote.")
+    else:
+        logger.info("Successfully reverted to the latest remote commit.")
 
 # -------------------------------------------------------------------------
 #  Main Automated Loop
@@ -453,11 +467,11 @@ def main_loop():
             SUCCESSFUL_COMMITS += 1
             logger.info("Successfully pushed changes.")
         else:
-            logger.error("Push failed. Attempting revert to previous commit.")
-            revert_to_previous_commit()
+            logger.error("Push failed. Attempting revert to latest remote commit.")
+            revert_to_latest_remote_commit()
     else:
-        logger.error(f"All {RETRY_LIMIT} attempts failed. Reverting to previous commit.")
-        revert_to_previous_commit()
+        logger.error(f"All {RETRY_LIMIT} attempts failed. Reverting to latest remote commit.")
+        revert_to_latest_remote_commit()
         force_push_res = git_command("push", "origin", BRANCH_NAME, "--force")
         if force_push_res.returncode == 0:
             logger.info("Successfully forced a revert to remote.")
@@ -519,8 +533,8 @@ def manual_run():
         if push_res.returncode == 0:
             logger.info("Manual-run: Pushed successfully.")
         else:
-            logger.error("Manual-run: Push failed. Reverting local commit.")
-            revert_to_previous_commit()
+            logger.error("Manual-run: Push failed. Reverting to latest remote commit.")
+            revert_to_latest_remote_commit()
     else:
         logger.error("Manual-run: Tests failed. Reverting local changes.")
         with open(app_path, "w", encoding="utf-8") as fw:
