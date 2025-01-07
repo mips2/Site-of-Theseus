@@ -52,46 +52,46 @@ RETRY_LIMIT = config.get("retry_limit", 5)
 ENABLE_AUTODEV = config.get("enable_autodev", True)
 
 # This system prompt ensures DeepSeek knows it must produce compiling code.
-# This system prompt ensures DeepSeek knows it must produce compiling code.
 SYSTEM_PROMPT = config.get(
     "system_prompt",
-        "You are a helpful AI developer. Your goal is to add a NEW and UNIQUE feature "
-        "that compiles/passes tests successfully. Stability and correctness are top priority. "
-        "The end goal is to create something incredible, one feature at a time. "
-        "If adding a route, make sure it is navigable. "
+    "You are a helpful AI developer. Your goal is to add a NEW and UNIQUE feature "
+    "that compiles/passes tests successfully. Stability and correctness are top priority. "
+    "The end goal is to create something incredible, one feature at a time. "
+    "If adding a route, make sure it is navigable and contributes meaningfully to the website's functionality. "
+    "Avoid adding trivial or silly routes like weather reports or placeholder data. "
+    "Focus on features that enhance user experience, add interactivity, or provide valuable functionality. "
 
-        "\n\n-- INTERNAL DEVELOPMENT GUIDELINES --\n"
-        "1. One Feature per Iteration:\n"
-        "   - Always add exactly ONE new feature each time you generate code. "
-        "   - Keep the application fully functional after every change.\n\n"
-        "2. Maintain Code Integrity:\n"
-        "   - Do not break or remove existing features or routes.\n"
-        "   - If a new route is introduced, it must be accessible through a link or navigation element.\n\n"
-        "3. No API-Only Solutions:\n"
-        "   - The final result should be a complete or progressively complete website, not just an API.\n\n"
-        "4. Modular Explanation:\n"
-        "   - Always indicate how new code integrates with existing files.\n"
-        "   - Use brief comments to clarify complex logic.\n\n"
-        "5. Self-Building Strategy:\n"
-        "   - Keep each feature small yet meaningful.\n"
-        "   - Ensure everything remains accessible and testable in the browser.\n\n"
-        "6. Security and Best Practices:\n"
-        "   - Validate inputs as necessary.\n"
-        "   - Avoid introducing security vulnerabilities.\n\n"
-        "7. Concise & Readable:\n"
-        "   - Write well-structured, readable code.\n"
-        "   - Use clear naming and minimal but sufficient comments.\n"
+    "\n\n-- INTERNAL DEVELOPMENT GUIDELINES --\n"
+    "1. One Feature per Iteration:\n"
+    "   - Always add exactly ONE new feature each time you generate code. "
+    "   - Keep the application fully functional after every change.\n\n"
+    "2. Maintain Code Integrity:\n"
+    "   - Do not break or remove existing features or routes.\n"
+    "   - If a new route is introduced, it must be accessible through a link or navigation element.\n\n"
+    "3. No API-Only Solutions:\n"
+    "   - The final result should be a complete or progressively complete website, not just an API.\n\n"
+    "4. Modular Explanation:\n"
+    "   - Always indicate how new code integrates with existing files.\n"
+    "   - Use brief comments to clarify complex logic.\n\n"
+    "5. Self-Building Strategy:\n"
+    "   - Keep each feature small yet meaningful.\n"
+    "   - Ensure everything remains accessible and testable in the browser.\n\n"
+    "6. Security and Best Practices:\n"
+    "   - Validate inputs as necessary.\n"
+    "   - Avoid introducing security vulnerabilities.\n\n"
+    "7. Concise & Readable:\n"
+    "   - Write well-structured, readable code.\n"
+    "   - Use clear naming and minimal but sufficient comments.\n"
 )
 
 # Additional instructions (not displayed to end users).
 USER_INSTRUCTIONS = config.get(
     "user_instructions",
-        "Maintain a one-feature-at-a-time approach.\n"
-        "Preserve existing functionality.\n"
-        "Ensure any new routes or pages are navigable.\n"
-        "Ask for clarification if needed.\n"
+    "Maintain a one-feature-at-a-time approach.\n"
+    "Preserve existing functionality.\n"
+    "Ensure any new routes or pages are navigable.\n"
+    "Ask for clarification if needed.\n"
 )
-
 
 # ------------------------------------------------------------------------------
 #  DeepSeek API Key
@@ -134,10 +134,13 @@ def generate_code_change(current_code):
                 "role": "user",
                 "content": (
                     f"Here is the existing code:\n\n{current_code}\n\n"
-                    "Return ONLY the updated code. Make sure it compiles and doesn't break existing tests."
+                    "Return ONLY the updated code. Make sure it compiles and doesn't break existing tests. "
+                    "Focus on adding meaningful features that contribute to building a full website. "
+                    "Avoid adding trivial or silly routes like weather reports or placeholder data."
                 ),
             },
         ],
+        "temperature": 0,  # Set temperature to 0 for deterministic output
     }
 
     headers = {
