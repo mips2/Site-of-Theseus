@@ -60,8 +60,8 @@ SYSTEM_PROMPT = config.get(
 # Additional user instructions if needed
 USER_INSTRUCTIONS = config.get(
     "user_instructions",
-    "Please enhance this Flask code by adding a new route or improving functionality. "
-    "Ensure the code is valid Python and doesn't break existing routes."
+    "Please enhance this Flask code by adding a feature to make the site better. It can be anything. "
+    "Ensure the code is valid within the context and doesn't break existing routes."
 )
 
 # ------------------------------------------------------------------------------
