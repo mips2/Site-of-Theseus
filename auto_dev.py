@@ -7,6 +7,7 @@ An autonomous script that:
 2. Uses DeepSeek to generate new code features.
 3. Tests changes.
 4. Commits and pushes on success, or reverts on repeated failure.
+   - On success, restarts 'gunicorn-theseus.service' and reloads Nginx.
 
 Additionally:
 - Allows custom system prompt (configured in config.yaml or directly below).
@@ -53,21 +54,21 @@ ENABLE_AUTODEV = config.get("enable_autodev", True)
 # This system prompt ensures DeepSeek knows it must produce compiling code.
 SYSTEM_PROMPT = config.get(
     "system_prompt",
-    "You are a helpful AI developer. Your goal is to add a NEW and UNIQUE feature "
+    "You are a helpful AI developer. Your goal is to add a NEW and UNIQUE feature. "
     "that compiles/passes tests successfully. Stability and correctness are top priority."
+    "The end goal is to create something incredible, one feature at a time."
 )
 
 # Additional user instructions if needed
 USER_INSTRUCTIONS = config.get(
     "user_instructions",
-    "Please enhance this Flask code by adding a feature to make the site better. It can be anything. "
+    "Please enhance this Flask code by adding a feature to make the site better. "
     "Ensure the code is valid within the context and doesn't break existing routes."
 )
 
 # ------------------------------------------------------------------------------
 #  DeepSeek API Key
 # ------------------------------------------------------------------------------
-# !!! WARNING: Ideally store this in environment variables or a secret manager.
 DEESEEK_API_KEY = os.environ.get("DEESEEK_API_KEY", None)
 if not DEESEEK_API_KEY:
     logging.error("No DeepSeek API key provided. Exiting.")
@@ -91,12 +92,11 @@ def generate_code_change(current_code):
     1. Send the existing code to DeepSeek, along with instructions on how to modify it.
     2. Return the updated code from the AI response.
     """
-
     payload = {
         "model": DEESEEK_MODEL,
         "messages": [
             {
-                "role": "system", 
+                "role": "system",
                 "content": SYSTEM_PROMPT
             },
             {
@@ -172,10 +172,8 @@ def git_command(*args):
 
     env = os.environ.copy()
     if GITHUB_TOKEN:
-        # Optionally, we can set env vars for Git-based authentication:
-        # env["GIT_ASKPASS"] = "echo"
-        # env["GIT_USERNAME"] = "YourUsername"
-        # env["GIT_PASSWORD"] = GITHUB_TOKEN
+        # Optionally, you could configure credentials here if using HTTPS
+        # e.g., env["GIT_ASKPASS"] = "echo"
         pass
 
     result = subprocess.run(cmd, check=False, capture_output=True, text=True, env=env)
@@ -195,6 +193,7 @@ def main_loop():
     2. Generate new code (retry up to RETRY_LIMIT times).
     3. Run tests.
     4. Commit/push if successful, revert if not.
+       * On success, restart gunicorn-theseus.service and reload nginx.
     """
     if not ENABLE_AUTODEV:
         logging.info("AUTO-DEV is disabled in config.yaml. Exiting gracefully.")
@@ -240,6 +239,25 @@ def main_loop():
         git_push_result = git_command("push", "origin", BRANCH_NAME)
         if git_push_result.returncode == 0:
             logging.info("Successfully committed and pushed changes.")
+
+            # ------------------------------------------------------------------
+            # RESTART Gunicorn to load new code
+            # ------------------------------------------------------------------
+            try:
+                logging.info("Restarting gunicorn-theseus.service to apply new changes...")
+                subprocess.run(["sudo", "systemctl", "restart", "gunicorn-theseus.service"], check=True)
+            except subprocess.CalledProcessError as e:
+                logging.error(f"Failed to restart Gunicorn service: {e}")
+
+            # ------------------------------------------------------------------
+            # RELOAD Nginx (optional, ensures Nginx recognizes new upstream config)
+            # ------------------------------------------------------------------
+            try:
+                logging.info("Reloading Nginx to apply new changes...")
+                subprocess.run(["sudo", "systemctl", "reload", "nginx"], check=True)
+            except subprocess.CalledProcessError as e:
+                logging.error(f"Failed to reload Nginx: {e}")
+
         else:
             logging.error("Failed to push changes to remote repository.")
     else:
@@ -265,8 +283,7 @@ def manual_run():
     1. Generate code once.
     2. Test it.
     3. If success, commit/push. If fail, revert.
-
-    Useful for manual testing before letting the script run automatically.
+       * On success, also restart Gunicorn and reload Nginx.
     """
     logging.info("Starting MANUAL RUN of the AI code update process.")
 
@@ -295,6 +312,21 @@ def manual_run():
         git_push_result = git_command("push", "origin", BRANCH_NAME)
         if git_push_result.returncode == 0:
             logging.info("Manual-run: Successfully committed and pushed changes.")
+
+            # Restart gunicorn-theseus.service to load new code
+            try:
+                logging.info("Manual-run: Restarting gunicorn-theseus.service...")
+                subprocess.run(["sudo", "systemctl", "restart", "gunicorn-theseus.service"], check=True)
+            except subprocess.CalledProcessError as e:
+                logging.error(f"Manual-run: Failed to restart Gunicorn: {e}")
+
+            # Reload Nginx
+            try:
+                logging.info("Manual-run: Reloading nginx...")
+                subprocess.run(["sudo", "systemctl", "reload", "nginx"], check=True)
+            except subprocess.CalledProcessError as e:
+                logging.error(f"Manual-run: Failed to reload Nginx: {e}")
+
         else:
             logging.error("Manual-run: Failed to push changes.")
     else:
@@ -314,8 +346,8 @@ def manual_run():
 #  Entry Point
 # ------------------------------------------------------------------------------
 if __name__ == "__main__":
-    # If you run "python auto_dev.py manual-run",
-    # we'll do a one-off iteration (manual_run) instead of the full main_loop.
+    # If you run "python auto_dev.py manual-run", we'll do a one-off iteration.
+    # Otherwise, run the full main_loop.
     if len(sys.argv) > 1 and sys.argv[1] == "manual-run":
         manual_run()
     else:
