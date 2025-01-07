@@ -21,5 +21,12 @@ def timestamp():
         "timezone": "UTC"
     })
 
+@app.route("/greet/<name>")
+def greet(name):
+    return jsonify({
+        "message": f"Hello, {name}! Welcome to our website.",
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    })
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
