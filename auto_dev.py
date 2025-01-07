@@ -18,7 +18,6 @@ import yaml
 import logging
 import sys
 import requests
-from dotenv import load_dotenv
 
 # ------------------------------------------------------------------------------
 #  Logging Setup
@@ -54,8 +53,7 @@ ENABLE_AUTODEV = config.get("enable_autodev", True)
 # ------------------------------------------------------------------------------
 # !!! WARNING: This is included directly here for demonstration. 
 # For production, store in environment variables or a secret manager.
-load_dotenv()
-DEESEEK_API_KEY = os.getenv("DEESEEK_API_KEY")
+DEESEEK_API_KEY = os.environ.get("DEESEEK_API_KEY", None)
 
 if not DEESEEK_API_KEY:
     logging.error("No DeepSeek API key provided. Exiting.")

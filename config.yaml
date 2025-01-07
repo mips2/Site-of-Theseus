@@ -1,0 +1,6 @@
+# config.yaml
+
+github_repo: "https://github.com/mips2/Site-of-Theseus"
+branch_name: "main"
+retry_limit: 5
+enable_autodev: true
