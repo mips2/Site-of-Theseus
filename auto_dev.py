@@ -7,17 +7,19 @@ An autonomous script that:
 2. Uses DeepSeek to generate new code features.
 3. Tests changes.
 4. Commits and pushes on success, or reverts on repeated failure.
+
+Additionally:
+- Allows custom system prompt (configured in config.yaml or directly below).
+- Supports 'manual-run' mode for a one-off iteration.
 """
 
 import os
 import subprocess
-import random
-import time
-from datetime import datetime
+import sys
 import yaml
 import logging
-import sys
 import requests
+from datetime import datetime
 
 # ------------------------------------------------------------------------------
 #  Logging Setup
@@ -48,13 +50,25 @@ BRANCH_NAME = config.get("branch_name", "main")
 RETRY_LIMIT = config.get("retry_limit", 5)
 ENABLE_AUTODEV = config.get("enable_autodev", True)
 
+# This system prompt ensures DeepSeek knows it must produce compiling code.
+SYSTEM_PROMPT = config.get(
+    "system_prompt",
+    "You are a helpful AI developer. Your goal is to add a NEW and UNIQUE feature "
+    "that compiles/passes tests successfully. Stability and correctness are top priority."
+)
+
+# Additional user instructions if needed
+USER_INSTRUCTIONS = config.get(
+    "user_instructions",
+    "Please enhance this Flask code by adding a new route or improving functionality. "
+    "Ensure the code is valid Python and doesn't break existing routes."
+)
+
 # ------------------------------------------------------------------------------
 #  DeepSeek API Key
 # ------------------------------------------------------------------------------
-# !!! WARNING: This is included directly here for demonstration. 
-# For production, store in environment variables or a secret manager.
+# !!! WARNING: Ideally store this in environment variables or a secret manager.
 DEESEEK_API_KEY = os.environ.get("DEESEEK_API_KEY", None)
-
 if not DEESEEK_API_KEY:
     logging.error("No DeepSeek API key provided. Exiting.")
     sys.exit(1)
@@ -62,8 +76,6 @@ if not DEESEEK_API_KEY:
 # ------------------------------------------------------------------------------
 #  GitHub Token (Optional)
 # ------------------------------------------------------------------------------
-# You can store your GitHub token in an environment variable, e.g. GITHUB_TOKEN.
-# If your local Git config is set up with SSH keys or GitHub CLI, you may not need this.
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", None)
 if not GITHUB_TOKEN:
     logging.warning("No GITHUB_TOKEN found in environment. Proceeding without it.")
@@ -74,29 +86,29 @@ if not GITHUB_TOKEN:
 DEESEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"
 DEESEEK_MODEL   = "deepseek-chat"
 
-
 def generate_code_change(current_code):
     """
     1. Send the existing code to DeepSeek, along with instructions on how to modify it.
     2. Return the updated code from the AI response.
     """
 
-    # Example instruction: "Add a /hello route that returns 'Hello from AI!'"
-    user_instructions = (
-        "You are an AI developer. Please enhance this Flask code by adding a new route. "
-        "For example, add a /hello route returning a friendly greeting or anything interesting. "
-        "Ensure the code is valid Python and that it won't break the existing routes."
-    )
-
-    # Prepare the request body
     payload = {
         "model": DEESEEK_MODEL,
         "messages": [
-            {"role": "system", "content": "You are a helpful AI developer."},
-            {"role": "user", "content": user_instructions},
+            {
+                "role": "system", 
+                "content": SYSTEM_PROMPT
+            },
             {
                 "role": "user",
-                "content": f"Here is the existing code:\n\n{current_code}\n\nReturn only the updated code."
+                "content": USER_INSTRUCTIONS
+            },
+            {
+                "role": "user",
+                "content": (
+                    f"Here is the existing code:\n\n{current_code}\n\n"
+                    "Return ONLY the updated code. Make sure it compiles and doesn't break existing tests."
+                ),
             },
         ],
     }
@@ -107,44 +119,39 @@ def generate_code_change(current_code):
     }
 
     try:
-        response = requests.post(DEESEEK_API_URL, json=payload, headers=headers, timeout=60)
+        response = requests.post(
+            DEESEEK_API_URL, json=payload, headers=headers, timeout=60
+        )
         response.raise_for_status()
-        # Attempt to parse out the code from the AI
         result = response.json()
         ai_message = result["choices"][0]["message"]["content"]
 
-        # The AI might return extra explanation. We want the Python code only.
-        # For safety, we can assume the entire content is the updated code or 
-        # contain code fences. Here, let's do a naive parse. 
-        # If you want more robust parsing, you might do regex or more advanced filtering.
+        # Attempt to extract code from possible code fences
         if "```" in ai_message:
-            # Attempt to extract code from triple backticks
             splitted = ai_message.split("```")
-            # The code block could be splitted[1] or splitted[2], depending on markdown style. 
-            # We'll pick the second chunk if it exists.
-            if len(splitted) > 1:
-                # This might contain language spec e.g. "```python"
-                code_part = splitted[1].strip()
-                # Remove "python" or similar if present
-                code_part = code_part.replace("python", "").strip()
-                return code_part
-            else:
-                return splitted[0].strip()
+            # The code block could be splitted[1] or splitted[2], etc.
+            # We'll just look for the largest chunk that looks like code.
+            code_blocks = [chunk.strip() for chunk in splitted if chunk.strip()]
+            # Attempt to filter out 'python' or any language spec
+            # We'll pick the chunk with the most lines as the code block
+            code_blocks_sorted = sorted(code_blocks, key=lambda x: len(x), reverse=True)
+            code_part = code_blocks_sorted[0]
+            # Remove language annotation if present
+            code_part = code_part.replace("python", "").strip()
+            return code_part
         else:
-            # If no code fences, assume the entire response is code.
             return ai_message.strip()
 
     except requests.exceptions.RequestException as e:
         logging.error(f"DeepSeek API call failed: {e}")
         return current_code + "\n# [DeepSeek ERROR] Could not generate new code.\n"
 
-
 # ------------------------------------------------------------------------------
 #  Testing
 # ------------------------------------------------------------------------------
 def run_test_commands():
     """
-    Run your website's tests to ensure the new code is valid.
+    Install dependencies and run tests to ensure the new code is valid.
     Return True if tests pass, False otherwise.
     """
     try:
@@ -165,11 +172,10 @@ def git_command(*args):
 
     env = os.environ.copy()
     if GITHUB_TOKEN:
-        # If you want to leverage https with token, you can do something like:
+        # Optionally, we can set env vars for Git-based authentication:
         # env["GIT_ASKPASS"] = "echo"
         # env["GIT_USERNAME"] = "YourUsername"
         # env["GIT_PASSWORD"] = GITHUB_TOKEN
-        # But typically, you'd set up a credential helper. We'll assume SSH or existing config is fine.
         pass
 
     result = subprocess.run(cmd, check=False, capture_output=True, text=True, env=env)
@@ -180,14 +186,21 @@ def git_command(*args):
     return result
 
 # ------------------------------------------------------------------------------
-#  Main Loop
+#  Main Automated Loop
 # ------------------------------------------------------------------------------
 def main_loop():
+    """
+    Automates the entire process:
+    1. Pull latest code.
+    2. Generate new code (retry up to RETRY_LIMIT times).
+    3. Run tests.
+    4. Commit/push if successful, revert if not.
+    """
     if not ENABLE_AUTODEV:
         logging.info("AUTO-DEV is disabled in config.yaml. Exiting gracefully.")
         return
 
-    # Step 1: Pull latest code
+    # Pull latest code
     git_command("pull", "origin", BRANCH_NAME)
 
     target_file = "website/app.py"
@@ -195,11 +208,11 @@ def main_loop():
         logging.error(f"{target_file} does not exist! Cannot proceed.")
         return
 
-    # Read the old/original code
+    # Read original code
     with open(target_file, "r") as f:
         old_code = f.read()
 
-    new_code = old_code  # We'll update this in a loop
+    new_code = old_code
     success = False
 
     for attempt in range(1, RETRY_LIMIT + 1):
@@ -212,7 +225,7 @@ def main_loop():
         with open(target_file, "w") as f:
             f.write(new_code)
 
-        # Step 2: Run tests
+        # Run tests
         if run_test_commands():
             success = True
             break
@@ -220,7 +233,7 @@ def main_loop():
             logging.warning(f"Test failed on attempt #{attempt}. Retrying...")
 
     if success:
-        # Step 3: Commit and push
+        # Commit and push
         git_command("add", ".")
         commit_msg = f"Auto-update from AI on {datetime.now().isoformat()}"
         git_command("commit", "-m", commit_msg)
@@ -230,9 +243,8 @@ def main_loop():
         else:
             logging.error("Failed to push changes to remote repository.")
     else:
-        # Step 4: Revert if we used up all attempts
+        # Revert to original code
         logging.error(f"All {RETRY_LIMIT} attempts failed. Reverting to previous version.")
-
         with open(target_file, "w") as f:
             f.write(old_code)
 
@@ -244,5 +256,67 @@ def main_loop():
         else:
             logging.error("Failed to push the revert to the remote repository.")
 
+# ------------------------------------------------------------------------------
+#  Manual Run (One-Off Iteration)
+# ------------------------------------------------------------------------------
+def manual_run():
+    """
+    Perform a single iteration of:
+    1. Generate code once.
+    2. Test it.
+    3. If success, commit/push. If fail, revert.
+
+    Useful for manual testing before letting the script run automatically.
+    """
+    logging.info("Starting MANUAL RUN of the AI code update process.")
+
+    git_command("pull", "origin", BRANCH_NAME)
+
+    target_file = "website/app.py"
+    if not os.path.exists(target_file):
+        logging.error(f"{target_file} does not exist! Cannot proceed.")
+        return
+
+    # Backup old code
+    with open(target_file, "r") as f:
+        old_code = f.read()
+
+    # Generate code once
+    new_code = generate_code_change(old_code)
+    with open(target_file, "w") as f:
+        f.write(new_code)
+
+    # Run tests
+    if run_test_commands():
+        logging.info("Manual run: Tests passed on first try.")
+        git_command("add", ".")
+        commit_msg = f"Manual-run update from AI on {datetime.now().isoformat()}"
+        git_command("commit", "-m", commit_msg)
+        git_push_result = git_command("push", "origin", BRANCH_NAME)
+        if git_push_result.returncode == 0:
+            logging.info("Manual-run: Successfully committed and pushed changes.")
+        else:
+            logging.error("Manual-run: Failed to push changes.")
+    else:
+        logging.error("Manual run: Tests failed. Reverting to old code.")
+        with open(target_file, "w") as f:
+            f.write(old_code)
+
+        git_command("add", ".")
+        git_command("commit", "-m", "Manual-run revert to previous working version")
+        revert_push_result = git_command("push", "origin", BRANCH_NAME)
+        if revert_push_result.returncode == 0:
+            logging.info("Manual-run: Successfully reverted to the previous version.")
+        else:
+            logging.error("Manual-run: Failed to push revert.")
+
+# ------------------------------------------------------------------------------
+#  Entry Point
+# ------------------------------------------------------------------------------
 if __name__ == "__main__":
-    main_loop()
+    # If you run "python auto_dev.py manual-run",
+    # we'll do a one-off iteration (manual_run) instead of the full main_loop.
+    if len(sys.argv) > 1 and sys.argv[1] == "manual-run":
+        manual_run()
+    else:
+        main_loop()
