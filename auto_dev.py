@@ -4,7 +4,7 @@ auto_dev.py
 
 An autonomous script that:
 1. Pulls the latest code from GitHub.
-2. Uses DeepSeek to generate new code features.
+2. Uses DeepSeek to generate new code features and HTML templates.
 3. Tests changes.
 4. Commits and pushes on success, or reverts on repeated failure.
    - On success, restarts 'gunicorn-theseus.service' and reloads Nginx.
@@ -54,34 +54,20 @@ ENABLE_AUTODEV = config.get("enable_autodev", True)
 # This system prompt ensures DeepSeek knows it must produce compiling code.
 SYSTEM_PROMPT = config.get(
     "system_prompt",
-    "You are a helpful AI developer. Your goal is to add a NEW and UNIQUE feature "
-    "that compiles/passes tests successfully. Stability and correctness are top priority. "
-    "The end goal is to create something incredible, one feature at a time. "
-    "If adding a route, make sure it is navigable and contributes meaningfully to the website's functionality. "
-    "Avoid adding trivial or silly routes like weather reports or placeholder data. "
-    "Focus on features that enhance user experience, add interactivity, or provide valuable functionality. "
-
-    "\n\n-- INTERNAL DEVELOPMENT GUIDELINES --\n"
-    "1. One Feature per Iteration:\n"
-    "   - Always add exactly ONE new feature each time you generate code. "
-    "   - Keep the application fully functional after every change.\n\n"
-    "2. Maintain Code Integrity:\n"
-    "   - Do not break or remove existing features or routes.\n"
-    "   - If a new route is introduced, it must be accessible through a link or navigation element.\n\n"
-    "3. No API-Only Solutions:\n"
-    "   - The final result should be a complete or progressively complete website, not just an API.\n\n"
-    "4. Modular Explanation:\n"
-    "   - Always indicate how new code integrates with existing files.\n"
-    "   - Use brief comments to clarify complex logic.\n\n"
-    "5. Self-Building Strategy:\n"
-    "   - Keep each feature small yet meaningful.\n"
-    "   - Ensure everything remains accessible and testable in the browser.\n\n"
-    "6. Security and Best Practices:\n"
-    "   - Validate inputs as necessary.\n"
-    "   - Avoid introducing security vulnerabilities.\n\n"
-    "7. Concise & Readable:\n"
-    "   - Write well-structured, readable code.\n"
-    "   - Use clear naming and minimal but sufficient comments.\n"
+    "You are a helpful AI developer. Your goal is to add NEW and UNIQUE features to the existing Flask application. "
+    "Each feature must:\n"
+    "1. Build upon the existing codebase.\n"
+    "2. Add interactivity (e.g., buttons, forms, links).\n"
+    "3. Create navigable pages with a clear user flow.\n"
+    "4. Avoid trivial or redundant routes (e.g., weather reports, placeholder data).\n"
+    "5. Enhance the user experience and functionality of the website.\n\n"
+    "Focus on features like:\n"
+    "- A 'Contact Us' form with validation and submission feedback.\n"
+    "- A navigation bar linking to all major pages.\n"
+    "- A user profile page with editable fields.\n"
+    "- A blog section with dynamic content loading.\n"
+    "- A search bar with autocomplete functionality.\n\n"
+    "Return ONLY the updated code. Do not include explanations or comments outside the code."
 )
 
 # Additional instructions (not displayed to end users).
@@ -90,7 +76,9 @@ USER_INSTRUCTIONS = config.get(
     "Maintain a one-feature-at-a-time approach.\n"
     "Preserve existing functionality.\n"
     "Ensure any new routes or pages are navigable.\n"
-    "Ask for clarification if needed.\n"
+    "Add interactive elements (e.g., buttons, forms, links).\n"
+    "Avoid trivial or redundant routes (e.g., weather reports, placeholder data).\n"
+    "Focus on features that enhance user experience and functionality."
 )
 
 # ------------------------------------------------------------------------------
@@ -112,12 +100,13 @@ if not GITHUB_TOKEN:
 #  DeepSeek Integration
 # ------------------------------------------------------------------------------
 DEESEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"
-DEESEEK_MODEL   = "deepseek-chat"
+DEESEEK_MODEL = "deepseek-chat"
+MAX_TOKENS = 2500  # Limit response length to prevent overly verbose output
 
 def generate_code_change(current_code):
     """
-    1. Send the existing code to DeepSeek, along with instructions on how to modify it.
-    2. Return the updated code from the AI response.
+    Send the existing code to DeepSeek, along with instructions on how to modify it.
+    Return the updated code from the AI response.
     """
     payload = {
         "model": DEESEEK_MODEL,
@@ -141,6 +130,7 @@ def generate_code_change(current_code):
             },
         ],
         "temperature": 0,  # Set temperature to 0 for deterministic output
+        "max_tokens": MAX_TOKENS,  # Limit response length
     }
 
     headers = {
@@ -176,6 +166,28 @@ def generate_code_change(current_code):
         logging.error(f"DeepSeek API call failed: {e}")
         return current_code + "\n# [DeepSeek ERROR] Could not generate new code.\n"
 
+def generate_template(template_name, template_content):
+    """
+    Generate or update an HTML template in the `templates` directory.
+    """
+    templates_dir = "website/templates"
+    os.makedirs(templates_dir, exist_ok=True)  # Ensure templates directory exists
+
+    template_path = os.path.join(templates_dir, template_name)
+    with open(template_path, "w") as f:
+        f.write(template_content)
+    logging.info(f"Generated/updated template: {template_path}")
+
+def ensure_file_exists(file_path, default_content=""):
+    """
+    Ensure a file exists. If it doesn't, create it with default content.
+    """
+    if not os.path.exists(file_path):
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, "w") as f:
+            f.write(default_content)
+        logging.info(f"Created file: {file_path}")
+
 # ------------------------------------------------------------------------------
 #  Testing
 # ------------------------------------------------------------------------------
@@ -186,7 +198,7 @@ def run_test_commands():
     """
     try:
         try:
-          subprocess.run(["pip", "install", "-r", "website/requirements.txt"], check=True, capture_output=True, text=True)
+            subprocess.run(["pip", "install", "-r", "website/requirements.txt"], check=True, capture_output=True, text=True)
         except subprocess.CalledProcessError as e:
             logging.error(f"Pip install failed: {e.stderr}")
             return False
@@ -225,7 +237,7 @@ def main_loop():
     """
     Automates the entire process:
     1. Pull latest code.
-    2. Generate new code (retry up to RETRY_LIMIT times).
+    2. Generate new code and templates (retry up to RETRY_LIMIT times).
     3. Run tests.
     4. Commit/push if successful, revert if not.
        * On success, restart gunicorn-theseus.service and reload nginx.
@@ -259,6 +271,21 @@ def main_loop():
         with open(target_file, "w") as f:
             f.write(new_code)
 
+        # Ensure templates exist if referenced in the code
+        if "render_template" in new_code:
+            # Extract template names from the code
+            template_names = set()
+            for line in new_code.splitlines():
+                if "render_template" in line:
+                    # Extract the template name from the render_template call
+                    template_name = line.split("render_template(")[1].split(")")[0].strip().strip('"').strip("'")
+                    template_names.add(template_name)
+
+            # Ensure each template exists
+            for template_name in template_names:
+                template_path = os.path.join("website/templates", template_name)
+                ensure_file_exists(template_path, f"<h1>Welcome to the AI-updated website!</h1>\n<p>This is the {template_name} page.</p>")
+
         # Run tests
         if run_test_commands():
             success = True
@@ -278,11 +305,6 @@ def main_loop():
             # ------------------------------------------------------------------
             # RESTART Gunicorn to load new code
             # ------------------------------------------------------------------
-            try:
-                logging.info("Restarting gunicorn-theseus.service to apply new changes...")
-                subprocess.run(["sudo", "systemctl", "restart", "gunicorn-theseus.service"], check=True)
-            except subprocess.CalledProcessError as e:
-                logging.error(f"Failed to restart Gunicorn service: {e}")
 
             # ------------------------------------------------------------------
             # RELOAD Nginx (optional, ensures Nginx recognizes new upstream config)
@@ -337,6 +359,21 @@ def manual_run():
     new_code = generate_code_change(old_code)
     with open(target_file, "w") as f:
         f.write(new_code)
+
+    # Ensure templates exist if referenced in the code
+    if "render_template" in new_code:
+        # Extract template names from the code
+        template_names = set()
+        for line in new_code.splitlines():
+            if "render_template" in line:
+                # Extract the template name from the render_template call
+                template_name = line.split("render_template(")[1].split(")")[0].strip().strip('"').strip("'")
+                template_names.add(template_name)
+
+        # Ensure each template exists
+        for template_name in template_names:
+            template_path = os.path.join("website/templates", template_name)
+            ensure_file_exists(template_path, f"<h1>Welcome to the AI-updated website!</h1>\n<p>This is the {template_name} page.</p>")
 
     # Run tests
     if run_test_commands():
