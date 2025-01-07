@@ -230,7 +230,6 @@ def parse_ai_response_into_files(ai_response):
          - Strip trailing '-->' if present (in case the AI included HTML comments).
          - Skip if referencing website/tests.
          - Remove inline <html> from .py blocks if found.
-      4) Perform syntax checks on all .py files. If any fail, discard the entire set.
     """
 
     # Remove triple backticks like ``` or ```python
@@ -269,15 +268,6 @@ def parse_ai_response_into_files(ai_response):
                     code_block = code_block[:start_idx] + "# [HTML REMOVED]\n" + code_block[end_idx:]
 
         temp_files[file_path] = code_block
-
-    # All-or-nothing syntax check
-    for fp, code_str in temp_files.items():
-        if fp.endswith(".py"):
-            if not is_valid_python_syntax(code_str):
-                logger.error(
-                    f"Syntax check failed for {fp}. Discarding entire AI response set."
-                )
-                return {}
 
     return temp_files
 
