@@ -161,7 +161,6 @@ def call_deepseek_api(payload):
             else:
                 logger.error("All attempts to call DeepSeek API have failed.")
     return None
-
 def generate_code_change(current_code, failure_reason=""):
     """
     Send the existing code to DeepSeek, along with instructions on how to modify it.
@@ -192,7 +191,7 @@ def generate_code_change(current_code, failure_reason=""):
         ],
         "temperature": 0,
         "max_tokens": MAX_TOKENS,
-    ]
+    }
 
     result = call_deepseek_api(payload)
     if not result:
