@@ -78,5 +78,14 @@ def health_check():
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     })
 
+@app.route("/user-agent")
+def user_agent():
+    # Add a feature to return the user's browser information
+    user_agent = request.headers.get('User-Agent')
+    return jsonify({
+        "user_agent": user_agent,
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    })
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

@@ -155,7 +155,12 @@ def run_test_commands():
     Return True if tests pass, False otherwise.
     """
     try:
-        subprocess.check_call(["pip", "install", "-r", "website/requirements.txt"])
+        try:
+          subprocess.run(["pip", "install", "-r", "website/requirements.txt"], check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as e:
+            logging.error(f"Pip install failed: {e.stderr}")
+            return False
+
         subprocess.check_call(["pytest", "website/tests/", "--maxfail=1"])
         return True
     except subprocess.CalledProcessError as e:
