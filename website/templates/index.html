@@ -7,12 +7,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Welcome to the Mood Tracker App</h1>
+    <h1>Welcome to the Mood App</h1>
     <nav>
         <ul>
             <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="{{ url_for('mood_tracker') }}">Mood Tracker</a></li>
             <li><a href="{{ url_for('mood_journal') }}">Mood Journal</a></li>
+            <li><a href="{{ url_for('mood_art') }}">Mood Art Generator</a></li>
         </ul>
     </nav>
 </body>

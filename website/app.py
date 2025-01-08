@@ -30,5 +30,22 @@ def submit_journal():
     flash(f"Your journal entry has been saved at {timestamp}!", "success")
     return redirect(url_for("mood_journal"))
 
+@app.route("/mood-art")
+def mood_art():
+    return render_template("mood_art.html")
+
+@app.route("/generate-art", methods=["POST"])
+def generate_art():
+    mood = request.form.get("mood")
+    colors = {
+        "happy": "#FFD700",
+        "sad": "#1E90FF",
+        "angry": "#FF4500",
+        "calm": "#32CD32",
+        "excited": "#FF69B4"
+    }
+    color = colors.get(mood, "#000000")
+    return jsonify({"color": color})
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
