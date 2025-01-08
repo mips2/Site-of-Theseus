@@ -78,5 +78,14 @@ def edit_feedback():
         return redirect(url_for("view_feedback"))
     return render_template("edit_feedback.html")
 
+@app.route("/export-feedback")
+def export_feedback():
+    try:
+        with open("website/static/feedback.txt", "r") as f:
+            feedback_entries = f.read()
+        return feedback_entries, 200, {'Content-Type': 'text/plain', 'Content-Disposition': 'attachment; filename=feedback.txt'}
+    except FileNotFoundError:
+        return "No feedback available to export.", 404
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
