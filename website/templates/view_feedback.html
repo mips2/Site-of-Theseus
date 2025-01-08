@@ -7,7 +7,6 @@
 </head>
 <body>
     <h1>Feedback Entries</h1>
-    <a href="{{ url_for('home') }}">Home</a>
     <ul>
         {% for entry in feedback_entries %}
             <li>
@@ -16,9 +15,13 @@
                     <input type="hidden" name="entry_to_delete" value="{{ entry }}">
                     <button type="submit">Delete</button>
                 </form>
+                <form action="{{ url_for('edit_feedback') }}" method="GET" style="display:inline;">
+                    <input type="hidden" name="original_entry" value="{{ entry }}">
+                    <button type="submit">Edit</button>
+                </form>
             </li>
         {% endfor %}
     </ul>
-    <a href="{{ url_for('search_feedback') }}">Search Feedback</a>
+    <a href="{{ url_for('home') }}">Back to Home</a>
 </body>
 </html>

@@ -59,5 +59,24 @@ def delete_feedback():
             pass
         return redirect(url_for("view_feedback"))
 
+@app.route("/edit-feedback", methods=["GET", "POST"])
+def edit_feedback():
+    if request.method == "POST":
+        original_entry = request.form.get("original_entry")
+        edited_entry = request.form.get("edited_entry")
+        try:
+            with open("website/static/feedback.txt", "r") as f:
+                feedback_entries = f.readlines()
+            with open("website/static/feedback.txt", "w") as f:
+                for entry in feedback_entries:
+                    if entry.strip() == original_entry.strip():
+                        f.write(edited_entry + "\n")
+                    else:
+                        f.write(entry)
+        except FileNotFoundError:
+            pass
+        return redirect(url_for("view_feedback"))
+    return render_template("edit_feedback.html")
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
