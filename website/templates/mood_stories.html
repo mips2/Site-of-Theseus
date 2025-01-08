@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Stories</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .story-container {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .story-text {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #333;
+        }
+        .mood-selector {
+            margin: 20px 0;
+        }
+        .mood-selector button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+        }
+        .mood-selector button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mood Stories</h1>
+    <div class="mood-selector">
+        <button onclick="generateStory('happy')">Happy</button>
+        <button onclick="generateStory('sad')">Sad</button>
+        <button onclick="generateStory('angry')">Angry</button>
+        <button onclick="generateStory('calm')">Calm</button>
+        <button onclick="generateStory('excited')">Excited</button>
+    </div>
+    <div class="story-container">
+        <p class="story-text" id="story-text">Select a mood to generate a story!</p>
+    </div>
+
+    <script>
+        function generateStory(mood) {
+            fetch('/generate-story', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `mood=${mood}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('story-text').innerText = data.story;
+            });
+        }
+    </script>
+</body>
+</html>

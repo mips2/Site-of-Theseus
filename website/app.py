@@ -107,5 +107,22 @@ def feed_pet():
     }.get(food, 0)
     return jsonify({"happiness_level": happiness_level})
 
+@app.route("/mood-stories")
+def mood_stories():
+    return render_template("mood_stories.html")
+
+@app.route("/generate-story", methods=["POST"])
+def generate_story():
+    mood = request.form.get("mood")
+    stories = {
+        "happy": "Once upon a time, in a land filled with sunshine and laughter, a group of friends embarked on an adventure to find the legendary treasure of joy.",
+        "sad": "In a quiet village, a young artist painted their sorrows away, creating masterpieces that spoke of loss and longing, yet held a glimmer of hope.",
+        "angry": "A fierce warrior, fueled by rage, sought to right the wrongs of the world, battling injustice with every ounce of strength.",
+        "calm": "Under the serene moonlight, a lone traveler found peace in the gentle whispers of the forest, where time seemed to stand still.",
+        "excited": "The carnival was alive with energy, as children and adults alike reveled in the thrill of the rides, the music, and the endless possibilities of the night."
+    }
+    story = stories.get(mood, "Once upon a time, in a world full of emotions, a story began to unfold.")
+    return jsonify({"story": story})
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
