@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .quiz-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Mood Quiz</h1>
+        <form id="quiz-form">
+            <div class="question">
+                <label>1. How do you feel about your day so far?</label>
+                <input type="radio" name="answer1" value="1"> Not great
+                <input type="radio" name="answer1" value="2"> Neutral
+                <input type="radio" name="answer1" value="3"> Pretty good
+                <input type="radio" name="answer1" value="4"> Amazing
+            </div>
+            <div class="question">
+                <label>2. How would you describe your energy level?</label>
+                <input type="radio" name="answer2" value="1"> Very low
+                <input type="radio" name="answer2" value="2"> Low
+                <input type="radio" name="answer2" value="3"> Moderate
+                <input type="radio" name="answer2" value="4"> High
+            </div>
+            <div class="question">
+                <label>3. How do you feel about your current tasks?</label>
+                <input type="radio" name="answer3" value="1"> Overwhelmed
+                <input type="radio" name="answer3" value="2"> Stressed
+                <input type="radio" name="answer3" value="3"> Balanced
+                <input type="radio" name="answer3" value="4"> Excited
+            </div>
+            <div class="question">
+                <label>4. How do you feel about your social interactions?</label>
+                <input type="radio" name="answer4" value="1"> Lonely
+                <input type="radio" name="answer4" value="2"> Neutral
+                <input type="radio" name="answer4" value="3"> Satisfied
+                <input type="radio" name="answer4" value="4"> Thrilled
+            </div>
+            <div class="question">
+                <label>5. How do you feel about your future?</label>
+                <input type="radio" name="answer5" value="1"> Pessimistic
+                <input type="radio" name="answer5" value="2"> Uncertain
+                <input type="radio" name="answer5" value="3"> Hopeful
+                <input type="radio" name="answer5" value="4"> Excited
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <div class="result" id="quiz-result"></div>
+    </div>
+    <script>
+        document.getElementById('quiz-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const answers = [];
+            for (let i = 1; i <= 5; i++) {
+                answers.push(formData.get(`answer${i}`));
+            }
+            fetch('/submit-quiz', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({answer: answers}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('quiz-result').textContent = `Your mood is: ${data.mood}`;
+            });
+        });
+    </script>
+</body>
+</html>

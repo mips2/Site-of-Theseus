@@ -64,5 +64,23 @@ def generate_playlist():
     playlist_url = playlists.get(mood, "https://open.spotify.com/")
     return jsonify({"playlist_url": playlist_url})
 
+@app.route("/mood-quiz")
+def mood_quiz():
+    return render_template("mood_quiz.html")
+
+@app.route("/submit-quiz", methods=["POST"])
+def submit_quiz():
+    answers = request.form.getlist("answer")
+    mood_score = sum(int(answer) for answer in answers)
+    if mood_score <= 5:
+        mood = "sad"
+    elif mood_score <= 10:
+        mood = "calm"
+    elif mood_score <= 15:
+        mood = "happy"
+    else:
+        mood = "excited"
+    return jsonify({"mood": mood})
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
