@@ -528,10 +528,32 @@ def manual_run():
             logger.error("Failed to push revert. Local is reverted, remote may differ.")
 
 # -------------------------------------------------------------------------
+#  Run Forever
+# -------------------------------------------------------------------------
+
+def run_forever(interval_minutes=10):
+    """
+    Continuously runs main_loop() every 'interval_minutes' minutes,
+    allowing the service manager to keep this script alive.
+    """
+    try:
+        while True:
+            main_loop()
+            logger.info(f"Sleeping for {interval_minutes} minutes before next run...")
+            time.sleep(interval_minutes * 60)
+    except KeyboardInterrupt:
+        logger.info("Received KeyboardInterrupt; exiting run_forever loop.")
+
+
+# -------------------------------------------------------------------------
 #  Entry Point
 # -------------------------------------------------------------------------
 if __name__ == "__main__":
+    # If you prefer a manual-run for debugging, you can still keep that:
     if len(sys.argv) > 1 and sys.argv[1] == "manual-run":
         manual_run()
     else:
-        main_loop()
+        # Instead of just calling main_loop() once,
+        # call our new run_forever function
+        run_forever(interval_minutes=10)
+
