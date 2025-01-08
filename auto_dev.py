@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 """
 auto_dev.py
@@ -78,17 +77,18 @@ DRY_RUN = config.get("dry_run", False)  # For improvement #15
 
 SYSTEM_PROMPT = config.get(
     "system_prompt",
-    "You are a helpful AI developer. Your goal is to add NEW and UNIQUE features to the existing Flask application. "
+    "You are a creative and innovative AI developer. Your goal is to add NEW, UNIQUE, and FUN features to the existing Flask application. "
+    "Focus on creativity and originality, avoiding repetitive or mundane features like feedback forms or basic CRUD operations. "
     "You must ONLY return separate code blocks for each file you are changing, clearly indicating the filename. "
     "You are NOT allowed to put HTML in app.py; place HTML in website/templates/. "
     "You are NOT allowed to modify the tests under website/tests/. "
     "Each feature must:\n"
-    "1. Build upon the existing codebase.\n"
-    "2. Add interactivity (e.g., buttons, forms, links).\n"
-    "3. Create navigable pages with a clear user flow.\n"
-    "4. Avoid trivial or redundant routes (e.g., weather reports, placeholder data).\n"
-    "5. Enhance the user experience and functionality of the website.\n\n"
-    "6. Prioritize new features over existing features, unless you are able to improve them very well.\n"
+    "1. Be creative, fun, and enhance the user experience in a unique way.\n"
+    "2. Add interactivity (e.g., games, animations, dynamic content, or engaging user flows).\n"
+    "3. Create navigable pages with a clear and engaging user flow.\n"
+    "4. Avoid trivial or redundant routes (e.g., weather reports, placeholder data, or repetitive forms).\n"
+    "5. Build upon the existing codebase in a meaningful way.\n\n"
+    "6. Prioritize NEW and UNIQUE features over improving existing ones, unless the improvement is highly impactful.\n"
     "7. You do not need to edit every existing file, only whichever ones are relevant to the change you are making.\n"
     "Return only code blocks labeled with 'File: ...' for each file you edit. No explanations outside code blocks."
 )
@@ -97,14 +97,13 @@ USER_INSTRUCTIONS = config.get(
     "user_instructions",
     "Maintain a one-feature-at-a-time approach.\n"
     "Preserve existing functionality.\n"
-    "Ensure any new routes or pages are navigable.\n"
-    "Add interactive elements (e.g., buttons, forms, links).\n"
-    "Avoid trivial or redundant routes (e.g., weather reports, placeholder data).\n"
+    "Ensure any new routes or pages are navigable and engaging.\n"
+    "Add interactive and fun elements (e.g., games, animations, dynamic content).\n"
+    "Avoid trivial or redundant routes (e.g., feedback forms, placeholder data).\n"
     "Place all HTML in website/templates, never inline in a .py file.\n"
     "Do not edit tests in website/tests.\n"
-    "Focus on features that enhance user experience and functionality."
+    "Focus on features that enhance user experience with creativity and originality."
 )
-
 # -------------------------------------------------------------------------
 #  Environment Variables
 # -------------------------------------------------------------------------
@@ -163,6 +162,7 @@ def call_deepseek_api(payload):
             else:
                 logger.error("All attempts to call DeepSeek API have failed.")
     return None
+
 def generate_code_change(current_code, failure_reason=""):
     """
     Send the existing code to DeepSeek, along with instructions on how to modify it.
@@ -191,7 +191,7 @@ def generate_code_change(current_code, failure_reason=""):
                 ),
             },
         ],
-        "temperature": 0.5,
+        "temperature": 0.7,
         "max_tokens": MAX_TOKENS,
     }
 
@@ -205,6 +205,42 @@ def generate_code_change(current_code, failure_reason=""):
     except (KeyError, IndexError) as e:
         logger.error(f"Invalid DeepSeek response structure: {e}")
         return "# [DeepSeek ERROR] Invalid response.\n"
+
+def generate_change_summary(old_code, new_code):
+    """
+    Generate a concise and readable summary of changes using DeepSeek.
+    Returns a string summarizing the changes.
+    """
+    payload = {
+        "model": DEESEEK_MODEL,
+        "messages": [
+            {"role": "system", "content": "You are a helpful AI assistant. Summarize the changes between the old and new code in a concise and readable way."},
+            {
+                "role": "user",
+                "content": (
+                    "Here is the old code:\n\n"
+                    + old_code
+                    + "\n\n"
+                    "Here is the new code:\n\n"
+                    + new_code
+                    + "\n\n"
+                    "Summarize the changes in one or two sentences. Focus on what was added, removed, or modified."
+                ),
+            },
+        ],
+        "temperature": 0.5,
+        "max_tokens": 200,
+    }
+
+    result = call_deepseek_api(payload)
+    if not result:
+        return "Changes: Unable to generate summary."
+    try:
+        summary = result["choices"][0]["message"]["content"].strip()
+        return f"Changes: {summary}"
+    except (KeyError, IndexError) as e:
+        logger.error(f"Invalid DeepSeek response structure: {e}")
+        return "Changes: Unable to generate summary."
 
 # -------------------------------------------------------------------------
 #  Multi-File Parsing & Basic Syntax Validation
@@ -443,11 +479,18 @@ def main_loop():
             fw.write(code_str)
         logger.info(f"Updated file: {filepath}")
 
+    # Generate a change summary
+    if "website/app.py" in files_dict:
+        new_app_code = files_dict["website/app.py"]
+        change_summary = generate_change_summary(old_app_code, new_app_code)
+    else:
+        change_summary = "Changes made to non-app.py files."
+
     # Run tests once
     if run_test_commands():
         # Commit & push
         git_command("add", ".")
-        commit_msg = f"Auto-update from AI on {datetime.now().isoformat()}"
+        commit_msg = f"Auto-update from AI on {datetime.now().isoformat()}\n\n{change_summary}"
         git_command("commit", "-m", commit_msg)
         push_res = git_command("push", "origin", BRANCH_NAME)
         if push_res.returncode == 0:
@@ -505,11 +548,18 @@ def manual_run():
             fw.write(code_str)
         logger.info(f"[MANUAL RUN] Updated file: {filepath}")
 
+    # Generate a change summary
+    if "website/app.py" in files_dict:
+        new_app_code = files_dict["website/app.py"]
+        change_summary = generate_change_summary(old_app_code, new_app_code)
+    else:
+        change_summary = "Changes made to non-app.py files."
+
     # Test
     if run_test_commands():
         logger.info("Tests passed.")
         git_command("add", ".")
-        commit_msg = f"Manual-run update from AI on {datetime.now().isoformat()}"
+        commit_msg = f"Manual-run update from AI on {datetime.now().isoformat()}\n\n{change_summary}"
         git_command("commit", "-m", commit_msg)
         push_res = git_command("push", "origin", BRANCH_NAME)
         if push_res.returncode == 0:
@@ -558,4 +608,3 @@ if __name__ == "__main__":
         # Instead of just calling main_loop() once,
         # call our new run_forever function
         run_forever(interval_minutes=10)
-
