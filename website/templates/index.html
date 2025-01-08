@@ -4,33 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            text-align: center;
-            padding: 50px;
-        }
-        .feature-link {
-            display: inline-block;
-            margin: 20px;
-            padding: 15px 30px;
-            font-size: 18px;
-            color: white;
-            background-color: #007BFF;
-            border-radius: 10px;
-            text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .feature-link:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Welcome to the Fun Flask App!</h1>
-    <a href="{{ url_for('mood_tracker') }}" class="feature-link">Track Your Mood</a>
+    <h1>Welcome to the Mood Tracker App</h1>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('mood_tracker') }}">Mood Tracker</a></li>
+            <li><a href="{{ url_for('mood_journal') }}">Mood Journal</a></li>
+        </ul>
+    </nav>
 </body>
 </html>
