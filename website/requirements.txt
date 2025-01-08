@@ -22,4 +22,4 @@ requests==2.32.3
 smmap==5.0.2
 unittest-xml-reporting==3.2.0
 urllib3==2.3.0
-Werkzeug==2.2.3
+Werkzeug==3.0.6
