@@ -135,5 +135,20 @@ def save_doodle():
     flash(f"Your doodle has been saved at {timestamp}!", "success")
     return redirect(url_for("mood_doodle"))
 
+@app.route("/mood-garden")
+def mood_garden():
+    return render_template("mood_garden.html")
+
+@app.route("/plant-flower", methods=["POST"])
+def plant_flower():
+    flower_type = request.form.get("flower_type")
+    growth_time = {
+        "rose": 5,
+        "tulip": 3,
+        "sunflower": 7,
+        "daisy": 2
+    }.get(flower_type, 0)
+    return jsonify({"growth_time": growth_time})
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

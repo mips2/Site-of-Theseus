@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Garden</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .garden {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .flower {
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .flower.rose { background-color: #FF007F; }
+        .flower.tulip { background-color: #FF69B4; }
+        .flower.sunflower { background-color: #FFD700; }
+        .flower.daisy { background-color: #FFFFFF; }
+    </style>
+</head>
+<body>
+    <h1>Mood Garden</h1>
+    <p>Plant flowers in your virtual garden based on your mood!</p>
+    <form id="flower-form">
+        <label for="flower-type">Choose a flower:</label>
+        <select id="flower-type" name="flower_type">
+            <option value="rose">Rose</option>
+            <option value="tulip">Tulip</option>
+            <option value="sunflower">Sunflower</option>
+            <option value="daisy">Daisy</option>
+        </select>
+        <button type="submit">Plant Flower</button>
+    </form>
+    <div class="garden" id="garden">
+        <!-- Flowers will be dynamically added here -->
+    </div>
+    <script>
+        document.getElementById('flower-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const flowerType = document.getElementById('flower-type').value;
+            fetch('/plant-flower', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `flower_type=${flowerType}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                const garden = document.getElementById('garden');
+                const flower = document.createElement('div');
+                flower.classList.add('flower', flowerType);
+                flower.textContent = flowerType;
+                garden.appendChild(flower);
+            });
+        });
+    </script>
+</body>
+</html>
