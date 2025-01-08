@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Puzzle</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Mood Puzzle</h1>
+    <p>Solve the puzzle to reveal a secret message!</p>
+    <form id="puzzle-form" action="{{ url_for('solve_puzzle') }}" method="POST">
+        <label for="puzzle-answer">What is the key to understanding emotions?</label>
+        <input type="text" id="puzzle-answer" name="puzzle_answer" required>
+        <button type="submit">Submit</button>
+    </form>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

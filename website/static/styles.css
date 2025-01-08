@@ -1,0 +1,49 @@
+/* Add this to the existing styles.css */
+#puzzle-form {
+    margin-top: 20px;
+}
+
+#puzzle-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+#puzzle-form input {
+    padding: 10px;
+    font-size: 1em;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 10px;
+}
+
+#puzzle-form button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#puzzle-form button:hover {
+    background-color: #45a049;
+}
+
+.flash-messages {
+    margin-top: 20px;
+}
+
+.flash {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.flash.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.flash.error {
+    background-color: #f8d7da;

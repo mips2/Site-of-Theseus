@@ -174,5 +174,18 @@ def generate_horoscope():
     horoscope = horoscopes.get(zodiac_sign.lower(), "The stars are quiet today. Take a moment to reflect and listen to your inner voice.")
     return jsonify({"horoscope": horoscope})
 
+@app.route("/mood-puzzle")
+def mood_puzzle():
+    return render_template("mood_puzzle.html")
+
+@app.route("/solve-puzzle", methods=["POST"])
+def solve_puzzle():
+    puzzle_answer = request.form.get("puzzle_answer")
+    if puzzle_answer == "mood":
+        flash("Congratulations! You solved the puzzle!", "success")
+    else:
+        flash("Oops! Try again!", "error")
+    return redirect(url_for("mood_puzzle"))
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
