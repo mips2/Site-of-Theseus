@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Maze</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/mood_maze.css') }}">
+</head>
+<body>
+    <h1>Mood Maze</h1>
+    <p>Navigate through the maze to reach the end. Your time will be recorded!</p>
+    <div id="maze-container">
+        <div id="maze"></div>
+    </div>
+    <form id="maze-form" action="{{ url_for('maze_complete') }}" method="POST" style="display: none;">
+        <input type="hidden" id="time-taken" name="time_taken">
+    </form>
+    <script src="{{ url_for('static', filename='scripts/mood_maze.js') }}"></script>
+</body>
+</html>

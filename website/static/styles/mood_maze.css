@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #333;
+}
+
+#maze-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#maze {
+    width: 400px;
+    height: 400px;
+    background-color: #fff;
+    border: 2px solid #333;
+    position: relative;
+}
+
+#maze div {
+    width: 20px;
+    height: 20px;
+    background-color: #333;
+    position: absolute;
+}
+
+#maze div.player {
+    background-color: #00f;
+}
+
+#maze div.end {
+    background-color: #0f0;
+}

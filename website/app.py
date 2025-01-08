@@ -82,5 +82,15 @@ def submit_quiz():
         mood = "excited"
     return jsonify({"mood": mood})
 
+@app.route("/mood-maze")
+def mood_maze():
+    return render_template("mood_maze.html")
+
+@app.route("/maze-complete", methods=["POST"])
+def maze_complete():
+    time_taken = request.form.get("time_taken")
+    flash(f"Congratulations! You completed the maze in {time_taken} seconds!", "success")
+    return redirect(url_for("mood_maze"))
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
