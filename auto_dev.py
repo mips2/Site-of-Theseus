@@ -91,6 +91,7 @@ SYSTEM_PROMPT = config.get(
     "6. Prioritize NEW and UNIQUE features over improving existing ones, unless the improvement is highly impactful.\n"
     "7. You do not need to edit every existing file, only whichever ones are relevant to the change you are making.\n"
     "8. **STRICTLY FORBIDDEN**: Do not include HTML comments (`<!-- ... -->`) or any HTML content in `.py` files. HTML belongs in `website/templates/`.\n"
+    "9. While building out existing features is fine, the goal is to create a website with a wide variety of features from various themes. Do not get too stuck in what was already being done. \n"
     "Return only code blocks labeled with 'File: ...' for each file you edit. No explanations outside code blocks."
 )
 USER_INSTRUCTIONS = config.get(
