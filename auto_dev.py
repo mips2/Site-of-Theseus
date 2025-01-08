@@ -220,20 +220,9 @@ def is_valid_python_syntax(code_str):
         return False
 
 def parse_ai_response_into_files(ai_response):
-    """
-    The AI may return multiple 'File:' blocks. Each block can appear with or without code fences.
-    Steps taken:
-      1) Remove all triple backticks (e.g., ```python or ```).
-      2) Use a regex approach to capture blocks labeled 'File: ...'.
-      3) For each file:
-         - Strip trailing '-->' if present (in case the AI included HTML comments).
-         - Skip if referencing website/tests.
-         - Remove inline <html> from .py blocks if found.
-    """
-
-    # Remove triple backticks like ``` or ```python
+    # Remove triple backticks
     cleaned_response = re.sub(r"```[a-zA-Z]*", "", ai_response)
-    cleaned_response = cleaned_response.replace("```", "")  # Just in case
+    cleaned_response = cleaned_response.replace("```", "")
 
     pattern = r"(File:\s*([^\n]+))(.*?)(?=File:|$)"
     matches = re.findall(pattern, cleaned_response, flags=re.DOTALL)
@@ -244,15 +233,20 @@ def parse_ai_response_into_files(ai_response):
         file_path = match[1].strip()
         code_block = match[2].strip()
 
-        # Remove trailing --> if AI appended it in the filename
+        # Remove trailing --> if AI appended it
         if file_path.endswith("-->"):
             file_path = file_path.replace("-->", "").strip()
 
+        # Skip tests
         if file_path.startswith("website/tests"):
             logger.warning(f"AI attempted to modify tests file '{file_path}'. Skipping.")
             continue
 
-        # If referencing a .py file but there's <html>, remove it
+        # Force everything else to be in `website/`
+        if not file_path.startswith("website/"):
+            file_path = f"website/{file_path.lstrip('/')}"
+
+        # If referencing a .py file but there's <html>, remove inline HTML
         if file_path.endswith(".py"):
             if "<html>" in code_block.lower():
                 logger.warning(f"AI inline HTML in .py file '{file_path}' - removing HTML block.")
@@ -269,6 +263,7 @@ def parse_ai_response_into_files(ai_response):
         temp_files[file_path] = code_block
 
     return temp_files
+
 
 # -------------------------------------------------------------------------
 #  Template Handling Checks
