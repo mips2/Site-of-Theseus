@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Pet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .pet-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .pet {
+            font-size: 100px;
+            cursor: pointer;
+        }
+        .food-options {
+            margin-top: 20px;
+        }
+        .food-options button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .happiness-level {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="pet-container">
+        <div class="pet">🐶</div>
+        <div class="food-options">
+            <button onclick="feedPet('apple')">🍎 Apple</button>
+            <button onclick="feedPet('carrot')">🥕 Carrot</button>
+            <button onclick="feedPet('cake')">🍰 Cake</button>
+            <button onclick="feedPet('broccoli')">🥦 Broccoli</button>
+        </div>
+        <div class="happiness-level">Happiness Level: <span id="happiness">0</span></div>
+    </div>
+
+    <script>
+        let happiness = 0;
+
+        function feedPet(food) {
+            fetch('/feed-pet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `food=${food}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                happiness += data.happiness_level;
+                document.getElementById('happiness').textContent = happiness;
+            });
+        }
+    </script>
+</body>
+</html>

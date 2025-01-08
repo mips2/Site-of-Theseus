@@ -92,5 +92,20 @@ def maze_complete():
     flash(f"Congratulations! You completed the maze in {time_taken} seconds!", "success")
     return redirect(url_for("mood_maze"))
 
+@app.route("/mood-pet")
+def mood_pet():
+    return render_template("mood_pet.html")
+
+@app.route("/feed-pet", methods=["POST"])
+def feed_pet():
+    food = request.form.get("food")
+    happiness_level = {
+        "apple": 10,
+        "carrot": 15,
+        "cake": 20,
+        "broccoli": 5
+    }.get(food, 0)
+    return jsonify({"happiness_level": happiness_level})
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
