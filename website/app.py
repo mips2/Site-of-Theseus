@@ -22,5 +22,14 @@ def feedback():
 def thank_you():
     return render_template("thank_you.html")
 
+@app.route("/view-feedback")
+def view_feedback():
+    try:
+        with open("website/static/feedback.txt", "r") as f:
+            feedback_entries = f.readlines()
+    except FileNotFoundError:
+        feedback_entries = []
+    return render_template("view_feedback.html", feedback_entries=feedback_entries)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
