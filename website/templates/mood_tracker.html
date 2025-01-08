@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+        .mood-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .mood-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .mood-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .happy { background-color: #4CAF50; color: white; }
+        .neutral { background-color: #FFC107; color: black; }
+        .sad { background-color: #F44336; color: white; }
+        .messages {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>How are you feeling today?</h1>
+    <form action="{{ url_for('save_mood') }}" method="POST">
+        <div class="mood-buttons">
+            <button type="submit" name="mood" value="happy" class="mood-button happy">😊 Happy</button>
+            <button type="submit" name="mood" value="neutral" class="mood-button neutral">😐 Neutral</button>
+            <button type="submit" name="mood" value="sad" class="mood-button sad">😢 Sad</button>
+        </div>
+    </form>
+    <div class="messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <a href="{{ url_for('home') }}" style="margin-top: 20px; display: inline-block; color: #007BFF;">Back to Home</a>
+</body>
+</html>
