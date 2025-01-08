@@ -189,7 +189,7 @@ def generate_code_change(current_code, failure_reason=""):
                 ),
             },
         ],
-        "temperature": 0,
+        "temperature": 0.5,
         "max_tokens": MAX_TOKENS,
     }
 
@@ -367,7 +367,8 @@ def git_command(*args):
 def revert_to_latest_remote_commit():
     """
     Revert to the latest commit on the remote repository.
-    This ensures the local repository matches the remote state.
+    This ensures the local repository matches the remote state,
+    including removing any untracked files or directories.
     """
     logger.info("Fetching latest changes from remote...")
     fetch_result = git_command("fetch", "origin")
@@ -379,8 +380,18 @@ def revert_to_latest_remote_commit():
     reset_result = git_command("reset", "--hard", f"origin/{BRANCH_NAME}")
     if reset_result.returncode != 0:
         logger.error("Failed to reset local branch to match remote.")
+        return
     else:
         logger.info("Successfully reverted to the latest remote commit.")
+
+    # Now clean untracked files/folders:
+    logger.info("Running git clean -fd to remove untracked files/directories...")
+    clean_result = git_command("clean", "-fd")
+    if clean_result.returncode != 0:
+        logger.error("Failed to clean untracked files/directories.")
+    else:
+        logger.info("Successfully cleaned untracked files/directories.")
+
 
 # -------------------------------------------------------------------------
 #  Main Automated Loop
