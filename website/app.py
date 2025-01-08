@@ -124,5 +124,16 @@ def generate_story():
     story = stories.get(mood, "Once upon a time, in a world full of emotions, a story began to unfold.")
     return jsonify({"story": story})
 
+@app.route("/mood-doodle")
+def mood_doodle():
+    return render_template("mood_doodle.html")
+
+@app.route("/save-doodle", methods=["POST"])
+def save_doodle():
+    doodle_data = request.form.get("doodle_data")
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    flash(f"Your doodle has been saved at {timestamp}!", "success")
+    return redirect(url_for("mood_doodle"))
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
