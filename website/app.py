@@ -150,5 +150,29 @@ def plant_flower():
     }.get(flower_type, 0)
     return jsonify({"growth_time": growth_time})
 
+@app.route("/mood-astrology")
+def mood_astrology():
+    return render_template("mood_astrology.html")
+
+@app.route("/generate-horoscope", methods=["POST"])
+def generate_horoscope():
+    zodiac_sign = request.form.get("zodiac_sign")
+    horoscopes = {
+        "aries": "Today is a day for bold moves and new beginnings. Your energy is high, and the stars are aligned in your favor.",
+        "taurus": "Take a moment to ground yourself. Stability and patience will bring you the rewards you seek.",
+        "gemini": "Your curiosity is your greatest asset today. Explore new ideas and connect with others.",
+        "cancer": "Emotions may run high, but trust your intuition. It will guide you to the right decisions.",
+        "leo": "Your charisma is shining bright. Use it to inspire and lead those around you.",
+        "virgo": "Attention to detail will pay off today. Focus on the small things that make a big difference.",
+        "libra": "Balance is key. Seek harmony in your relationships and surroundings.",
+        "scorpio": "Transformation is in the air. Embrace change and let go of what no longer serves you.",
+        "sagittarius": "Adventure calls! Follow your wanderlust and explore new horizons.",
+        "capricorn": "Hard work and determination will lead to success. Keep your eyes on the prize.",
+        "aquarius": "Innovation is your forte today. Think outside the box and embrace your unique perspective.",
+        "pisces": "Your creativity is flowing. Use it to bring beauty and inspiration into the world."
+    }
+    horoscope = horoscopes.get(zodiac_sign.lower(), "The stars are quiet today. Take a moment to reflect and listen to your inner voice.")
+    return jsonify({"horoscope": horoscope})
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
