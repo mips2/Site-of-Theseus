@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Feedback</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Search Feedback</h1>
@@ -12,12 +13,16 @@
         <input type="text" id="search_term" name="search_term" required>
         <button type="submit">Search</button>
     </form>
+    {% if feedback_entries %}
+        <h2>Results for "{{ search_term }}":</h2>
+        <ul>
+            {% for entry in feedback_entries %}
+                <li>{{ entry }}</li>
+            {% endfor %}
+        </ul>
+    {% elif search_term %}
+        <p>No results found for "{{ search_term }}".</p>
+    {% endif %}
     <a href="{{ url_for('home') }}">Back to Home</a>
-    <h2>Results for "{{ search_term }}"</h2>
-    <ul>
-        {% for entry in feedback_entries %}
-            <li>{{ entry }}</li>
-        {% endfor %}
-    </ul>
 </body>
 </html>

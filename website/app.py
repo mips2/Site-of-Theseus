@@ -1,7 +1,8 @@
-from flask import Flask, jsonify, request, render_template, redirect, url_for
+from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = 'supersecretkey'  # Required for flashing messages
 
 @app.route("/")
 def home():
@@ -12,9 +13,13 @@ def feedback():
     if request.method == "POST":
         name = request.form.get("name")
         message = request.form.get("message")
+        if not name or not message:
+            flash("Both name and message are required!", "error")
+            return redirect(url_for("feedback"))
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         with open("website/static/feedback.txt", "a") as f:
             f.write(f"{timestamp} - {name}: {message}\n")
+        flash("Thank you for your feedback!", "success")
         return redirect(url_for("thank_you"))
     return render_template("feedback.html")
 
@@ -55,8 +60,9 @@ def delete_feedback():
                 for entry in feedback_entries:
                     if entry.strip() != entry_to_delete.strip():
                         f.write(entry)
+            flash("Feedback entry deleted successfully!", "success")
         except FileNotFoundError:
-            pass
+            flash("No feedback entries found to delete.", "error")
         return redirect(url_for("view_feedback"))
 
 @app.route("/edit-feedback", methods=["GET", "POST"])
@@ -64,6 +70,9 @@ def edit_feedback():
     if request.method == "POST":
         original_entry = request.form.get("original_entry")
         edited_entry = request.form.get("edited_entry")
+        if not edited_entry:
+            flash("Edited entry cannot be empty!", "error")
+            return redirect(url_for("view_feedback"))
         try:
             with open("website/static/feedback.txt", "r") as f:
                 feedback_entries = f.readlines()
@@ -73,8 +82,9 @@ def edit_feedback():
                         f.write(edited_entry + "\n")
                     else:
                         f.write(entry)
+            flash("Feedback entry updated successfully!", "success")
         except FileNotFoundError:
-            pass
+            flash("No feedback entries found to edit.", "error")
         return redirect(url_for("view_feedback"))
     return render_template("edit_feedback.html")
 

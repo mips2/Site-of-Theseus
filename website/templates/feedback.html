@@ -3,18 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feedback</title>
+    <title>Feedback Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Leave Your Feedback</h1>
+    <h1>Feedback Form</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <form method="POST">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
-        <br>
         <label for="message">Message:</label>
         <textarea id="message" name="message" required></textarea>
-        <br>
-        <button type="submit">Submit</button>
+        <button type="submit">Submit Feedback</button>
     </form>
     <a href="{{ url_for('home') }}">Back to Home</a>
 </body>

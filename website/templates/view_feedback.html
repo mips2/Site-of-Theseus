@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Feedback</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Feedback Entries</h1>
-    <a href="{{ url_for('home') }}">Home</a>
-    <a href="{{ url_for('feedback') }}">Leave Feedback</a>
-    <a href="{{ url_for('search_feedback') }}">Search Feedback</a>
-    <a href="{{ url_for('export_feedback') }}">Export Feedback</a>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <ul>
         {% for entry in feedback_entries %}
             <li>
@@ -26,5 +30,6 @@
             </li>
         {% endfor %}
     </ul>
+    <a href="{{ url_for('home') }}">Back to Home</a>
 </body>
 </html>

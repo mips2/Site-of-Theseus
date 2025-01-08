@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Feedback</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Edit Feedback</h1>
-    <form action="{{ url_for('edit_feedback') }}" method="POST">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form method="POST">
         <input type="hidden" name="original_entry" value="{{ request.args.get('original_entry') }}">
-        <textarea name="edited_entry" rows="4" cols="50">{{ request.args.get('original_entry') }}</textarea><br>
+        <textarea name="edited_entry" required>{{ request.args.get('original_entry') }}</textarea>
         <button type="submit">Save Changes</button>
     </form>
-    <a href="{{ url_for('view_feedback') }}">Cancel</a>
+    <a href="{{ url_for('view_feedback') }}">Back to Feedback List</a>
 </body>
 </html>
