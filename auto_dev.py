@@ -90,9 +90,9 @@ SYSTEM_PROMPT = config.get(
     "5. Build upon the existing codebase in a meaningful way.\n\n"
     "6. Prioritize NEW and UNIQUE features over improving existing ones, unless the improvement is highly impactful.\n"
     "7. You do not need to edit every existing file, only whichever ones are relevant to the change you are making.\n"
+    "8. **STRICTLY FORBIDDEN**: Do not include HTML comments (`<!-- ... -->`) or any HTML content in `.py` files. HTML belongs in `website/templates/`.\n"
     "Return only code blocks labeled with 'File: ...' for each file you edit. No explanations outside code blocks."
 )
-
 USER_INSTRUCTIONS = config.get(
     "user_instructions",
     "Maintain a one-feature-at-a-time approach.\n"
@@ -284,19 +284,12 @@ def parse_ai_response_into_files(ai_response):
         if not file_path.startswith("website/"):
             file_path = f"website/{file_path.lstrip('/')}"
 
-        # If referencing a .py file but there's <html>, remove inline HTML
+        # If referencing a .py file, remove HTML comments and blocks
         if file_path.endswith(".py"):
-            if "<html>" in code_block.lower():
-                logger.warning(f"AI inline HTML in .py file '{file_path}' - removing HTML block.")
-                while True:
-                    start_idx = code_block.lower().find("<html>")
-                    if start_idx == -1:
-                        break
-                    end_idx = code_block.lower().find("</html>", start_idx)
-                    if end_idx == -1:
-                        break
-                    end_idx += len("</html>")
-                    code_block = code_block[:start_idx] + "# [HTML REMOVED]\n" + code_block[end_idx:]
+            # Remove HTML comments
+            code_block = re.sub(r"<!--.*?-->", "", code_block, flags=re.DOTALL)
+            # Remove HTML blocks
+            code_block = re.sub(r"<[^>]+>", "", code_block)
 
         temp_files[file_path] = code_block
 
