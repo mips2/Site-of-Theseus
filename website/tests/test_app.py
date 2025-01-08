@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 # Import from website/app.py
 # (If your Flask app is in website/app.py, do this instead of from app import app)
-from website.app import app
+from app import app
 
 
 class TestApp(unittest.TestCase):
