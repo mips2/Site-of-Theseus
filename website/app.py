@@ -44,5 +44,20 @@ def search_feedback():
         return render_template("search_feedback.html", feedback_entries=filtered_entries, search_term=search_term)
     return render_template("search_feedback.html")
 
+@app.route("/delete-feedback", methods=["POST"])
+def delete_feedback():
+    if request.method == "POST":
+        entry_to_delete = request.form.get("entry_to_delete")
+        try:
+            with open("website/static/feedback.txt", "r") as f:
+                feedback_entries = f.readlines()
+            with open("website/static/feedback.txt", "w") as f:
+                for entry in feedback_entries:
+                    if entry.strip() != entry_to_delete.strip():
+                        f.write(entry)
+        except FileNotFoundError:
+            pass
+        return redirect(url_for("view_feedback"))
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

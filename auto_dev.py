@@ -88,6 +88,8 @@ SYSTEM_PROMPT = config.get(
     "3. Create navigable pages with a clear user flow.\n"
     "4. Avoid trivial or redundant routes (e.g., weather reports, placeholder data).\n"
     "5. Enhance the user experience and functionality of the website.\n\n"
+    "6. Prioritize new features over existing features, unless you are able to improve them very well.\n"
+    "7. You do not need to edit every existing file, only whichever ones are relevant to the change you are making.\n"
     "Return only code blocks labeled with 'File: ...' for each file you edit. No explanations outside code blocks."
 )
 
