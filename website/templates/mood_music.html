@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Music</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Mood Music Generator</h1>
+    <p>Select your current mood and we'll generate a Spotify playlist for you!</p>
+    <form id="mood-form">
+        <label for="mood">Choose your mood:</label>
+        <select id="mood" name="mood">
+            <option value="happy">Happy</option>
+            <option value="sad">Sad</option>
+            <option value="angry">Angry</option>
+            <option value="calm">Calm</option>
+            <option value="excited">Excited</option>
+        </select>
+        <button type="submit">Generate Playlist</button>
+    </form>
+    <div id="playlist-result" style="margin-top: 20px;">
+        <a id="playlist-link" href="#" target="_blank" style="display: none;">Listen to your playlist on Spotify</a>
+    </div>
+    <script>
+        document.getElementById('mood-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const mood = document.getElementById('mood').value;
+            fetch('/generate-playlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `mood=${mood}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                const playlistLink = document.getElementById('playlist-link');
+                playlistLink.href = data.playlist_url;
+                playlistLink.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Mood Tracker</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Welcome to the Mood App</h1>
+    <h1>Welcome to Mood Tracker</h1>
     <nav>
         <ul>
             <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="{{ url_for('mood_tracker') }}">Mood Tracker</a></li>
             <li><a href="{{ url_for('mood_journal') }}">Mood Journal</a></li>
-            <li><a href="{{ url_for('mood_art') }}">Mood Art Generator</a></li>
+            <li><a href="{{ url_for('mood_art') }}">Mood Art</a></li>
+            <li><a href="{{ url_for('mood_music') }}">Mood Music</a></li>
         </ul>
     </nav>
 </body>

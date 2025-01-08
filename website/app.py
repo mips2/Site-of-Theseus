@@ -47,5 +47,22 @@ def generate_art():
     color = colors.get(mood, "#000000")
     return jsonify({"color": color})
 
+@app.route("/mood-music")
+def mood_music():
+    return render_template("mood_music.html")
+
+@app.route("/generate-playlist", methods=["POST"])
+def generate_playlist():
+    mood = request.form.get("mood")
+    playlists = {
+        "happy": "https://open.spotify.com/playlist/37i9dQZF1DXdPec7aLTmlC",
+        "sad": "https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0",
+        "angry": "https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0",
+        "calm": "https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6",
+        "excited": "https://open.spotify.com/playlist/37i9dQZF1DX0XUsuxWHRQd"
+    }
+    playlist_url = playlists.get(mood, "https://open.spotify.com/")
+    return jsonify({"playlist_url": playlist_url})
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
