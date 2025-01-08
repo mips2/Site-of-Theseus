@@ -386,8 +386,6 @@ def revert_to_latest_remote_commit():
 #  Main Automated Loop
 # -------------------------------------------------------------------------
 def main_loop():
-    global ATTEMPTED_COMMITS, SUCCESSFUL_COMMITS
-
     if not ENABLE_AUTODEV:
         logger.info("AUTO-DEV is disabled in config.yaml. Exiting.")
         return
@@ -406,67 +404,46 @@ def main_loop():
     with open(app_path, "r", encoding="utf-8") as f:
         old_app_code = f.read()
 
-    current_code = old_app_code
-    success = False
-    failure_reason = ""
+    # Single AI request (no loop)
+    ai_response = generate_code_change(old_app_code)
+    files_dict = parse_ai_response_into_files(ai_response)
 
-    # Attempt multiple times
-    for attempt in range(1, RETRY_LIMIT + 1):
-        logger.info(f"Generation attempt #{attempt} of {RETRY_LIMIT}.")
-        if attempt > 1:
-            logger.info("Pausing briefly before next AI request (rate limit).")
-            time.sleep(3 * attempt)
+    if not files_dict:
+        logger.error("No valid (or fully valid) file changes returned by AI. Aborting.")
+        revert_to_latest_remote_commit()
+        return
 
-        ai_response = generate_code_change(current_code, failure_reason=failure_reason)
-        files_dict = parse_ai_response_into_files(ai_response)
+    # Check references (templates, etc.)
+    template_references_check(files_dict)
 
-        if not files_dict:
-            failure_reason = "No valid (or fully valid) file changes returned by AI."
-            logger.warning(failure_reason)
-            continue
+    # If DRY_RUN, skip actual writes and tests
+    if DRY_RUN:
+        logger.info("[DRY RUN] Would update files, but skipping actual writes/tests.")
+        return
 
-        # 3. Check for template references
-        template_references_check(files_dict)
+    # Write changes (only once)
+    for filepath, code_str in files_dict.items():
+        dir_path = os.path.dirname(filepath)
+        if dir_path:
+            os.makedirs(dir_path, exist_ok=True)
+        with open(filepath, "w", encoding="utf-8") as fw:
+            fw.write(code_str)
+        logger.info(f"Updated file: {filepath}")
 
-        # 4. Dry-run skip actual writes/tests
-        if DRY_RUN:
-            logger.info("[DRY RUN] Would update files, but skipping actual writes/tests.")
-            success = True
-            break
-        else:
-            # Write changes
-            for filepath, code_str in files_dict.items():
-                dir_path = os.path.dirname(filepath)
-                if dir_path:  # Only create if not empty
-                    os.makedirs(dir_path, exist_ok=True)
-                with open(filepath, "w", encoding="utf-8") as fw:
-                    fw.write(code_str)
-                logger.info(f"Updated file: {filepath}")
-
-
-            # Test
-            if run_test_commands():
-                success = True
-                break
-            else:
-                failure_reason = "Tests failed for generated code."
-                logger.warning(failure_reason)
-
-    # 5. Commit or revert
-    if success:
-        ATTEMPTED_COMMITS += 1
+    # Run tests once
+    if run_test_commands():
+        # Commit & push
         git_command("add", ".")
         commit_msg = f"Auto-update from AI on {datetime.now().isoformat()}"
         git_command("commit", "-m", commit_msg)
         push_res = git_command("push", "origin", BRANCH_NAME)
         if push_res.returncode == 0:
-            SUCCESSFUL_COMMITS += 1
             logger.info("Successfully pushed changes.")
         else:
             logger.error("Push failed. Attempting revert to latest remote commit.")
             revert_to_latest_remote_commit()
     else:
-        logger.error(f"All {RETRY_LIMIT} attempts failed. Reverting to latest remote commit.")
+        logger.error("Tests failed for generated code. Reverting to latest remote commit.")
         revert_to_latest_remote_commit()
         force_push_res = git_command("push", "origin", BRANCH_NAME, "--force")
         if force_push_res.returncode == 0:
@@ -474,11 +451,7 @@ def main_loop():
         else:
             logger.error("Failed to push revert. Local is reverted, remote may be out of sync.")
 
-    # Final metrics/log
-    logger.info(
-        f"Session metrics - Attempted commits: {ATTEMPTED_COMMITS}, "
-        f"Successful commits: {SUCCESSFUL_COMMITS}"
-    )
+    logger.info("Done with single-attempt auto-dev run.")
 
 # -------------------------------------------------------------------------
 #  Manual Run (One-Off Iteration)
