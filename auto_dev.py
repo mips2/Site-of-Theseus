@@ -72,7 +72,7 @@ with open(CONFIG_FILE, "r") as f:
 
 GITHUB_REPO = config.get("github_repo", "")
 BRANCH_NAME = config.get("branch_name", "main")
-RETRY_LIMIT = config.get("retry_limit", 5)
+RETRY_LIMIT = config.get("retry_limit", 1)
 ENABLE_AUTODEV = config.get("enable_autodev", True)
 DRY_RUN = config.get("dry_run", False)  # For improvement #15
 
