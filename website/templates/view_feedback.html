@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Feedback</title>
+</head>
+<body>
+    <h1>Feedback Received</h1>
+    <ul>
+        {% for entry in feedback %}
+        <li>
+            <strong>{{ entry.name }}</strong> ({{ entry.timestamp }}): {{ entry.message }}
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('home') }}"><button>Back to Home</button></a>
+</body>
+</html>

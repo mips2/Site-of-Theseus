@@ -441,12 +441,13 @@ def main_loop():
         else:
             # Write changes
             for filepath, code_str in files_dict.items():
-                if filepath == "website/app.py":
-                    current_code = code_str
-                os.makedirs(os.path.dirname(filepath), exist_ok=True)
+                dir_path = os.path.dirname(filepath)
+                if dir_path:  # Only create if not empty
+                    os.makedirs(dir_path, exist_ok=True)
                 with open(filepath, "w", encoding="utf-8") as fw:
                     fw.write(code_str)
                 logger.info(f"Updated file: {filepath}")
+
 
             # Test
             if run_test_commands():
