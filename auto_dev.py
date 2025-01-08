@@ -601,10 +601,22 @@ def run_forever(interval_minutes=10):
 #  Entry Point
 # -------------------------------------------------------------------------
 if __name__ == "__main__":
-    # If you prefer a manual-run for debugging, you can still keep that:
-    if len(sys.argv) > 1 and sys.argv[1] == "manual-run":
-        manual_run()
-    else:
-        # Instead of just calling main_loop() once,
-        # call our new run_forever function
-        run_forever(interval_minutes=10)
+    # Default interval in minutes
+    interval_minutes = 10
+
+    # Parse command-line arguments
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "manual-run":
+            manual_run()
+        else:
+            try:
+                # Attempt to parse the interval from the command line
+                interval_minutes = int(sys.argv[1])
+                if interval_minutes <= 0:
+                    logger.error("Interval must be a positive integer. Using default (10 minutes).")
+                    interval_minutes = 10
+            except ValueError:
+                logger.error("Invalid interval provided. Using default (10 minutes).")
+
+    # Run the main loop with the specified interval
+    run_forever(interval_minutes=interval_minutes)
