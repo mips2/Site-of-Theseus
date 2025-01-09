@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Pet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/virtual_pet.css') }}">
+</head>
+<body>
+    <div class="pet-container">
+        <h1>Your Virtual Pet</h1>
+        <div class="pet" id="pet">
+            <img src="{{ url_for('static', filename='images/pet.png') }}" alt="Virtual Pet">
+        </div>
+        <div class="controls">
+            <button id="feed-btn">Feed</button>
+            <button id="play-btn">Play</button>
+            <button id="clean-btn">Clean</button>
+        </div>
+        <div class="stats">
+            <p>Hunger: <span id="hunger">100</span></p>
+            <p>Happiness: <span id="happiness">100</span></p>
+            <p>Cleanliness: <span id="cleanliness">100</span></p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/virtual_pet.js') }}"></script>
+</body>
+</html>
