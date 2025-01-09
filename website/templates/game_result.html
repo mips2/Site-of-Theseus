@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Game Result</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,11 +14,15 @@
         h1 {
             color: #333;
         }
-        .streak {
+        .result {
             font-size: 1.5em;
+            margin: 20px 0;
+        }
+        .streak {
+            font-size: 1.2em;
             color: #4CAF50;
         }
-        .start-button {
+        .play-again-button {
             padding: 10px 20px;
             font-size: 1.2em;
             background-color: #4CAF50;
@@ -27,14 +31,18 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .start-button:hover {
+        .play-again-button:hover {
             background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to the Addictive Game Hub!</h1>
+    <h1>Game Result</h1>
+    <p class="result">You chose: {{ user_choice }}</p>
+    <p class="result">Computer chose: {{ computer_choice }}</p>
+    <p class="result">{{ result }}</p>
     <p class="streak">Your current streak: {{ streak }}</p>
-    <a href="{{ url_for('start_game') }}"><button class="start-button">Start Rock-Paper-Scissors Game</button></a>
+    <a href="{{ url_for('start_game') }}"><button class="play-again-button">Play Again</button></a>
+    <a href="{{ url_for('home') }}"><button class="play-again-button">Return Home</button></a>
 </body>
 </html>
