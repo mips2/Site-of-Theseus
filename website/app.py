@@ -14,5 +14,9 @@ def puzzle_game():
 def memory_game():
     return render_template('memory_game.html')
 
+@app.route('/emoji-story')
+def emoji_story():
+    return render_template('emoji_story.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

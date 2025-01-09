@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Story</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Emoji Story Creator</h1>
+        <div class="emoji-story-container">
+            <div class="emoji-picker">
+                <h2>Choose Emojis</h2>
+                <div class="emoji-grid">
+                    <span>😀</span>
+                    <span>😍</span>
+                    <span>🤔</span>
+                    <span>🎉</span>
+                    <span>🚀</span>
+                    <span>🍕</span>
+                    <span>🐱</span>
+                    <span>🌍</span>
+                </div>
+            </div>
+            <div class="story-area">
+                <h2>Your Story</h2>
+                <div class="story-box" contenteditable="true"></div>
+                <button class="save-story">Save Story</button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='emoji_story.js') }}"></script>
+</body>
+</html>
