@@ -55,5 +55,12 @@ def streak_rewards():
     }
     return render_template('streak_rewards.html', rewards=rewards, streak=user_streak)
 
+@app.route('/secret_game_mode')
+def secret_game_mode():
+    if user_streak >= 10:
+        return render_template('secret_game_mode.html')
+    else:
+        return redirect(url_for('streak_rewards'))
+
 if __name__ == '__main__':
     app.run(debug=True)
