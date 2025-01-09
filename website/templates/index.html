@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Maze Game</title>
+    <title>Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the Interactive Maze Game!</h1>
-        <p>Navigate through the maze and reach the end to win!</p>
-        <a href="{{ url_for('maze') }}" class="btn">Play Maze Game</a>
+        <h1>Welcome to the Interactive Adventure!</h1>
+        <div class="nav-links">
+            <a href="/maze" class="btn">Maze Challenge</a>
+            <a href="/puzzle" class="btn">Puzzle Challenge</a>
+        </div>
     </div>
 </body>
 </html>

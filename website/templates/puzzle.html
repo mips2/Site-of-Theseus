@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Challenge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .puzzle-container {
+            display: grid;
+            gap: 5px;
+            margin: 20px auto;
+            width: max-content;
+        }
+        .puzzle-tile {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .puzzle-tile.empty {
+            background-color: transparent;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Puzzle Challenge</h1>
+        <div class="difficulty-selector">
+            <button onclick="generatePuzzle('easy')">Easy</button>
+            <button onclick="generatePuzzle('medium')">Medium</button>
+            <button onclick="generatePuzzle('hard')">Hard</button>
+        </div>
+        <div class="puzzle-container" id="puzzle-container"></div>
+    </div>
+    <script>
+        function generatePuzzle(difficulty) {
+            fetch('/generate_puzzle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ difficulty: difficulty }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('puzzle-container');
+                container.innerHTML = '';
+                container.style.gridTemplateColumns = `repeat(${Math.sqrt(data.flat().length)}, 1fr)`;
+                data.flat().forEach((num, index) => {
+                    const tile = document.createElement('div');
+                    tile.className = 'puzzle-tile' + (num === null ? ' empty' : '');
+                    tile.textContent = num || '';
+                    tile.onclick = () => moveTile(index, data);
+                    container.appendChild(tile);
+                });
+            });
+        }
+
+        function moveTile(index, puzzle) {
+            const size = Math.sqrt(puzzle.flat().length);
+            const emptyIndex = puzzle.flat().indexOf(null);
+            const row = Math.floor(index / size);
+            const col = index % size;
+            const emptyRow = Math.floor(emptyIndex / size);
+            const emptyCol = emptyIndex % size;
+            if ((row === emptyRow && Math.abs(col - emptyCol) === 1) || 
+                (col === emptyCol && Math.abs(row - emptyRow) === 1)) {
+                [puzzle.flat()[index], puzzle.flat()[emptyIndex]] = [puzzle.flat()[emptyIndex], puzzle.flat()[index]];
+                generatePuzzleFromFlat(puzzle.flat());
+            }
+        }
+
+        function generatePuzzleFromFlat(flatPuzzle) {
+            const container = document.getElementById('puzzle-container');
+            container.innerHTML = '';
+            const size = Math.sqrt(flatPuzzle.length);
+            container.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+            flatPuzzle.forEach((num, index) => {
+                const tile = document.createElement('div');
+                tile.className = 'puzzle-tile' + (num === null ? ' empty' : '');
+                tile.textContent = num || '';
+                tile.onclick = () => moveTile(index, flatPuzzle);
+                container.appendChild(tile);
+            });
+        }
+    </script>
+</body>
+</html>

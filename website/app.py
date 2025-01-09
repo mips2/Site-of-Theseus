@@ -19,5 +19,24 @@ def generate_maze():
     maze[-1][-1] = 0  # End point
     return jsonify(maze)
 
+@app.route('/puzzle')
+def puzzle():
+    return render_template('puzzle.html')
+
+@app.route('/generate_puzzle', methods=['POST'])
+def generate_puzzle():
+    difficulty = request.json['difficulty']
+    if difficulty == 'easy':
+        size = 3
+    elif difficulty == 'medium':
+        size = 4
+    else:
+        size = 5
+    numbers = list(range(1, size * size))
+    numbers.append(None)  # Empty tile
+    random.shuffle(numbers)
+    puzzle = [numbers[i:i + size] for i in range(0, len(numbers), size)]
+    return jsonify(puzzle)
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -18,13 +18,17 @@ body {
 }
 
 h1 {
-    color: #333;
+    margin-bottom: 20px;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }
 
 .btn {
-    display: inline-block;
     padding: 10px 20px;
-    margin-top: 20px;
     background-color: #007bff;
     color: #fff;
     text-decoration: none;
@@ -36,35 +40,14 @@ h1 {
     background-color: #0056b3;
 }
 
-#maze-container {
-    margin: 20px auto;
-    text-align: center;
+.difficulty-selector {
+    margin-bottom: 20px;
 }
 
-.cell {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-.wall {
-    background-color: #333;
-}
-
-.start {
-    background-color: #4CAF50;
-}
-
-.end {
-    background-color: #FF5722;
-}
-
-#generate-maze {
-    margin-top: 20px;
+.difficulty-selector button {
     padding: 10px 20px;
-    background-color: #007bff;
+    margin: 0 5px;
+    background-color: #28a745;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -72,6 +55,6 @@ h1 {
     transition: background-color 0.3s;
 }
 
-#generate-maze:hover {
-    background-color: #0056b3;
+.difficulty-selector button:hover {
+    background-color: #218838;
 }
