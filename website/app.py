@@ -1,113 +1,41 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for
 import random
 
 app = Flask(__name__)
 
-# In-memory storage for a simple game state
-game_state = {
-    "score": 0,
-    "current_question": None,
-    "questions": [
-        {"question": "What is the capital of France?", "answer": "Paris"},
-        {"question": "What is the largest planet in our solar system?", "answer": "Jupiter"},
-        {"question": "What is the smallest prime number?", "answer": "2"},
-        {"question": "What is the chemical symbol for gold?", "answer": "Au"},
-        {"question": "What is the square root of 64?", "answer": "8"}
-    ]
-}
-
-# Memory game state
-memory_game_state = {
-    "cards": ["A", "B", "C", "D", "E", "F", "G", "H"],
-    "flipped": [],
-    "matched": []
-}
-
-# New feature: Interactive Story Generator
-story_state = {
-    "current_story": "",
-    "story_parts": [
-        "Once upon a time, in a land far, far away, there was a {adjective} {noun}.",
-        "The {noun} loved to {verb} every day, but one day, something unexpected happened.",
-        "A {adjective} {animal} appeared and said, '{exclamation}!'",
-        "The {noun} and the {animal} decided to {verb} together, and they lived happily ever after."
-    ]
-}
+# List of fun facts to display in the interactive trivia game
+FUN_FACTS = [
+    "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still edible!",
+    "Octopuses have three hearts. Two pump blood to the gills, and one pumps it to the rest of the body.",
+    "Bananas are berries, but strawberries aren't.",
+    "The Eiffel Tower can be 15 cm taller during the summer due to thermal expansion.",
+    "A day on Venus is longer than a year on Venus.",
+]
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
-@app.route('/start-quiz', methods=['GET', 'POST'])
-def start_quiz():
-    if request.method == 'POST':
-        game_state["score"] = 0
-        game_state["current_question"] = random.choice(game_state["questions"])
-        return redirect(url_for('quiz'))
-    return render_template('start_quiz.html')
+@app.route('/trivia')
+def trivia():
+    return render_template('trivia.html')
 
-@app.route('/quiz', methods=['GET', 'POST'])
-def quiz():
+@app.route('/trivia/play', methods=['GET', 'POST'])
+def trivia_play():
     if request.method == 'POST':
         user_answer = request.form.get('answer')
-        if user_answer.lower() == game_state["current_question"]["answer"].lower():
-            game_state["score"] += 1
-            message = "Correct! 🎉"
+        correct_answer = request.form.get('correct_answer')
+        if user_answer == correct_answer:
+            result = "Correct! 🎉"
         else:
-            message = f"Wrong! The correct answer was {game_state['current_question']['answer']}."
-        game_state["current_question"] = random.choice(game_state["questions"])
-        return render_template('quiz.html', question=game_state["current_question"], score=game_state["score"], message=message)
-    return render_template('quiz.html', question=game_state["current_question"], score=game_state["score"])
-
-@app.route('/end-quiz')
-def end_quiz():
-    final_score = game_state["score"]
-    game_state["score"] = 0
-    game_state["current_question"] = None
-    return render_template('end_quiz.html', final_score=final_score)
-
-@app.route('/memory-game')
-def memory_game():
-    memory_game_state["flipped"] = []
-    memory_game_state["matched"] = []
-    random.shuffle(memory_game_state["cards"])
-    return render_template('memory_game.html', cards=memory_game_state["cards"])
-
-@app.route('/flip-card/')
-def flip_card(index):
-    if index not in memory_game_state["flipped"] and index not in memory_game_state["matched"]:
-        memory_game_state["flipped"].append(index)
-        if len(memory_game_state["flipped"]) == 2:
-            if memory_game_state["cards"][memory_game_state["flipped"][0]] == memory_game_state["cards"][memory_game_state["flipped"][1]]:
-                memory_game_state["matched"].extend(memory_game_state["flipped"])
-                memory_game_state["flipped"] = []
-            else:
-                memory_game_state["flipped"] = []
-    return render_template('memory_game.html', cards=memory_game_state["cards"], flipped=memory_game_state["flipped"], matched=memory_game_state["matched"])
-
-# New feature: Interactive Story Generator
-@app.route('/story-generator')
-def story_generator():
-    return render_template('story_generator.html')
-
-@app.route('/generate-story', methods=['POST'])
-def generate_story():
-    data = request.json
-    adjective = data.get('adjective', 'mysterious')
-    noun = data.get('noun', 'castle')
-    verb = data.get('verb', 'dance')
-    animal = data.get('animal', 'dragon')
-    exclamation = data.get('exclamation', 'Wow!')
-
-    story = " ".join(story_state["story_parts"]).format(
-        adjective=adjective,
-        noun=noun,
-        verb=verb,
-        animal=animal,
-        exclamation=exclamation
-    )
-    story_state["current_story"] = story
-    return jsonify({"story": story})
+            result = f"Wrong! The correct answer was: {correct_answer}"
+        return render_template('trivia_result.html', result=result)
+    
+    # Randomly select a fun fact and generate a question
+    fact = random.choice(FUN_FACTS)
+    question = f"True or False: {fact}"
+    correct_answer = "True"  # All facts are true in this example
+    return render_template('trivia_play.html', question=question, correct_answer=correct_answer)
 
 if __name__ == '__main__':
     app.run(debug=True)
