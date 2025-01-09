@@ -145,5 +145,37 @@ def complete_puzzle_room():
     user_progress[username]['score'] += 20  # Bonus points for completing the puzzle room
     return redirect(url_for('adventure', username=username))
 
+@app.route('/art-gallery')
+def art_gallery():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    # Generate a random art piece for the user to admire
+    art_pieces = [
+        {"title": "Starry Night", "artist": "Vincent van Gogh", "image": "starry_night.jpg"},
+        {"title": "Mona Lisa", "artist": "Leonardo da Vinci", "image": "mona_lisa.jpg"},
+        {"title": "The Scream", "artist": "Edvard Munch", "image": "the_scream.jpg"},
+        {"title": "The Persistence of Memory", "artist": "Salvador Dalí", "image": "persistence_of_memory.jpg"}
+    ]
+    art_piece = random.choice(art_pieces)
+    
+    return render_template('art_gallery.html', username=username, art_piece=art_piece)
+
+@app.route('/art-gallery/complete', methods=['POST'])
+def complete_art_gallery():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    user_progress[username]['score'] += 10  # Bonus points for visiting the art gallery
+    return redirect(url_for('adventure', username=username))
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Gallery</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Art Gallery, {{ username }}!</h1>
+        <div class="art-piece">
+            <h2>{{ art_piece.title }}</h2>
+            <p>By {{ art_piece.artist }}</p>
+            <img src="{{ url_for('static', filename='images/' + art_piece.image) }}" alt="{{ art_piece.title }}">
+        </div>
+        <form action="{{ url_for('complete_art_gallery') }}" method="POST">
+            <button type="submit">Continue Adventure</button>
+        </form>
+    </div>
+</body>
+</html>
