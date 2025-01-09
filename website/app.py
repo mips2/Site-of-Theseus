@@ -211,5 +211,39 @@ def complete_music_lab():
     user_progress[username]['score'] += 10  # Bonus points for exploring the music lab
     return redirect(url_for('adventure', username=username))
 
+@app.route('/space-explorer')
+def space_explorer():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    # Generate a random planet for the user to explore
+    planets = [
+        {"name": "Mercury", "description": "The smallest and closest planet to the Sun.", "image": "mercury.jpg"},
+        {"name": "Venus", "description": "The hottest planet with a thick atmosphere.", "image": "venus.jpg"},
+        {"name": "Mars", "description": "The Red Planet, home to the largest volcano in the solar system.", "image": "mars.jpg"},
+        {"name": "Jupiter", "description": "The largest planet with a giant red spot.", "image": "jupiter.jpg"},
+        {"name": "Saturn", "description": "Known for its stunning ring system.", "image": "saturn.jpg"},
+        {"name": "Neptune", "description": "The farthest planet from the Sun, known for its blue color.", "image": "neptune.jpg"}
+    ]
+    planet = random.choice(planets)
+    
+    return render_template('space_explorer.html', username=username, planet=planet)
+
+@app.route('/space-explorer/complete', methods=['POST'])
+def complete_space_explorer():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    user_progress[username]['score'] += 25  # Bonus points for exploring space
+    return redirect(url_for('adventure', username=username))
+
 if __name__ == '__main__':
     app.run(debug=True)
