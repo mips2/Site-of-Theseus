@@ -66,5 +66,9 @@ def interactive_story():
 def maze_runner():
     return render_template('maze_runner.html')
 
+@app.route('/space-invaders')
+def space_invaders():
+    return render_template('space_invaders.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

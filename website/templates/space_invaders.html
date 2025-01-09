@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/space_invaders.css') }}">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Space Invaders</h1>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div class="controls">
+            <p>Use <strong>Arrow Keys</strong> to move and <strong>Spacebar</strong> to shoot!</p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/space_invaders.js') }}"></script>
+</body>
+</html>
