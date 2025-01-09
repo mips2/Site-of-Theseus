@@ -161,5 +161,22 @@ def get_planet_info():
     info = planet_info.get(planet.lower(), 'No information available for this planet.')
     return jsonify({'info': info})
 
+@app.route('/ai-art-generator')
+def ai_art_generator():
+    return render_template('ai_art_generator.html')
+
+@app.route('/generate-art', methods=['POST'])
+def generate_art():
+    prompt = request.json.get('prompt')
+    # Simulate AI-generated art by returning a random image URL
+    art_images = [
+        'https://via.placeholder.com/400x400.png?text=Abstract+Art',
+        'https://via.placeholder.com/400x400.png?text=Surreal+Landscape',
+        'https://via.placeholder.com/400x400.png?text=Futuristic+City',
+        'https://via.placeholder.com/400x400.png?text=Portrait+of+a+Robot',
+        'https://via.placeholder.com/400x400.png?text=Galaxy+in+a+Bottle'
+    ]
+    return jsonify({'art_url': random.choice(art_images)})
+
 if __name__ == '__main__':
     app.run(debug=True)

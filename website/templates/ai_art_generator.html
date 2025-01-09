@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Art Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .art-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .art-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .art-container p {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .generate-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .generate-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI Art Generator</h1>
+    <p>Enter a prompt and let the AI create a unique piece of art for you!</p>
+    <input type="text" id="prompt" placeholder="Enter your art prompt here..." style="width: 300px; padding: 10px;">
+    <button class="generate-button" onclick="generateArt()">Generate Art</button>
+    <div class="art-container">
+        <img id="art-image" src="" alt="AI Generated Art" style="display: none;">
+        <p id="art-description"></p>
+    </div>
+    <script>
+        function generateArt() {
+            const prompt = document.getElementById('prompt').value;
+            if (!prompt) {
+                alert('Please enter a prompt!');
+                return;
+            }
+            fetch('/generate-art', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt: prompt }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const artImage = document.getElementById('art-image');
+                const artDescription = document.getElementById('art-description');
+                artImage.src = data.art_url;
+                artImage.style.display = 'block';
+                artDescription.textContent = `Art generated for: "${prompt}"`;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
