@@ -113,5 +113,37 @@ def complete_time_travel():
     user_progress[username]['score'] += 15  # Bonus points for completing the time travel
     return redirect(url_for('adventure', username=username))
 
+@app.route('/puzzle-room')
+def puzzle_room():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    # Generate a random puzzle for the user to solve
+    puzzles = [
+        "Arrange the numbers 1-9 in a 3x3 grid so that each row, column, and diagonal sums to 15.",
+        "Find the missing number in the sequence: 2, 5, 10, 17, __, 37.",
+        "Unscramble the letters to form a meaningful word: R A I N B O W.",
+        "Determine the next shape in the pattern: ○, △, □, ○, △, __."
+    ]
+    puzzle = random.choice(puzzles)
+    
+    return render_template('puzzle_room.html', username=username, puzzle=puzzle)
+
+@app.route('/puzzle-room/complete', methods=['POST'])
+def complete_puzzle_room():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    user_progress[username]['score'] += 20  # Bonus points for completing the puzzle room
+    return redirect(url_for('adventure', username=username))
+
 if __name__ == '__main__':
     app.run(debug=True)

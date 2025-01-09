@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Room</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .puzzle-container {
+            background-color: #333333;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        .puzzle-container h2 {
+            margin-bottom: 20px;
+        }
+        .puzzle-container p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .puzzle-container form {
+            margin-top: 20px;
+        }
+        .puzzle-container input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
+            width: 80%;
+            margin-bottom: 20px;
+        }
+        .puzzle-container button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .puzzle-container button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="puzzle-container">
+        <h2>Welcome to the Puzzle Room, {{ username }}!</h2>
+        <p>Your current score: {{ user_progress[username]['score'] }}</p>
+        <p>Solve this puzzle to earn bonus points:</p>
+        <p>{{ puzzle }}</p>
+        <form action="{{ url_for('complete_puzzle_room') }}" method="POST">
+            <input type="text" name="solution" placeholder="Enter your solution here..." required>
+            <button type="submit">Submit Solution</button>
+        </form>
+    </div>
+</body>
+</html>

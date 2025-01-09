@@ -7,42 +7,46 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
-            background: url('/static/images/home_bg.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
+            background-color: #1a1a1a;
+            color: #ffffff;
             font-family: 'Arial', sans-serif;
             text-align: center;
             padding: 50px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
         }
         h1 {
             font-size: 3em;
             margin-bottom: 20px;
         }
-        .nav-links {
-            margin-top: 40px;
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
         }
-        .nav-links a {
+        .btn {
             display: inline-block;
-            margin: 10px;
             padding: 10px 20px;
             font-size: 1.2em;
-            background-color: #4caf50;
+            background-color: #4CAF50;
             color: white;
             text-decoration: none;
             border-radius: 5px;
+            margin: 10px;
         }
-        .nav-links a:hover {
+        .btn:hover {
             background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to the Adventure Game!</h1>
-    <div class="nav-links">
-        <a href="{{ url_for('start_adventure') }}">Start Adventure</a>
-        <a href="{{ url_for('leaderboard') }}">Leaderboard</a>
-        <a href="{{ url_for('mini_game') }}">Mini Game</a>
-        <a href="{{ url_for('time_travel') }}">Time Travel</a>
+    <div class="container">
+        <h1>Welcome to the Adventure Game!</h1>
+        <p>Embark on an epic journey filled with challenges, puzzles, and time travel!</p>
+        <a href="{{ url_for('start_adventure') }}" class="btn">Start Adventure</a>
+        <a href="{{ url_for('leaderboard') }}" class="btn">Leaderboard</a>
+        <a href="{{ url_for('puzzle_room') }}" class="btn">Puzzle Room</a>
     </div>
 </body>
 </html>
