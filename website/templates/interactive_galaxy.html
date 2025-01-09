@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Galaxy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/interactive_galaxy.css') }}">
+</head>
+<body>
+    <div class="galaxy-container">
+        <h1>Explore the Interactive Galaxy</h1>
+        <div class="stars"></div>
+        <div class="planets">
+            <div class="planet" id="planet1"></div>
+            <div class="planet" id="planet2"></div>
+            <div class="planet" id="planet3"></div>
+        </div>
+        <button id="explore-button">Launch Exploration</button>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/interactive_galaxy.js') }}"></script>
+</body>
+</html>

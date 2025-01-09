@@ -3,56 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Home</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .container {
-            text-align: center;
-        }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            animation: float 3s ease-in-out infinite;
-        }
-        .button {
-            background-color: #ff6f61;
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
-        .button:hover {
-            transform: scale(1.1);
-            background-color: #ff3b2f;
-        }
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-        }
-    </style>
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the Interactive World!</h1>
-        <button class="button" onclick="window.location.href='/explore'">Start Exploring</button>
+        <h1>Welcome to the Interactive Universe</h1>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('explore') }}">Explore</a>
+            <a href="{{ url_for('space') }}">Space</a>
+            <a href="{{ url_for('ocean') }}">Ocean</a>
+            <a href="{{ url_for('forest') }}">Forest</a>
+            <a href="{{ url_for('interactive_galaxy') }}">Interactive Galaxy</a>
+        </nav>
     </div>
 </body>
 </html>

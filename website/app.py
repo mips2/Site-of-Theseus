@@ -22,5 +22,9 @@ def ocean():
 def forest():
     return render_template('forest.html')
 
+@app.route('/interactive-galaxy')
+def interactive_galaxy():
+    return render_template('interactive_galaxy.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
