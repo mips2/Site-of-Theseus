@@ -22,5 +22,9 @@ def emoji_story():
 def color_mixer():
     return render_template('color_mixer.html')
 
+@app.route('/music-maker')
+def music_maker():
+    return render_template('music_maker.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
