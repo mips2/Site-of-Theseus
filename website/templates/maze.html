@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Maze Game</h1>
+        <div id="maze-container"></div>
+        <button id="generate-maze">Generate New Maze</button>
+    </div>
+    <script>
+        $(document).ready(function() {
+            function generateMaze(size) {
+                $.ajax({
+                    url: "{{ url_for('generate_maze') }}",
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ size: size }),
+                    success: function(data) {
+                        renderMaze(data);
+                    }
+                });
+            }
+
+            function renderMaze(maze) {
+                $('#maze-container').empty();
+                maze.forEach(function(row, i) {
+                    row.forEach(function(cell, j) {
+                        const cellElement = $('<div>').addClass('cell').attr('data-row', i).attr('data-col', j);
+                        if (cell === 1) {
+                            cellElement.addClass('wall');
+                        } else if (i === 0 && j === 0) {
+                            cellElement.addClass('start');
+                        } else if (i === maze.length - 1 && j === row.length - 1) {
+                            cellElement.addClass('end');
+                        }
+                        $('#maze-container').append(cellElement);
+                    });
+                    $('#maze-container').append($('<br>'));
+                });
+            }
+
+            $('#generate-maze').click(function() {
+                generateMaze(10);
+            });
+
+            generateMaze(10);
+        });
+    </script>
+</body>
+</html>
