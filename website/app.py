@@ -18,5 +18,9 @@ def memory_game():
 def emoji_story():
     return render_template('emoji_story.html')
 
+@app.route('/color-mixer')
+def color_mixer():
+    return render_template('color_mixer.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
