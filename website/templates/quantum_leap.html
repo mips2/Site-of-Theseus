@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Leap Adventure</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/quantum_leap.css') }}">
+</head>
+<body>
+    <div class="quantum-container">
+        <h1>Quantum Leap Adventure</h1>
+        <p>Step into the quantum realm and leap through time and space to solve puzzles and uncover mysteries!</p>
+        <div id="quantum-board">
+            <div class="quantum-tile" data-state="0"></div>
+            <div class="quantum-tile" data-state="1"></div>
+            <div class="quantum-tile" data-state="2"></div>
+            <div class="quantum-tile" data-state="3"></div>
+        </div>
+        <button id="quantum-leap-button">Leap!</button>
+        <p id="quantum-result"></p>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/quantum_leap.js') }}"></script>
+</body>
+</html>

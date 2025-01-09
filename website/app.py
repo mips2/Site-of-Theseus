@@ -78,5 +78,9 @@ def emoji_story_generator():
 def alien_language_decoder():
     return render_template('alien_language_decoder.html')
 
+@app.route('/quantum-leap')
+def quantum_leap():
+    return render_template('quantum_leap.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,71 @@
+body {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: #eaeaea;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.quantum-container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+#quantum-board {
+    display: grid;
+    grid-template-columns: repeat(2, 100px);
+    grid-gap: 10px;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.quantum-tile {
+    width: 100px;
+    height: 100px;
+    background: #0f3460;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.quantum-tile:hover {
+    transform: scale(1.1);
+    background: #1a1a2e;
+}
+
+#quantum-leap-button {
+    padding: 0.8rem 2rem;
+    font-size: 1.2rem;
+    background: #e94560;
+    color: #eaeaea;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#quantum-leap-button:hover {
+    background: #c2334d;
+}
+
+#quantum-result {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #e94560;
+}
