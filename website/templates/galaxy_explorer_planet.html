@@ -3,83 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planet {{ planet_name }}</title>
+    <title>Planet Explorer - {{ planet_name }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
-            background: radial-gradient(circle, #000428, #004e92);
-            color: white;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #e0e0e0;
             font-family: 'Arial', sans-serif;
             text-align: center;
             margin: 0;
             padding: 0;
-            overflow: hidden;
         }
         .planet-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
-        .planet {
-            width: 300px;
-            height: 300px;
+        .planet-image {
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
-            background: radial-gradient(circle, #ff7e5f, #feb47b);
-            box-shadow: 0 0 50px rgba(255, 126, 95, 0.8);
-            animation: rotatePlanet 20s linear infinite;
+            margin: 20px auto;
+            background: url("{{ url_for('static', filename='images/' + planet_name + '.jpg') }}") no-repeat center center/cover;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
         }
         .planet-info {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            text-align: left;
+            margin-top: 20px;
         }
         .planet-info h2 {
             font-size: 2.5rem;
-            margin: 0;
+            margin-bottom: 10px;
         }
         .planet-info p {
             font-size: 1.2rem;
-            margin: 10px 0;
+            line-height: 1.6;
         }
-        .explore-button {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            background: #ff7e5f;
-            border: none;
-            border-radius: 5px;
+        .interactive-section {
+            margin-top: 30px;
+        }
+        .interactive-section button {
+            background: #00bcd4;
             color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
             cursor: pointer;
             transition: background 0.3s ease;
         }
-        .explore-button:hover {
-            background: #feb47b;
+        .interactive-section button:hover {
+            background: #0097a7;
         }
-        @keyframes rotatePlanet {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .planet-fact {
+            margin-top: 20px;
+            font-style: italic;
+            color: #a8a8a8;
         }
     </style>
 </head>
 <body>
     <div class="planet-container">
-        <div class="planet"></div>
+        <div class="planet-image"></div>
         <div class="planet-info">
             <h2>{{ planet_name }}</h2>
-            <p>Welcome to the mysterious planet {{ planet_name }}! Explore its unique terrain and uncover hidden secrets.</p>
+            <p>Welcome to the mysterious planet {{ planet_name }}! Explore its unique features and uncover its secrets.</p>
+            <div class="interactive-section">
+                <button onclick="revealFact()">Reveal a Fun Fact</button>
+                <p class="planet-fact" id="planetFact" style="display: none;">Loading fun fact...</p>
+            </div>
         </div>
-        <button class="explore-button" onclick="explorePlanet()">Explore</button>
     </div>
+
     <script>
-        function explorePlanet() {
-            alert("You've discovered a hidden treasure on {{ planet_name }}!");
+        const facts = {
+            "Mars": "Mars has the tallest volcano in the solar system, Olympus Mons, which is about 13.6 miles high.",
+            "Jupiter": "Jupiter's Great Red Spot is a giant storm that has been raging for over 400 years.",
+            "Saturn": "Saturn's rings are made up of billions of ice and rock particles, some as small as a grain of sand.",
+            "Venus": "Venus rotates in the opposite direction to most planets, meaning the sun rises in the west and sets in the east.",
+            "Neptune": "Neptune has the strongest winds in the solar system, reaching speeds of up to 1,500 miles per hour."
+        };
+
+        function revealFact() {
+            const planetName = "{{ planet_name }}";
+            const factElement = document.getElementById("planetFact");
+            factElement.textContent = facts[planetName] || "No fun fact available for this planet.";
+            factElement.style.display = "block";
         }
     </script>
 </body>
