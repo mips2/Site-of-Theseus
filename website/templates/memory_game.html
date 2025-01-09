@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Game</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -18,65 +18,45 @@
             height: 100vh;
             text-align: center;
         }
-        .container {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #4a90e2;
-        }
-        .game-board {
+        .memory-board {
             display: grid;
             grid-template-columns: repeat(4, 100px);
-            grid-gap: 10px;
-            margin: 2rem auto;
+            gap: 10px;
+            margin-top: 20px;
         }
         .card {
             width: 100px;
             height: 100px;
-            background: #4a90e2;
+            background-color: #fff;
             border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2rem;
-            color: white;
+            font-size: 2em;
             cursor: pointer;
-            transition: transform 0.3s ease, background 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .card.flipped {
-            background: #ff6f61;
             transform: rotateY(180deg);
         }
-        .btn {
-            background: #4a90e2;
+        .card.matched {
+            background-color: #4caf50;
             color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        .btn:hover {
-            background: #357abd;
+            cursor: default;
         }
     </style>
 </head>
 <body>
-    <div class="container animate__animated animate__fadeIn">
+    <div>
         <h1>Memory Game</h1>
-        <div class="game-board" id="game-board">
+        <div class="memory-board">
             <!-- Cards will be dynamically generated here -->
         </div>
-        <button class="btn" onclick="resetGame()">Reset Game</button>
+        <button id="reset-button" style="margin-top: 20px; padding: 10px 20px; font-size: 1em; cursor: pointer;">Reset Game</button>
     </div>
     <script>
-        const cards = ['A', 'B', 'C', 'D', 'A', 'B', 'C', 'D'];
+        const cards = ['🍎', '🍌', '🍇', '🍓', '🍎', '🍌', '🍇', '🍓'];
+        const memoryBoard = document.querySelector('.memory-board');
         let flippedCards = [];
         let matchedCards = [];
 
@@ -88,24 +68,18 @@
             return array;
         }
 
-        function createGameBoard() {
-            const gameBoard = document.getElementById('game-board');
+        function createBoard() {
             const shuffledCards = shuffle(cards);
-            shuffledCards.forEach((card, index) => {
-                const cardElement = document.createElement('div');
-                cardElement.classList.add('card');
-                cardElement.dataset.value = card;
-                cardElement.dataset.index = index;
-                cardElement.addEventListener('click', flipCard);
-                gameBoard.appendChild(cardElement);
-            });
+            memoryBoard.innerHTML = shuffledCards.map(card => `
+                <div class="card" data-value="${card}">
+                    <span>${card}</span>
+                </div>
+            `).join('');
         }
 
-        function flipCard(event) {
-            const card = event.target;
+        function flipCard(card) {
             if (flippedCards.length < 2 && !flippedCards.includes(card) && !matchedCards.includes(card)) {
                 card.classList.add('flipped');
-                card.textContent = card.dataset.value;
                 flippedCards.push(card);
                 if (flippedCards.length === 2) {
                     checkForMatch();
@@ -117,7 +91,8 @@
             const [card1, card2] = flippedCards;
             if (card1.dataset.value === card2.dataset.value) {
                 matchedCards.push(card1, card2);
-                flippedCards = [];
+                card1.classList.add('matched');
+                card2.classList.add('matched');
                 if (matchedCards.length === cards.length) {
                     setTimeout(() => alert('Congratulations! You won!'), 500);
                 }
@@ -125,22 +100,25 @@
                 setTimeout(() => {
                     card1.classList.remove('flipped');
                     card2.classList.remove('flipped');
-                    card1.textContent = '';
-                    card2.textContent = '';
-                    flippedCards = [];
                 }, 1000);
             }
+            flippedCards = [];
         }
 
-        function resetGame() {
-            const gameBoard = document.getElementById('game-board');
-            gameBoard.innerHTML = '';
+        memoryBoard.addEventListener('click', (e) => {
+            if (e.target.classList.contains('card')) {
+                flipCard(e.target);
+            }
+        });
+
+        document.getElementById('reset-button').addEventListener('click', () => {
+            memoryBoard.innerHTML = '';
             flippedCards = [];
             matchedCards = [];
-            createGameBoard();
-        }
+            createBoard();
+        });
 
-        createGameBoard();
+        createBoard();
     </script>
 </body>
 </html>

@@ -27,6 +27,8 @@ if os.path.exists(templates_dir):
     shutil.move(templates_dir, os.path.join(archive_dir, 'templates'))
 if os.path.exists(static_dir):
     shutil.move(static_dir, os.path.join(archive_dir, 'static'))
+if os.path.exists(static_dir):
+    shutil.move(static_dir, os.path.join(archive_dir, 'app.py'))
 
 # Create new base Flask template
 os.makedirs(templates_dir, exist_ok=True)
