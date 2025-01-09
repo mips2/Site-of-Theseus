@@ -7,63 +7,33 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
             text-align: center;
-            padding: 50px;
-        }
-        .game-container {
-            background-color: #fff;
-            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: inline-block;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
-        .game-title {
-            font-size: 24px;
-            margin-bottom: 20px;
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
         }
-        .game-button {
-            padding: 10px 20px;
-            font-size: 18px;
-            background-color: #007bff;
-            color: #fff;
+        .game {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        .btn {
+            background: #ff6f61;
+            color: white;
+            padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .game-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div class="game-container">
-        <div class="game-title">Click the Button as Fast as You Can!</div>
-        <button class="game-button" onclick="completeGame()">Click Me!</button>
-    </div>
-
-    <script>
-        let startTime = new Date().getTime();
-
-        function completeGame() {
-            let endTime = new Date().getTime();
-            let reactionTime = (endTime - startTime) / 1000;
-            alert(`Your reaction time: ${reactionTime.toFixed(2)} seconds!`);
-            
-            fetch('/mini-game/complete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }).then(response => {
-                if (response.ok) {
-                    window.location.href = '/adventure/{{ username }}';
-                }
-            });
-        }
-    </script>
-</body>
-</html>

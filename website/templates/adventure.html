@@ -3,48 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adventure</title>
+    <title>Adventure - {{ username }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
-            background: url('/static/images/adventure_bg.jpg') no-repeat center center fixed;
-            background-size: cover;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
             font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
             text-align: center;
-            padding: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
         h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
         }
-        p {
-            font-size: 1.5em;
-            margin-bottom: 40px;
+        .challenge {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
         }
-        form {
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 1.2em;
-            background-color: #4caf50;
-            border: none;
+        .btn {
+            background: #ff6f61;
             color: white;
-            cursor: pointer;
+            padding: 0.75rem 1.5rem;
+            border: none;
             border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
         }
-        button:hover {
-            background-color: #45a049;
+        .btn:hover {
+            background: #ff3b2f;
+        }
+        .progress {
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to the Adventure, {{ username }}!</h1>
-    <p>Level: {{ level }} | Score: {{ score }}</p>
-    <p>Your challenge: {{ challenge }}</p>
-    <form action="{{ url_for('complete_challenge', username=username) }}" method="POST">
-        <button type="submit">Complete Challenge</button>
-    </form>
+    <div class="container">
+        <h1>Welcome, {{ username }}!</h1>
+        <div class="challenge">
+            <p>Your Challenge:</p>
+            <p>{{ challenge }}</p>
+        </div>
+        <form method="POST" action="{{ url_for('complete_challenge', username=username) }}">
+            <button type="submit" class="btn">Complete Challenge</button>
+        </form>
+        <div class="progress">
+            <p>Level: {{ level }} | Score: {{ score }}</p>
+        </div>
+    </div>
 </body>
 </html>

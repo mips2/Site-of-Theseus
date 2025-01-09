@@ -5,6 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        table {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #444;
+        }
+        th {
+            background: #ff6f61;
+            color: white;
+        }
+        tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .btn {
+            background: #ff6f61;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 1.5rem;
+        }
+        .btn:hover {
+            background: #ff3b2f;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -15,7 +69,6 @@
                     <th>Rank</th>
                     <th>Username</th>
                     <th>Score</th>
-                    <th>Level</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,12 +77,11 @@
                     <td>{{ rank }}</td>
                     <td>{{ username }}</td>
                     <td>{{ data['score'] }}</td>
-                    <td>{{ data['level'] }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <a href="{{ url_for('home') }}" class="btn">Back to Home</a>
+        <a href="{{ url_for('home') }}" class="btn">Return Home</a>
     </div>
 </body>
 </html>
