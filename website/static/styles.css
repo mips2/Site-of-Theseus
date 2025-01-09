@@ -1,34 +1,10 @@
-/* Add any additional styles for the virtual pet page here */
-.pet-container {
-    max-width: 400px;
-    margin: 0 auto;
+/* Add this to the existing styles.css file */
+.planet-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 50px;
 }
 
-.pet-image {
-    width: 150px;
-    height: 150px;
-    margin-bottom: 20px;
-}
-
-.pet-response {
-    font-size: 18px;
-    margin-top: 20px;
-}
-
-.food-options {
-    margin-top: 20px;
-}
-
-.food-option {
-    display: inline-block;
-    margin: 10px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.food-option:hover {
-    background-color: #0056b3;
-}
+.planet {
+    cursor: pointer

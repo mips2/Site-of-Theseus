@@ -141,5 +141,25 @@ def feed_pet():
     response = responses.get(food, 'Your pet is not interested in that food.')
     return jsonify({'response': response})
 
+@app.route('/space-explorer')
+def space_explorer():
+    return render_template('space_explorer.html')
+
+@app.route('/get-planet-info', methods=['POST'])
+def get_planet_info():
+    planet = request.json.get('planet')
+    planet_info = {
+        'mercury': 'Mercury is the closest planet to the Sun and has extreme temperature variations.',
+        'venus': 'Venus is the hottest planet in the solar system due to its thick atmosphere.',
+        'earth': 'Earth is the only planet known to support life.',
+        'mars': 'Mars is known as the Red Planet and has the largest volcano in the solar system.',
+        'jupiter': 'Jupiter is the largest planet and has a giant storm called the Great Red Spot.',
+        'saturn': 'Saturn is famous for its stunning ring system made of ice and rock.',
+        'uranus': 'Uranus rotates on its side and has a pale blue color due to methane in its atmosphere.',
+        'neptune': 'Neptune is the windiest planet with supersonic wind speeds.'
+    }
+    info = planet_info.get(planet.lower(), 'No information available for this planet.')
+    return jsonify({'info': info})
+
 if __name__ == '__main__':
     app.run(debug=True)
