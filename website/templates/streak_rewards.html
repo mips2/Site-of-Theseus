@@ -7,19 +7,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Streak Rewards</h1>
+    <h1>Streak Rewards 🏆</h1>
     <p>Your current streak: {{ streak }}</p>
     <ul>
-        {% for threshold, reward in rewards.items() %}
-            <li>{{ threshold }} days: {{ reward }}</li>
+        {% for streak_level, reward in rewards.items() %}
+            <li>{{ streak_level }} days: {{ reward }}</li>
         {% endfor %}
     </ul>
-    {% if streak >= 3 %}
-        <a href="{{ url_for('emoji_roulette') }}">Spin the Emoji Roulette! 🎲</a>
-    {% endif %}
-    {% if streak >= 10 %}
-        <a href="{{ url_for('secret_game_mode') }}">Unlock Secret Game Mode! 🚀</a>
-    {% endif %}
+    <p>Keep playing daily to unlock more rewards!</p>
     <a href="{{ url_for('home') }}">Back to Home</a>
 </body>
 </html>

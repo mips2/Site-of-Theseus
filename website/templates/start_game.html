@@ -7,12 +7,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Choose Your Move</h1>
+    <h1>Rock, Paper, Scissors</h1>
     <form method="POST">
-        <button type="submit" name="choice" value="rock">✊ Rock</button>
-        <button type="submit" name="choice" value="paper">✋ Paper</button>
-        <button type="submit" name="choice" value="scissors">✌️ Scissors</button>
+        <label>
+            <input type="radio" name="choice" value="rock" required> Rock
+        </label>
+        <label>
+            <input type="radio" name="choice" value="paper"> Paper
+        </label>
+        <label>
+            <input type="radio" name="choice" value="scissors"> Scissors
+        </label>
+        <button type="submit">Play</button>
     </form>
-    <a href="{{ url_for('home') }}" class="btn">Back to Home</a>
+    <a href="{{ url_for('home') }}">Back to Home</a>
 </body>
 </html>

@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Emoji Roulette 🎲</h1>
-    <p>Your streak of {{ streak }} has unlocked the Emoji Roulette! Spin to see what you get:</p>
+    <h1>Emoji Roulette 🎰</h1>
+    <p>You've unlocked this feature by maintaining a streak of 3 or more. Spin the wheel and see what you get!</p>
     <div id="roulette-container">
-        <p id="emoji-display">{{ selected_emoji }}</p>
-        <button id="spin-button">Spin Again!</button>
+        <div id="roulette-wheel">
+            <span id="emoji-display">{{ selected_emoji }}</span>
+        </div>
+        <button id="spin-button">Spin Again</button>
     </div>
     <a href="{{ url_for('home') }}">Back to Home</a>
 

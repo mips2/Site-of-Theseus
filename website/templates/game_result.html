@@ -11,8 +11,8 @@
     <p>You chose: {{ user_choice }}</p>
     <p>Computer chose: {{ computer_choice }}</p>
     <h2>{{ result }}</h2>
-    <p>Your streak: {{ streak }}</p>
-    <a href="{{ url_for('start_game') }}" class="btn">Play Again</a>
-    <a href="{{ url_for('home') }}" class="btn">Back to Home</a>
+    <p>Your current streak: {{ streak }}</p>
+    <a href="{{ url_for('start_game') }}">Play Again</a>
+    <a href="{{ url_for('home') }}">Back to Home</a>
 </body>
 </html>
