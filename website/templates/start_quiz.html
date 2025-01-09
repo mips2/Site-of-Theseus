@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Start Quiz</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the Fun Quiz App!</h1>
-        <p>Test your knowledge with our interactive quiz.</p>
-        <a href="{{ url_for('start_quiz') }}" class="btn">Start Quiz</a>
+        <h1>Are you ready to start the quiz?</h1>
+        <form method="POST">
+            <button type="submit" class="btn">Start Quiz</button>
+        </form>
     </div>
 </body>
 </html>

@@ -1,42 +1,52 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, redirect, url_for
 import random
 
 app = Flask(__name__)
+
+# In-memory storage for a simple game state
+game_state = {
+    "score": 0,
+    "current_question": None,
+    "questions": [
+        {"question": "What is the capital of France?", "answer": "Paris"},
+        {"question": "What is the largest planet in our solar system?", "answer": "Jupiter"},
+        {"question": "What is the smallest prime number?", "answer": "2"},
+        {"question": "What is the chemical symbol for gold?", "answer": "Au"},
+        {"question": "What is the square root of 64?", "answer": "8"}
+    ]
+}
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
-@app.route('/maze')
-def maze():
-    return render_template('maze.html')
+@app.route('/start-quiz', methods=['GET', 'POST'])
+def start_quiz():
+    if request.method == 'POST':
+        game_state["score"] = 0
+        game_state["current_question"] = random.choice(game_state["questions"])
+        return redirect(url_for('quiz'))
+    return render_template('start_quiz.html')
 
-@app.route('/generate_maze', methods=['POST'])
-def generate_maze():
-    size = int(request.json['size'])
-    maze = [[random.choice([0, 1]) for _ in range(size)] for _ in range(size)]
-    maze[0][0] = 0  # Start point
-    maze[-1][-1] = 0  # End point
-    return jsonify(maze)
+@app.route('/quiz', methods=['GET', 'POST'])
+def quiz():
+    if request.method == 'POST':
+        user_answer = request.form.get('answer')
+        if user_answer.lower() == game_state["current_question"]["answer"].lower():
+            game_state["score"] += 1
+            message = "Correct! 🎉"
+        else:
+            message = f"Wrong! The correct answer was {game_state['current_question']['answer']}."
+        game_state["current_question"] = random.choice(game_state["questions"])
+        return render_template('quiz.html', question=game_state["current_question"], score=game_state["score"], message=message)
+    return render_template('quiz.html', question=game_state["current_question"], score=game_state["score"])
 
-@app.route('/puzzle')
-def puzzle():
-    return render_template('puzzle.html')
-
-@app.route('/generate_puzzle', methods=['POST'])
-def generate_puzzle():
-    difficulty = request.json['difficulty']
-    if difficulty == 'easy':
-        size = 3
-    elif difficulty == 'medium':
-        size = 4
-    else:
-        size = 5
-    numbers = list(range(1, size * size))
-    numbers.append(None)  # Empty tile
-    random.shuffle(numbers)
-    puzzle = [numbers[i:i + size] for i in range(0, len(numbers), size)]
-    return jsonify(puzzle)
+@app.route('/end-quiz')
+def end_quiz():
+    final_score = game_state["score"]
+    game_state["score"] = 0
+    game_state["current_question"] = None
+    return render_template('end_quiz.html', final_score=final_score)
 
 if __name__ == '__main__':
     app.run(debug=True)

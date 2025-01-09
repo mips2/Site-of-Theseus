@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz Time!</h1>
+        <p>Your current score: {{ score }}</p>
+        <p>{{ question.question }}</p>
+        <form method="POST">
+            <input type="text" name="answer" placeholder="Your answer" required>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+        <a href="{{ url_for('end_quiz') }}" class="btn">End Quiz</a>
+    </div>
+</body>
+</html>
