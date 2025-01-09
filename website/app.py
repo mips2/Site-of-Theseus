@@ -245,5 +245,37 @@ def complete_space_explorer():
     user_progress[username]['score'] += 25  # Bonus points for exploring space
     return redirect(url_for('adventure', username=username))
 
+@app.route('/dreamscape')
+def dreamscape():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    # Generate a random dream scenario for the user to explore
+    dreams = [
+        "You find yourself in a floating city made of clouds.",
+        "You are a pirate sailing through a sea of stars.",
+        "You discover a hidden forest where the trees sing.",
+        "You are a wizard casting spells in a magical library."
+    ]
+    dream = random.choice(dreams)
+    
+    return render_template('dreamscape.html', username=username, dream=dream)
+
+@app.route('/dreamscape/complete', methods=['POST'])
+def complete_dreamscape():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    user_progress[username]['score'] += 30  # Bonus points for exploring the dreamscape
+    return redirect(url_for('adventure', username=username))
+
 if __name__ == '__main__':
     app.run(debug=True)
