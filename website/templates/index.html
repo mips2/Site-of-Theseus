@@ -5,13 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .feature-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: scale(1.05);
+        }
+        .feature-card h2 {
+            margin-bottom: 15px;
+        }
+        .feature-card a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to the Ultimate Quiz Experience!</h1>
-        <p>Test your knowledge and have fun with our interactive quiz game.</p>
-        <a href="{{ url_for('start_quiz') }}" class="btn">Start Quiz</a>
-        <a href="{{ url_for('memory_game') }}" class="btn">Play Memory Game</a>
+    <h1>Welcome to the Interactive Website!</h1>
+    <div class="feature-card">
+        <h2>Quiz Game</h2>
+        <a href="{{ url_for('start_quiz') }}">Start Quiz</a>
+    </div>
+    <div class="feature-card">
+        <h2>Memory Game</h2>
+        <a href="{{ url_for('memory_game') }}">Play Memory Game</a>
+    </div>
+    <div class="feature-card">
+        <h2>Story Generator</h2>
+        <a href="{{ url_for('story_generator') }}">Create a Story</a>
     </div>
 </body>
 </html>

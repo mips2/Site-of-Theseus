@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Story Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .story-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 80%;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .story-text {
+            margin-top: 20px;
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Story Generator</h1>
+    <div class="story-container">
+        <input type="text" id="adjective" placeholder="Enter an adjective (e.g., mysterious)">
+        <input type="text" id="noun" placeholder="Enter a noun (e.g., castle)">
+        <input type="text" id="verb" placeholder="Enter a verb (e.g., dance)">
+        <input type="text" id="animal" placeholder="Enter an animal (e.g., dragon)">
+        <input type="text" id="exclamation" placeholder="Enter an exclamation (e.g., Wow!)">
+        <button onclick="generateStory()">Generate Story</button>
+        <div class="story-text" id="story-text"></div>
+    </div>
+
+    <script>
+        function generateStory() {
+            const adjective = document.getElementById('adjective').value;
+            const noun = document.getElementById('noun').value;
+            const verb = document.getElementById('verb').value;
+            const animal = document.getElementById('animal').value;
+            const exclamation = document.getElementById('exclamation').value;
+
+            fetch('/generate-story', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    adjective: adjective,
+                    noun: noun,
+                    verb: verb,
+                    animal: animal,
+                    exclamation: exclamation
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('story-text').innerText = data.story;
+            });
+        }
+    </script>
+</body>
+</html>

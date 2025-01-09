@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import random
 
 app = Flask(__name__)
@@ -21,6 +21,17 @@ memory_game_state = {
     "cards": ["A", "B", "C", "D", "E", "F", "G", "H"],
     "flipped": [],
     "matched": []
+}
+
+# New feature: Interactive Story Generator
+story_state = {
+    "current_story": "",
+    "story_parts": [
+        "Once upon a time, in a land far, far away, there was a {adjective} {noun}.",
+        "The {noun} loved to {verb} every day, but one day, something unexpected happened.",
+        "A {adjective} {animal} appeared and said, '{exclamation}!'",
+        "The {noun} and the {animal} decided to {verb} together, and they lived happily ever after."
+    ]
 }
 
 @app.route('/')
@@ -73,6 +84,30 @@ def flip_card(index):
             else:
                 memory_game_state["flipped"] = []
     return render_template('memory_game.html', cards=memory_game_state["cards"], flipped=memory_game_state["flipped"], matched=memory_game_state["matched"])
+
+# New feature: Interactive Story Generator
+@app.route('/story-generator')
+def story_generator():
+    return render_template('story_generator.html')
+
+@app.route('/generate-story', methods=['POST'])
+def generate_story():
+    data = request.json
+    adjective = data.get('adjective', 'mysterious')
+    noun = data.get('noun', 'castle')
+    verb = data.get('verb', 'dance')
+    animal = data.get('animal', 'dragon')
+    exclamation = data.get('exclamation', 'Wow!')
+
+    story = " ".join(story_state["story_parts"]).format(
+        adjective=adjective,
+        noun=noun,
+        verb=verb,
+        animal=animal,
+        exclamation=exclamation
+    )
+    story_state["current_story"] = story
+    return jsonify({"story": story})
 
 if __name__ == '__main__':
     app.run(debug=True)
