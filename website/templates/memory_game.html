@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fun Interactive Website</title>
+    <title>Memory Game</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
             color: #333;
             margin: 0;
             padding: 0;
@@ -25,8 +25,30 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
         h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
+        }
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 10px;
+            margin: 2rem auto;
+        }
+        .memory-card {
+            width: 100px;
+            height: 100px;
+            background: #ff6f61;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .memory-card:hover {
+            transform: scale(1.1);
         }
         .btn {
             display: inline-block;
@@ -44,17 +66,22 @@
             transform: scale(1.1);
             background: #ff3b2f;
         }
-        .btn i {
-            margin-right: 0.5rem;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the Fun Zone!</h1>
-        <p>Choose your adventure:</p>
-        <a href="/puzzle-game" class="btn"><i class="fas fa-puzzle-piece"></i> Puzzle Game</a>
-        <a href="/memory-game" class="btn"><i class="fas fa-brain"></i> Memory Game</a>
+        <h1>Memory Game</h1>
+        <div class="memory-grid">
+            <div class="memory-card">A</div>
+            <div class="memory-card">B</div>
+            <div class="memory-card">C</div>
+            <div class="memory-card">D</div>
+            <div class="memory-card">E</div>
+            <div class="memory-card">F</div>
+            <div class="memory-card">G</div>
+            <div class="memory-card">H</div>
+        </div>
+        <a href="/" class="btn"><i class="fas fa-home"></i> Back to Home</a>
     </div>
 </body>
 </html>

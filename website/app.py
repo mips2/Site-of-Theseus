@@ -10,5 +10,9 @@ def home():
 def puzzle_game():
     return render_template('puzzle_game.html')
 
+@app.route('/memory-game')
+def memory_game():
+    return render_template('memory_game.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
