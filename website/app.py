@@ -62,5 +62,14 @@ def secret_game_mode():
     else:
         return redirect(url_for('streak_rewards'))
 
+@app.route('/emoji_roulette')
+def emoji_roulette():
+    if user_streak >= 3:
+        emojis = ["🎉", "🎲", "🍀", "🌟", "💎", "🔥", "🌈", "🍕", "🚀", "🎁"]
+        selected_emoji = random.choice(emojis)
+        return render_template('emoji_roulette.html', selected_emoji=selected_emoji)
+    else:
+        return redirect(url_for('streak_rewards'))
+
 if __name__ == '__main__':
     app.run(debug=True)
