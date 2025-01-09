@@ -1,96 +1,73 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
+/* Add this to your existing styles.css */
+.galaxy-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 2s infinite;
 }
 
-h1 {
-    text-align: center;
-    color: #333;
+@keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
 }
 
-.game-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 40px;
+.planet {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ff7e5f, #feb47b);
+    animation: orbit 10s linear infinite;
 }
 
-.game-card {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    color: #333;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
+@keyframes orbit {
+    from { transform: rotate(0deg) translateX(150px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
 }
 
-.game-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+.spaceship {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: url("{{ url_for('static', filename='spaceship.png') }}") no-repeat center center;
+    background-size: contain;
+    animation: float 3s ease-in-out infinite;
 }
 
-.emoji-story-container {
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    gap: 20px;
-    margin-top: 40px;
-}
-
-.emoji-picker, .story-area {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.emoji-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
-    margin-top: 10px;
 }
 
-.emoji-grid span {
-    font-size: 2em;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.emoji-grid span:hover {
-    transform: scale(1.2);
-}
-
-.story-box {
-    width: 100%;
-    height: 200px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-top: 10px;
-    font-size: 1.2em;
-    overflow-y: auto;
-    background-color: #f9f9f9;
-}
-
-.save-story {
-    margin-top: 20px;
+.controls button {
     padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
+    font-size: 16px;
+    background: #ff7e5f;
     border: none;
     border-radius: 5px;
+    color: white;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background 0.3s;
 }
 
-.save-story:hover {
-    background-color: #0056b3;
+.controls button:hover {
+    background: #feb47b;
 }

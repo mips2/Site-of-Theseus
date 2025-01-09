@@ -14,76 +14,93 @@
             padding: 0;
             overflow: hidden;
         }
-        .game-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        .galaxy-container {
+            position: relative;
+            width: 100vw;
             height: 100vh;
+            overflow: hidden;
         }
-        .stars {
+        .star {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url("{{ url_for('static', filename='stars.png') }}") repeat;
-            animation: moveStars 200s linear infinite;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
         }
-        @keyframes moveStars {
-            from { background-position: 0 0; }
-            to { background-position: 10000px 5000px; }
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
         .planet {
-            width: 200px;
-            height: 200px;
-            background: url("{{ url_for('static', filename='planet.png') }}") no-repeat center center;
-            background-size: cover;
-            animation: rotatePlanet 20s linear infinite;
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff7e5f, #feb47b);
+            animation: orbit 10s linear infinite;
         }
-        @keyframes rotatePlanet {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes orbit {
+            from { transform: rotate(0deg) translateX(150px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
         }
-        .game-title {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+        .spaceship {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: url("{{ url_for('static', filename='spaceship.png') }}") no-repeat center center;
+            background-size: contain;
+            animation: float 3s ease-in-out infinite;
         }
-        .game-instructions {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            text-align: center;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
-        .game-button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            background: linear-gradient(45deg, #00ffcc, #00b3ff);
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        .controls button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #ff7e5f;
             border: none;
+            border-radius: 5px;
             color: white;
             cursor: pointer;
-            border-radius: 25px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: background 0.3s;
         }
-        .game-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px #00ffcc;
+        .controls button:hover {
+            background: #feb47b;
         }
     </style>
 </head>
 <body>
-    <div class="stars"></div>
-    <div class="game-container">
+    <div class="galaxy-container">
+        <div class="spaceship"></div>
         <div class="planet"></div>
-        <h1 class="game-title">Galaxy Explorer</h1>
-        <p class="game-instructions">Embark on an interstellar journey! Click the button to explore new galaxies and uncover hidden treasures.</p>
-        <button class="game-button" onclick="exploreGalaxy()">Explore Galaxy</button>
+        {% for _ in range(100) %}
+            <div class="star" style="top: {{ range(0, 100)|random }}%; left: {{ range(0, 100)|random }}%;"></div>
+        {% endfor %}
     </div>
+    <div class="controls">
+        <button onclick="moveSpaceship('left')">← Left</button>
+        <button onclick="moveSpaceship('right')">Right →</button>
+    </div>
+
     <script>
-        function exploreGalaxy() {
-            const galaxies = ["Andromeda", "Milky Way", "Triangulum", "Whirlpool", "Sombrero"];
-            const randomGalaxy = galaxies[Math.floor(Math.random() * galaxies.length)];
-            alert(`You discovered the ${randomGalaxy} galaxy!`);
+        const spaceship = document.querySelector('.spaceship');
+        function moveSpaceship(direction) {
+            const currentLeft = parseFloat(window.getComputedStyle(spaceship).left);
+            if (direction === 'left' && currentLeft > 0) {
+                spaceship.style.left = `${currentLeft - 20}px`;
+            } else if (direction === 'right' && currentLeft < window.innerWidth - 100) {
+                spaceship.style.left = `${currentLeft + 20}px`;
+            }
         }
     </script>
 </body>
