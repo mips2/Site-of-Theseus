@@ -34,5 +34,9 @@ def galaxy_explorer():
 def music_mixer():
     return render_template('music_mixer.html')
 
+@app.route('/ai-art-generator')
+def ai_art_generator():
+    return render_template('ai_art_generator.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

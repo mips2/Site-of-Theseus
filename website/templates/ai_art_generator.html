@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Art Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/ai_art_generator.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>AI Art Generator</h1>
+        <p>Create unique art with AI! Enter a prompt and watch the magic happen.</p>
+        <div class="art-generator">
+            <textarea id="prompt-input" placeholder="Enter your art prompt here..."></textarea>
+            <button id="generate-art-btn">Generate Art</button>
+            <div id="art-display"></div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/ai_art_generator.js') }}"></script>
+</body>
+</html>
