@@ -16,7 +16,7 @@
         }
         .galaxy-container {
             position: relative;
-            width: 100vw;
+            width: 100%;
             height: 100vh;
             overflow: hidden;
         }
@@ -38,11 +38,12 @@
             height: 50px;
             border-radius: 50%;
             background: radial-gradient(circle, #ff7e5f, #feb47b);
+            box-shadow: 0 0 20px rgba(255, 126, 95, 0.8);
             animation: orbit 10s linear infinite;
         }
         @keyframes orbit {
             from { transform: rotate(0deg) translateX(150px) rotate(0deg); }
-            to { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
+            to { transform: rotate(360deg) translateX(150px) rotate(360deg); }
         }
         .spaceship {
             position: absolute;
@@ -50,57 +51,44 @@
             height: 100px;
             background: url("{{ url_for('static', filename='spaceship.png') }}") no-repeat center center;
             background-size: contain;
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-        .controls {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-        }
-        .controls button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background: #ff7e5f;
-            border: none;
-            border-radius: 5px;
-            color: white;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: transform 0.2s ease;
         }
-        .controls button:hover {
-            background: #feb47b;
+        .spaceship:hover {
+            transform: scale(1.1);
+        }
+        .info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <div class="galaxy-container">
-        <div class="spaceship"></div>
+        <div class="info-panel">
+            <p>Click on the spaceship to explore the galaxy!</p>
+        </div>
+        <div class="spaceship" onclick="exploreGalaxy()"></div>
         <div class="planet"></div>
-        {% for _ in range(100) %}
-            <div class="star" style="top: {{ range(0, 100)|random }}%; left: {{ range(0, 100)|random }}%;"></div>
-        {% endfor %}
-    </div>
-    <div class="controls">
-        <button onclick="moveSpaceship('left')">← Left</button>
-        <button onclick="moveSpaceship('right')">Right →</button>
+        <!-- Stars -->
+        <div class="star" style="top: 10%; left: 20%;"></div>
+        <div class="star" style="top: 30%; left: 50%;"></div>
+        <div class="star" style="top: 70%; left: 80%;"></div>
+        <div class="star" style="top: 50%; left: 10%;"></div>
+        <div class="star" style="top: 90%; left: 40%;"></div>
     </div>
 
     <script>
-        const spaceship = document.querySelector('.spaceship');
-        function moveSpaceship(direction) {
-            const currentLeft = parseFloat(window.getComputedStyle(spaceship).left);
-            if (direction === 'left' && currentLeft > 0) {
-                spaceship.style.left = `${currentLeft - 20}px`;
-            } else if (direction === 'right' && currentLeft < window.innerWidth - 100) {
-                spaceship.style.left = `${currentLeft + 20}px`;
-            }
+        function exploreGalaxy() {
+            alert("You've discovered a new planet! Keep exploring to find more!");
+            const planet = document.querySelector('.planet');
+            planet.style.background = 'radial-gradient(circle, #00c6ff, #0072ff)';
+            planet.style.boxShadow = '0 0 20px rgba(0, 198, 255, 0.8)';
         }
     </script>
 </body>
