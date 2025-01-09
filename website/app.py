@@ -22,5 +22,9 @@ def emoji_mixer():
 def color_splash():
     return render_template('color_splash.html')
 
+@app.route('/new-feature')
+def new_feature():
+    return render_template('new_feature.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

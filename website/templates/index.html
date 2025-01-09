@@ -7,35 +7,28 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            font-family: 'Arial', sans-serif;
             color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             text-align: center;
+            padding: 20px;
         }
         .game-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            max-width: 600px;
-            margin: 0 auto;
+            margin-top: 50px;
         }
         .game-card {
-            background: rgba(255, 255, 255, 0.8);
+            background: white;
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
         }
         .game-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
         .game-card h2 {
             margin: 0;
@@ -43,29 +36,41 @@
             color: #ff6f61;
         }
         .game-card p {
-            margin: 10px 0 0;
             font-size: 1em;
-            color: #555;
+            color: #666;
+        }
+        .game-card a {
+            text-decoration: none;
+            color: inherit;
         }
     </style>
 </head>
 <body>
+    <h1>Welcome to the Fun Interactive Games Hub!</h1>
     <div class="game-grid">
-        <div class="game-card" onclick="window.location.href='/memory-game'">
-            <h2>Memory Game</h2>
-            <p>Test your memory with this fun card-matching game!</p>
+        <div class="game-card">
+            <a href="{{ url_for('memory_game') }}">
+                <h2>Memory Game</h2>
+                <p>Test your memory with this fun card-matching game!</p>
+            </a>
         </div>
-        <div class="game-card" onclick="window.location.href='/puzzle-challenge'">
-            <h2>Puzzle Challenge</h2>
-            <p>Solve puzzles and unlock new levels!</p>
+        <div class="game-card">
+            <a href="{{ url_for('puzzle_challenge') }}">
+                <h2>Puzzle Challenge</h2>
+                <p>Solve puzzles and unlock new levels!</p>
+            </a>
         </div>
-        <div class="game-card" onclick="window.location.href='/emoji-mixer'">
-            <h2>Emoji Mixer</h2>
-            <p>Create your own unique emoji combinations!</p>
+        <div class="game-card">
+            <a href="{{ url_for('emoji_mixer') }}">
+                <h2>Emoji Mixer</h2>
+                <p>Create your own unique emoji combinations!</p>
+            </a>
         </div>
-        <div class="game-card" onclick="window.location.href='/color-splash'">
-            <h2>Color Splash</h2>
-            <p>Explore a world of colors and create stunning art!</p>
+        <div class="game-card">
+            <a href="{{ url_for('color_splash') }}">
+                <h2>Color Splash</h2>
+                <p>Explore a world of colors and create stunning art!</p>
+            </a>
         </div>
     </div>
 </body>

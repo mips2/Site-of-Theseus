@@ -7,78 +7,106 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
             color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             text-align: center;
+            padding: 20px;
         }
-        .memory-grid {
+        .memory-game {
             display: grid;
             grid-template-columns: repeat(4, 100px);
             gap: 10px;
-            margin: 20px auto;
+            justify-content: center;
+            margin-top: 50px;
         }
         .memory-card {
             width: 100px;
             height: 100px;
             background: #fff;
             border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             font-size: 2em;
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .memory-card.flipped {
-            background: #ff6f61;
-            color: #fff;
+            background: #6a5acd;
+            color: white;
         }
-        .memory-card:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        .memory-card.matched {
+            background: #4caf50;
+            color: white;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <div class="memory-grid">
-        <div class="memory-card" onclick="flipCard(this)">🐶</div>
-        <div class="memory-card" onclick="flipCard(this)">🐱</div>
-        <div class="memory-card" onclick="flipCard(this)">🐶</div>
-        <div class="memory-card" onclick="flipCard(this)">🐱</div>
-        <div class="memory-card" onclick="flipCard(this)">🐼</div>
-        <div class="memory-card" onclick="flipCard(this)">🐧</div>
-        <div class="memory-card" onclick="flipCard(this)">🐼</div>
-        <div class="memory-card" onclick="flipCard(this)">🐧</div>
+    <h1>Memory Game</h1>
+    <div class="memory-game" id="memoryGame">
+        <!-- Cards will be dynamically generated here -->
     </div>
     <script>
+        const cards = ['A', 'B', 'C', 'D', 'A', 'B', 'C', 'D'];
         let flippedCards = [];
+        let matchedCards = [];
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createCard(value) {
+            const card = document.createElement('div');
+            card.classList.add('memory-card');
+            card.textContent = value;
+            card.addEventListener('click', () => flipCard(card));
+            return card;
+        }
+
         function flipCard(card) {
-            if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
+            if (flippedCards.length < 2 && !flippedCards.includes(card) && !matchedCards.includes(card)) {
                 card.classList.add('flipped');
                 flippedCards.push(card);
+
                 if (flippedCards.length === 2) {
-                    setTimeout(checkMatch, 1000);
+                    checkForMatch();
                 }
             }
         }
-        function checkMatch() {
+
+        function checkForMatch() {
             const [card1, card2] = flippedCards;
             if (card1.textContent === card2.textContent) {
-                card1.style.visibility = 'hidden';
-                card2.style.visibility = 'hidden';
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                matchedCards.push(card1, card2);
+                if (matchedCards.length === cards.length) {
+                    alert('Congratulations! You won!');
+                }
             } else {
-                card1.classList.remove('flipped');
-                card2.classList.remove('flipped');
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                }, 1000);
             }
             flippedCards = [];
         }
+
+        function initGame() {
+            const gameContainer = document.getElementById('memoryGame');
+            shuffle(cards).forEach(value => {
+                gameContainer.appendChild(createCard(value));
+            });
+        }
+
+        initGame();
     </script>
 </body>
 </html>

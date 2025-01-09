@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Feature: Interactive Story Builder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .story-builder {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 50px auto;
+            max-width: 600px;
+        }
+        .story-builder h2 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #6a5acd;
+        }
+        .story-builder p {
+            font-size: 1em;
+            color: #666;
+        }
+        .story-builder input, .story-builder textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .story-builder button {
+            background: #6a5acd;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .story-builder button:hover {
+            background: #5a4acd;
+        }
+    </style>
+</head>
+<body>
+    <div class="story-builder">
+        <h2>Interactive Story Builder</h2>
+        <p>Create your own story by filling in the blanks below!</p>
+        <form id="storyForm">
+            <input type="text" id="characterName" placeholder="Enter a character name" required>
+            <input type="text" id="place" placeholder="Enter a place" required>
+            <textarea id="story" placeholder="Write a short story..." rows="5" required></textarea>
+            <button type="submit">Generate Story</button>
+        </form>
+        <div id="storyOutput" style="margin-top: 20px;"></div>
+    </div>
+    <script>
+        document.getElementById('storyForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const characterName = document.getElementById('characterName').value;
+            const place = document.getElementById('place').value;
+            const story = document.getElementById('story').value;
+            const storyOutput = document.getElementById('storyOutput');
+            storyOutput.innerHTML = `
+                <h3>Your Story:</h3>
+                <p>Once upon a time, in a place called ${place}, there lived a character named ${characterName}. ${story}</p>
+            `;
+        });
+    </script>
+</body>
+</html>
