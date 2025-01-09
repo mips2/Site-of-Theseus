@@ -205,5 +205,22 @@ def scramble_word():
     scrambled_word = ''.join(random.sample(word, len(word)))
     return jsonify({'scrambled_word': scrambled_word})
 
+@app.route('/virtual-garden')
+def virtual_garden():
+    return render_template('virtual_garden.html')
+
+@app.route('/plant-flower', methods=['POST'])
+def plant_flower():
+    flower_type = request.json.get('flower_type')
+    # Simple flower planting logic
+    responses = {
+        'rose': 'You planted a beautiful red rose! It will bloom in a few days.',
+        'tulip': 'You planted a vibrant tulip! It will add color to your garden.',
+        'sunflower': 'You planted a cheerful sunflower! It will grow tall and bright.',
+        'daisy': 'You planted a delicate daisy! It will bring a touch of simplicity to your garden.'
+    }
+    response = responses.get(flower_type, 'You planted a mysterious flower! Watch it grow.')
+    return jsonify({'response': response})
+
 if __name__ == '__main__':
     app.run(debug=True)
