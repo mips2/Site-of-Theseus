@@ -3,15 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adventure Quest</title>
+    <title>Adventure Game</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+        .welcome-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        .welcome-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .start-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .start-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to Adventure Quest!</h1>
-        <p>Embark on an epic journey filled with challenges and rewards.</p>
-        <a href="{{ url_for('start_adventure') }}" class="btn">Start Your Adventure</a>
-        <a href="{{ url_for('leaderboard') }}" class="btn">View Leaderboard</a>
+    <div class="welcome-container">
+        <div class="welcome-title">Welcome to the Adventure Game!</div>
+        <a href="{{ url_for('start_adventure') }}" class="start-button">Start Adventure</a>
     </div>
 </body>
 </html>

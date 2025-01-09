@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adventure - {{ username }}</title>
+    <title>Mini Game</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
@@ -13,22 +13,18 @@
             text-align: center;
             padding: 50px;
         }
-        .adventure-container {
+        .game-container {
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             display: inline-block;
         }
-        .adventure-title {
+        .game-title {
             font-size: 24px;
             margin-bottom: 20px;
         }
-        .challenge-text {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-        .action-button {
+        .game-button {
             padding: 10px 20px;
             font-size: 18px;
             background-color: #007bff;
@@ -38,29 +34,36 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        .action-button:hover {
+        .game-button:hover {
             background-color: #0056b3;
-        }
-        .mini-game-link {
-            margin-top: 20px;
-            font-size: 16px;
-            color: #007bff;
-            text-decoration: none;
-        }
-        .mini-game-link:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="adventure-container">
-        <div class="adventure-title">Welcome, {{ username }}!</div>
-        <div class="challenge-text">Level: {{ level }} | Score: {{ score }}</div>
-        <div class="challenge-text">{{ challenge }}</div>
-        <form action="{{ url_for('complete_challenge', username=username) }}" method="POST">
-            <button type="submit" class="action-button">Complete Challenge</button>
-        </form>
-        <a href="{{ url_for('mini_game') }}" class="mini-game-link">Play a Mini Game for Bonus Points!</a>
+    <div class="game-container">
+        <div class="game-title">Click the Button as Fast as You Can!</div>
+        <button class="game-button" onclick="completeGame()">Click Me!</button>
     </div>
+
+    <script>
+        let startTime = new Date().getTime();
+
+        function completeGame() {
+            let endTime = new Date().getTime();
+            let reactionTime = (endTime - startTime) / 1000;
+            alert(`Your reaction time: ${reactionTime.toFixed(2)} seconds!`);
+            
+            fetch('/mini-game/complete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = '/adventure/{{ username }}';
+                }
+            });
+        }
+    </script>
 </body>
 </html>

@@ -56,5 +56,28 @@ def leaderboard():
     sorted_users = sorted(user_progress.items(), key=lambda x: x[1]['score'], reverse=True)
     return render_template('leaderboard.html', leaderboard=sorted_users)
 
+@app.route('/mini-game')
+def mini_game():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    return render_template('mini_game.html', username=username)
+
+@app.route('/mini-game/complete', methods=['POST'])
+def complete_mini_game():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    user_progress[username]['score'] += 5  # Bonus points for completing the mini-game
+    return redirect(url_for('adventure', username=username))
+
 if __name__ == '__main__':
     app.run(debug=True)
