@@ -3,38 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f0f0;
-            padding: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        .streak {
-            font-size: 1.5em;
-            color: #4CAF50;
-        }
-        .start-button {
-            padding: 10px 20px;
-            font-size: 1.2em;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .start-button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <title>Rock, Paper, Scissors</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Welcome to the Addictive Game Hub!</h1>
-    <p class="streak">Your current streak: {{ streak }}</p>
-    <a href="{{ url_for('start_game') }}"><button class="start-button">Start Rock-Paper-Scissors Game</button></a>
+    <h1>Welcome to Rock, Paper, Scissors!</h1>
+    <p>Your current streak: {{ streak }}</p>
+    <a href="{{ url_for('start_game') }}" class="btn">Start Game</a>
+    <a href="{{ url_for('streak_rewards') }}" class="btn">Check Streak Rewards</a>
 </body>
 </html>

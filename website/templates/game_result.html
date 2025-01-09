@@ -4,45 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Result</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f0f0;
-            padding: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        .result {
-            font-size: 1.5em;
-            margin: 20px 0;
-        }
-        .streak {
-            font-size: 1.2em;
-            color: #4CAF50;
-        }
-        .play-again-button {
-            padding: 10px 20px;
-            font-size: 1.2em;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .play-again-button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Game Result</h1>
-    <p class="result">You chose: {{ user_choice }}</p>
-    <p class="result">Computer chose: {{ computer_choice }}</p>
-    <p class="result">{{ result }}</p>
-    <p class="streak">Your current streak: {{ streak }}</p>
-    <a href="{{ url_for('start_game') }}"><button class="play-again-button">Play Again</button></a>
-    <a href="{{ url_for('home') }}"><button class="play-again-button">Return Home</button></a>
+    <p>You chose: {{ user_choice }}</p>
+    <p>Computer chose: {{ computer_choice }}</p>
+    <h2>{{ result }}</h2>
+    <p>Your streak: {{ streak }}</p>
+    <a href="{{ url_for('start_game') }}" class="btn">Play Again</a>
+    <a href="{{ url_for('home') }}" class="btn">Back to Home</a>
 </body>
 </html>

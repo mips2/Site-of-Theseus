@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streak Rewards</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Streak Rewards</h1>
+    <p>Your current streak: {{ streak }}</p>
+    <ul>
+        {% for threshold, reward in rewards.items() %}
+            <li>
+                {% if streak >= threshold %}
+                    <span class="unlocked">✅ {{ reward }}</span>
+                {% else %}
+                    <span class="locked">🔒 Reach {{ threshold }} wins to unlock: {{ reward }}</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('home') }}" class="btn">Back to Home</a>
+</body>
+</html>

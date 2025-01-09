@@ -1,13 +1,18 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import random
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
+app.secret_key = 'supersecretkey'  # Required for session management
 
 # Global variable to store user's streak
 user_streak = 0
 
 @app.route('/')
 def home():
+    # Initialize session for daily streak tracking
+    if 'last_played' not in session:
+        session['last_played'] = datetime.now().strftime('%Y-%m-%d')
     return render_template('index.html', streak=user_streak)
 
 @app.route('/start_game', methods=['GET', 'POST'])
@@ -29,9 +34,26 @@ def start_game():
             result = "You lose!"
             user_streak = 0
         
+        # Update last played date and check for daily streak bonus
+        last_played = datetime.strptime(session['last_played'], '%Y-%m-%d')
+        today = datetime.now()
+        if today.date() > last_played.date():
+            if (today - last_played).days == 1:  # Played consecutively
+                user_streak += 1  # Bonus streak point for daily play
+            session['last_played'] = today.strftime('%Y-%m-%d')
+        
         return render_template('game_result.html', user_choice=user_choice, computer_choice=computer_choice, result=result, streak=user_streak)
     
     return render_template('start_game.html')
+
+@app.route('/streak_rewards')
+def streak_rewards():
+    rewards = {
+        3: "Unlock a secret emoji! 🎉",
+        5: "Get a special badge! 🏅",
+        10: "Exclusive access to a new game mode! 🚀"
+    }
+    return render_template('streak_rewards.html', rewards=rewards, streak=user_streak)
 
 if __name__ == '__main__':
     app.run(debug=True)
