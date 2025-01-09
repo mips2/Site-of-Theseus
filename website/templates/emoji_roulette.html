@@ -7,21 +7,22 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Emoji Roulette</h1>
-    <p>You've unlocked Emoji Roulette! Spin to see what you get:</p>
-    <div id="emoji-display">
-        <h2>{{ selected_emoji }}</h2>
+    <h1>Emoji Roulette 🎲</h1>
+    <p>Your streak of {{ streak }} has unlocked the Emoji Roulette! Spin to see what you get:</p>
+    <div id="roulette-container">
+        <p id="emoji-display">{{ selected_emoji }}</p>
+        <button id="spin-button">Spin Again!</button>
     </div>
-    <button id="spin-button">Spin Again</button>
     <a href="{{ url_for('home') }}">Back to Home</a>
+
     <script>
+        const emojis = ["🎉", "🎲", "🍀", "🌟", "💎", "🔥", "🌈", "🍕", "🚀", "🎁"];
         const spinButton = document.getElementById('spin-button');
         const emojiDisplay = document.getElementById('emoji-display');
 
-        spinButton.addEventListener('click', async () => {
-            const response = await fetch('/emoji_roulette');
-            const newEmoji = await response.text();
-            emojiDisplay.innerHTML = `<h2>${newEmoji}</h2>`;
+        spinButton.addEventListener('click', () => {
+            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+            emojiDisplay.textContent = randomEmoji;
         });
     </script>
 </body>
