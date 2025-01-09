@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import random
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key_here'  # Required for session management
 
 # Store user progress in a simple in-memory dictionary
 user_progress = {}
@@ -16,6 +17,7 @@ def start_adventure():
         username = request.form.get('username')
         if username:
             user_progress[username] = {'level': 1, 'score': 0}
+            session['username'] = username  # Store username in session
             return redirect(url_for('adventure', username=username))
     return render_template('start_adventure.html')
 
@@ -47,6 +49,12 @@ def complete_challenge(username):
     user_progress[username]['score'] += 10
     
     return redirect(url_for('adventure', username=username))
+
+@app.route('/leaderboard')
+def leaderboard():
+    # Sort users by score in descending order
+    sorted_users = sorted(user_progress.items(), key=lambda x: x[1]['score'], reverse=True)
+    return render_template('leaderboard.html', leaderboard=sorted_users)
 
 if __name__ == '__main__':
     app.run(debug=True)
