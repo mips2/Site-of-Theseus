@@ -195,5 +195,15 @@ def predict_thought():
     ]
     return jsonify({'prediction': random.choice(predictions)})
 
+@app.route('/word-scramble')
+def word_scramble():
+    return render_template('word_scramble.html')
+
+@app.route('/scramble-word', methods=['POST'])
+def scramble_word():
+    word = request.json.get('word')
+    scrambled_word = ''.join(random.sample(word, len(word)))
+    return jsonify({'scrambled_word': scrambled_word})
+
 if __name__ == '__main__':
     app.run(debug=True)
