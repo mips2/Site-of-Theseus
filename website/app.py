@@ -1,226 +1,52 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, redirect, url_for
 import random
 
 app = Flask(__name__)
 
-# List of fun facts to display dynamically
-FUN_FACTS = [
-    "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still edible!",
-    "Octopuses have three hearts. Two pump blood to the gills, and one pumps it to the rest of the body.",
-    "Bananas are berries, but strawberries aren't.",
-    "The Eiffel Tower can be 15 cm taller during the summer due to thermal expansion.",
-    "A day on Venus is longer than a year on Venus."
-]
+# Store user progress in a simple in-memory dictionary
+user_progress = {}
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
-@app.route('/fun-fact')
-def fun_fact():
-    return jsonify({'fact': random.choice(FUN_FACTS)})
+@app.route('/start-adventure', methods=['GET', 'POST'])
+def start_adventure():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        if username:
+            user_progress[username] = {'level': 1, 'score': 0}
+            return redirect(url_for('adventure', username=username))
+    return render_template('start_adventure.html')
 
-@app.route('/interactive-quiz')
-def interactive_quiz():
-    return render_template('quiz.html')
-
-@app.route('/submit-quiz', methods=['POST'])
-def submit_quiz():
-    answers = request.json
-    score = 0
-    correct_answers = {
-        'q1': 'Paris',
-        'q2': 'Mars',
-        'q3': 'Blue Whale'
-    }
-    for q, a in answers.items():
-        if correct_answers.get(q) == a:
-            score += 1
-    return jsonify({'score': score, 'total': len(correct_answers)})
-
-@app.route('/emoji-story')
-def emoji_story():
-    return render_template('emoji_story.html')
-
-@app.route('/generate-story', methods=['POST'])
-def generate_story():
-    emojis = request.json.get('emojis', [])
-    story = " ".join(emojis)
-    return jsonify({'story': story})
-
-@app.route('/mood-tracker')
-def mood_tracker():
-    return render_template('mood_tracker.html')
-
-@app.route('/save-mood', methods=['POST'])
-def save_mood():
-    mood = request.json.get('mood')
-    timestamp = request.json.get('timestamp')
-    # Here you could save the mood and timestamp to a database
-    return jsonify({'status': 'success', 'mood': mood, 'timestamp': timestamp})
-
-@app.route('/color-mixer')
-def color_mixer():
-    return render_template('color_mixer.html')
-
-@app.route('/mix-colors', methods=['POST'])
-def mix_colors():
-    color1 = request.json.get('color1')
-    color2 = request.json.get('color2')
-    # Simple color mixing logic (average RGB values)
-    r1, g1, b1 = int(color1[1:3], 16), int(color1[3:5], 16), int(color1[5:7], 16)
-    r2, g2, b2 = int(color2[1:3], 16), int(color2[3:5], 16), int(color2[5:7], 16)
-    mixed_color = f"#{((r1 + r2) // 2):02x}{((g1 + g2) // 2):02x}{((b1 + b2) // 2):02x}"
-    return jsonify({'mixed_color': mixed_color})
-
-@app.route('/time-capsule')
-def time_capsule():
-    return render_template('time_capsule.html')
-
-@app.route('/save-capsule', methods=['POST'])
-def save_capsule():
-    message = request.json.get('message')
-    open_date = request.json.get('open_date')
-    # Here you could save the message and open_date to a database
-    return jsonify({'status': 'success', 'message': message, 'open_date': open_date})
-
-@app.route('/dream-interpreter')
-def dream_interpreter():
-    return render_template('dream_interpreter.html')
-
-@app.route('/interpret-dream', methods=['POST'])
-def interpret_dream():
-    dream = request.json.get('dream')
-    # Simple dream interpretation logic
-    keywords = {
-        'water': 'You are experiencing emotional turbulence.',
-        'falling': 'You may be feeling a lack of control in your life.',
-        'flying': 'You are feeling free and liberated.',
-        'teeth': 'You might be worried about your appearance or health.',
-        'chase': 'You are avoiding a problem or responsibility.'
-    }
-    interpretation = []
-    for word, meaning in keywords.items():
-        if word in dream.lower():
-            interpretation.append(meaning)
-    if not interpretation:
-        interpretation.append("Your dream is unique and requires deeper introspection.")
-    return jsonify({'interpretation': interpretation})
-
-@app.route('/music-mood')
-def music_mood():
-    return render_template('music_mood.html')
-
-@app.route('/get-music', methods=['POST'])
-def get_music():
-    mood = request.json.get('mood')
-    # Simple music recommendation based on mood
-    music = {
-        'happy': ['Dancing Queen - ABBA', 'Uptown Funk - Mark Ronson ft. Bruno Mars', 'Happy - Pharrell Williams'],
-        'sad': ['Someone Like You - Adele', 'Hurt - Johnny Cash', 'Fix You - Coldplay'],
-        'energetic': ['Eye of the Tiger - Survivor', 'Lose Yourself - Eminem', 'Thunderstruck - AC/DC'],
-        'relaxed': ['Weightless - Marconi Union', 'Clair de Lune - Claude Debussy', 'Strawberry Swing - Coldplay']
-    }
-    recommendations = music.get(mood, ['No recommendations available for this mood.'])
-    return jsonify({'recommendations': recommendations})
-
-@app.route('/virtual-pet')
-def virtual_pet():
-    return render_template('virtual_pet.html')
-
-@app.route('/feed-pet', methods=['POST'])
-def feed_pet():
-    food = request.json.get('food')
-    # Simple pet feeding logic
-    responses = {
-        'apple': 'Your pet loves apples! It looks happy.',
-        'carrot': 'Your pet nibbles on the carrot. It seems content.',
-        'meat': 'Your pet devours the meat. It looks very satisfied.',
-        'fish': 'Your pet enjoys the fish. It purrs happily.'
-    }
-    response = responses.get(food, 'Your pet is not interested in that food.')
-    return jsonify({'response': response})
-
-@app.route('/space-explorer')
-def space_explorer():
-    return render_template('space_explorer.html')
-
-@app.route('/get-planet-info', methods=['POST'])
-def get_planet_info():
-    planet = request.json.get('planet')
-    planet_info = {
-        'mercury': 'Mercury is the closest planet to the Sun and has extreme temperature variations.',
-        'venus': 'Venus is the hottest planet in the solar system due to its thick atmosphere.',
-        'earth': 'Earth is the only planet known to support life.',
-        'mars': 'Mars is known as the Red Planet and has the largest volcano in the solar system.',
-        'jupiter': 'Jupiter is the largest planet and has a giant storm called the Great Red Spot.',
-        'saturn': 'Saturn is famous for its stunning ring system made of ice and rock.',
-        'uranus': 'Uranus rotates on its side and has a pale blue color due to methane in its atmosphere.',
-        'neptune': 'Neptune is the windiest planet with supersonic wind speeds.'
-    }
-    info = planet_info.get(planet.lower(), 'No information available for this planet.')
-    return jsonify({'info': info})
-
-@app.route('/ai-art-generator')
-def ai_art_generator():
-    return render_template('ai_art_generator.html')
-
-@app.route('/generate-art', methods=['POST'])
-def generate_art():
-    prompt = request.json.get('prompt')
-    # Simulate AI-generated art by returning a random image URL
-    art_images = [
-        'https://via.placeholder.com/400x400.png?text=Abstract+Art',
-        'https://via.placeholder.com/400x400.png?text=Surreal+Landscape',
-        'https://via.placeholder.com/400x400.png?text=Futuristic+City',
-        'https://via.placeholder.com/400x400.png?text=Portrait+of+a+Robot',
-        'https://via.placeholder.com/400x400.png?text=Galaxy+in+a+Bottle'
+@app.route('/adventure/')
+def adventure(username):
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    level = user_progress[username]['level']
+    score = user_progress[username]['score']
+    
+    # Generate a random challenge for the user
+    challenges = [
+        "Solve the riddle: I speak without a mouth and hear without ears. What am I?",
+        "Find the hidden treasure in the maze!",
+        "Defeat the dragon by choosing the right weapon!",
+        "Decipher the ancient code to unlock the next level!"
     ]
-    return jsonify({'art_url': random.choice(art_images)})
+    challenge = random.choice(challenges)
+    
+    return render_template('adventure.html', username=username, level=level, score=score, challenge=challenge)
 
-@app.route('/mind-reader')
-def mind_reader():
-    return render_template('mind_reader.html')
-
-@app.route('/predict-thought', methods=['POST'])
-def predict_thought():
-    thought = request.json.get('thought')
-    # Simple "mind reading" logic
-    predictions = [
-        "You are thinking about the future.",
-        "You are reflecting on a past memory.",
-        "You are considering a big decision.",
-        "You are daydreaming about a faraway place.",
-        "You are focused on a current challenge."
-    ]
-    return jsonify({'prediction': random.choice(predictions)})
-
-@app.route('/word-scramble')
-def word_scramble():
-    return render_template('word_scramble.html')
-
-@app.route('/scramble-word', methods=['POST'])
-def scramble_word():
-    word = request.json.get('word')
-    scrambled_word = ''.join(random.sample(word, len(word)))
-    return jsonify({'scrambled_word': scrambled_word})
-
-@app.route('/virtual-garden')
-def virtual_garden():
-    return render_template('virtual_garden.html')
-
-@app.route('/plant-flower', methods=['POST'])
-def plant_flower():
-    flower_type = request.json.get('flower_type')
-    # Simple flower planting logic
-    responses = {
-        'rose': 'You planted a beautiful red rose! It will bloom in a few days.',
-        'tulip': 'You planted a vibrant tulip! It will add color to your garden.',
-        'sunflower': 'You planted a cheerful sunflower! It will grow tall and bright.',
-        'daisy': 'You planted a delicate daisy! It will bring a touch of simplicity to your garden.'
-    }
-    response = responses.get(flower_type, 'You planted a mysterious flower! Watch it grow.')
-    return jsonify({'response': response})
+@app.route('/adventure//complete', methods=['POST'])
+def complete_challenge(username):
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    user_progress[username]['level'] += 1
+    user_progress[username]['score'] += 10
+    
+    return redirect(url_for('adventure', username=username))
 
 if __name__ == '__main__':
     app.run(debug=True)

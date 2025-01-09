@@ -1,0 +1,10 @@
+/* Add this to the existing styles.css file */
+.planet-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 50px;
+}
+
+.planet {
+    cursor: pointer

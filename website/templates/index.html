@@ -2,4 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventure Quest</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Adventure Quest!</h1>
+        <p>Embark on an epic journey filled with challenges and mysteries.</p>
+        <a href="{{ url_for('start_adventure') }}" class="btn">Start Your Adventure</a>
+    </div>
+</body>
+</html>
