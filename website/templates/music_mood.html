@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Mood</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            color: #ff6f61;
+        }
+        .mood-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1.5rem;
+        }
+        .mood-buttons button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff6f61;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .mood-buttons button:hover {
+            background-color: #ff3b2f;
+        }
+        .recommendations {
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+        .recommendations h2 {
+            font-size: 1.5rem;
+            color: #ff6f61;
+            margin-bottom: 1rem;
+        }
+        .recommendations ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .recommendations li {
+            background: #f8f8f8;
+            margin: 0.5rem 0;
+            padding: 0.75rem;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>What's Your Mood Today?</h1>
+        <div class="mood-buttons">
+            <button onclick="getMusic('happy')">Happy</button>
+            <button onclick="getMusic('sad')">Sad</button>
+            <button onclick="getMusic('energetic')">Energetic</button>
+            <button onclick="getMusic('relaxed')">Relaxed</button>
+        </div>
+        <div class="recommendations">
+            <h2>Music Recommendations</h2>
+            <ul id="music-list"></ul>
+        </div>
+    </div>
+    <script>
+        function getMusic(mood) {
+            fetch('/get-music', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ mood: mood }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const musicList = document.getElementById('music-list');
+                musicList.innerHTML = '';
+                data.recommendations.forEach(song => {
+                    const li = document.createElement('li');
+                    li.textContent = song;
+                    musicList.appendChild(li);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

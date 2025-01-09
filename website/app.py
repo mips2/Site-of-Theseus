@@ -107,5 +107,22 @@ def interpret_dream():
         interpretation.append("Your dream is unique and requires deeper introspection.")
     return jsonify({'interpretation': interpretation})
 
+@app.route('/music-mood')
+def music_mood():
+    return render_template('music_mood.html')
+
+@app.route('/get-music', methods=['POST'])
+def get_music():
+    mood = request.json.get('mood')
+    # Simple music recommendation based on mood
+    music = {
+        'happy': ['Dancing Queen - ABBA', 'Uptown Funk - Mark Ronson ft. Bruno Mars', 'Happy - Pharrell Williams'],
+        'sad': ['Someone Like You - Adele', 'Hurt - Johnny Cash', 'Fix You - Coldplay'],
+        'energetic': ['Eye of the Tiger - Survivor', 'Lose Yourself - Eminem', 'Thunderstruck - AC/DC'],
+        'relaxed': ['Weightless - Marconi Union', 'Clair de Lune - Claude Debussy', 'Strawberry Swing - Coldplay']
+    }
+    recommendations = music.get(mood, ['No recommendations available for this mood.'])
+    return jsonify({'recommendations': recommendations})
+
 if __name__ == '__main__':
     app.run(debug=True)
