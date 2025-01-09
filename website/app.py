@@ -38,5 +38,15 @@ def submit_quiz():
             score += 1
     return jsonify({'score': score, 'total': len(correct_answers)})
 
+@app.route('/emoji-story')
+def emoji_story():
+    return render_template('emoji_story.html')
+
+@app.route('/generate-story', methods=['POST'])
+def generate_story():
+    emojis = request.json.get('emojis', [])
+    story = " ".join(emojis)
+    return jsonify({'story': story})
+
 if __name__ == '__main__':
     app.run(debug=True)
