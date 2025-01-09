@@ -86,5 +86,9 @@ def quantum_leap():
 def retro_arcade():
     return render_template('retro_arcade.html')
 
+@app.route('/mystery-island')
+def mystery_island():
+    return render_template('mystery_island.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
