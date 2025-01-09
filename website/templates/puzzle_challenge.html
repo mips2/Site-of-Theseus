@@ -21,13 +21,13 @@
         .puzzle-container {
             display: grid;
             grid-template-columns: repeat(3, 100px);
-            gap: 5px;
-            margin-top: 20px;
+            gap: 10px;
+            margin: 20px auto;
         }
         .puzzle-piece {
             width: 100px;
             height: 100px;
-            background-color: #fff;
+            background: #fff;
             border-radius: 10px;
             display: flex;
             justify-content: center;
@@ -36,79 +36,57 @@
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .puzzle-piece.empty {
-            background-color: transparent;
-            border: 2px dashed #ccc;
-            cursor: default;
+        .puzzle-piece:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
 <body>
-    <div>
-        <h1>Puzzle Challenge</h1>
-        <div class="puzzle-container">
-            <!-- Puzzle pieces will be dynamically generated here -->
-        </div>
-        <button id="shuffle-button" style="margin-top: 20px; padding: 10px 20px; font-size: 1em; cursor: pointer;">Shuffle Puzzle</button>
+    <div class="puzzle-container">
+        <div class="puzzle-piece">1</div>
+        <div class="puzzle-piece">2</div>
+        <div class="puzzle-piece">3</div>
+        <div class="puzzle-piece">4</div>
+        <div class="puzzle-piece">5</div>
+        <div class="puzzle-piece">6</div>
+        <div class="puzzle-piece">7</div>
+        <div class="puzzle-piece">8</div>
+        <div class="puzzle-piece"></div>
     </div>
     <script>
-        const puzzlePieces = ['1', '2', '3', '4', '5', '6', '7', '8', ''];
-        const puzzleContainer = document.querySelector('.puzzle-container');
-        let emptyIndex = 8;
-
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        function createPuzzle() {
-            puzzleContainer.innerHTML = puzzlePieces.map((piece, index) => `
-                <div class="puzzle-piece ${piece === '' ? 'empty' : ''}" data-index="${index}">
-                    ${piece}
-                </div>
-            `).join('');
-        }
-
-        function movePiece(index) {
-            const piece = puzzleContainer.children[index];
-            if (piece.classList.contains('empty')) return;
-
-            const emptyPiece = puzzleContainer.children[emptyIndex];
-            if (Math.abs(index - emptyIndex) === 1 || Math.abs(index - emptyIndex) === 3) {
-                emptyPiece.textContent = piece.textContent;
-                piece.textContent = '';
-                piece.classList.add('empty');
-                emptyPiece.classList.remove('empty');
-                emptyIndex = index;
-            }
-
-            checkForWin();
-        }
-
-        function checkForWin() {
-            const pieces = Array.from(puzzleContainer.children).map(piece => piece.textContent);
-            if (pieces.join('') === '12345678') {
-                setTimeout(() => alert('Congratulations! You solved the puzzle!'), 500);
-            }
-        }
-
-        puzzleContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('puzzle-piece')) {
-                const index = Array.from(puzzleContainer.children).indexOf(e.target);
-                movePiece(index);
-            }
+        const puzzlePieces = document.querySelectorAll('.puzzle-piece');
+        let emptyPiece = puzzlePieces[puzzlePieces.length - 1];
+        puzzlePieces.forEach(piece => {
+            piece.addEventListener('click', () => {
+                if (isAdjacent(piece, emptyPiece)) {
+                    swapPieces(piece, emptyPiece);
+                    checkWin();
+                }
+            });
         });
-
-        document.getElementById('shuffle-button').addEventListener('click', () => {
-            shuffle(puzzlePieces);
-            createPuzzle();
-            emptyIndex = puzzlePieces.indexOf('');
-        });
-
-        createPuzzle();
+        function isAdjacent(piece1, piece2) {
+            const piece1Index = Array.from(puzzlePieces).indexOf(piece1);
+            const piece2Index = Array.from(puzzlePieces).indexOf(piece2);
+            const row1 = Math.floor(piece1Index / 3);
+            const col1 = piece1Index % 3;
+            const row2 = Math.floor(piece2Index / 3);
+            const col2 = piece2Index % 3;
+            return Math.abs(row1 - row2) + Math.abs(col1 - col2) === 1;
+        }
+        function swapPieces(piece1, piece2) {
+            const temp = piece1.textContent;
+            piece1.textContent = piece2.textContent;
+            piece2.textContent = temp;
+            emptyPiece = piece1;
+        }
+        function checkWin() {
+            const pieces = Array.from(puzzlePieces).map(piece => piece.textContent);
+            const sortedPieces = pieces.slice(0, -1).sort((a, b) => a - b);
+            if (sortedPieces.every((val, index) => val === pieces[index])) {
+                alert('Congratulations! You solved the puzzle!');
+            }
+        }
     </script>
 </body>
 </html>

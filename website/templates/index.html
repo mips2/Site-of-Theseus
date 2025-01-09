@@ -22,14 +22,16 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 20px;
-            margin-top: 20px;
+            max-width: 600px;
+            margin: 0 auto;
         }
         .game-card {
             background: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
+            border-radius: 15px;
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
         }
         .game-card:hover {
             transform: translateY(-10px);
@@ -38,33 +40,32 @@
         .game-card h2 {
             margin: 0;
             font-size: 1.5em;
+            color: #ff6f61;
         }
         .game-card p {
             margin: 10px 0 0;
             font-size: 1em;
+            color: #555;
         }
     </style>
 </head>
 <body>
-    <div>
-        <h1>Welcome to the Fun Interactive Games Hub!</h1>
-        <div class="game-grid">
-            <a href="{{ url_for('memory_game') }}" class="game-card">
-                <h2>Memory Game</h2>
-                <p>Test your memory with this fun card-matching game!</p>
-            </a>
-            <a href="{{ url_for('puzzle_challenge') }}" class="game-card">
-                <h2>Puzzle Challenge</h2>
-                <p>Solve puzzles and unlock new levels!</p>
-            </a>
-            <a href="{{ url_for('emoji_mixer') }}" class="game-card">
-                <h2>Emoji Mixer</h2>
-                <p>Create your own unique emoji combinations!</p>
-            </a>
-            <a href="{{ url_for('color_splash') }}" class="game-card">
-                <h2>Color Splash</h2>
-                <p>Explore a world of colors and create stunning art!</p>
-            </a>
+    <div class="game-grid">
+        <div class="game-card" onclick="window.location.href='/memory-game'">
+            <h2>Memory Game</h2>
+            <p>Test your memory with this fun card-matching game!</p>
+        </div>
+        <div class="game-card" onclick="window.location.href='/puzzle-challenge'">
+            <h2>Puzzle Challenge</h2>
+            <p>Solve puzzles and unlock new levels!</p>
+        </div>
+        <div class="game-card" onclick="window.location.href='/emoji-mixer'">
+            <h2>Emoji Mixer</h2>
+            <p>Create your own unique emoji combinations!</p>
+        </div>
+        <div class="game-card" onclick="window.location.href='/color-splash'">
+            <h2>Color Splash</h2>
+            <p>Explore a world of colors and create stunning art!</p>
         </div>
     </div>
 </body>
