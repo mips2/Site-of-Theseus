@@ -34,7 +34,7 @@
         }
         .game-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
         }
         .game-card h2 {
             margin: 0;
@@ -42,36 +42,37 @@
         }
         .game-card p {
             margin: 10px 0 0;
+            font-size: 1em;
             color: #666;
         }
     </style>
 </head>
 <body>
     <div class="game-grid">
-        <div class="game-card" onclick="window.location.href='/puzzle-game'">
+        <a href="{{ url_for('puzzle_game') }}" class="game-card">
             <h2>Puzzle Game</h2>
             <p>Solve challenging puzzles!</p>
-        </div>
-        <div class="game-card" onclick="window.location.href='/memory-game'">
+        </a>
+        <a href="{{ url_for('memory_game') }}" class="game-card">
             <h2>Memory Game</h2>
             <p>Test your memory skills!</p>
-        </div>
-        <div class="game-card" onclick="window.location.href='/emoji-story'">
+        </a>
+        <a href="{{ url_for('emoji_story') }}" class="game-card">
             <h2>Emoji Story</h2>
             <p>Create stories using emojis!</p>
-        </div>
-        <div class="game-card" onclick="window.location.href='/color-mixer'">
+        </a>
+        <a href="{{ url_for('color_mixer') }}" class="game-card">
             <h2>Color Mixer</h2>
             <p>Mix colors to create new ones!</p>
-        </div>
-        <div class="game-card" onclick="window.location.href='/music-maker'">
+        </a>
+        <a href="{{ url_for('music_maker') }}" class="game-card">
             <h2>Music Maker</h2>
             <p>Compose your own music!</p>
-        </div>
-        <div class="game-card" onclick="window.location.href='/new-game'">
+        </a>
+        <a href="{{ url_for('new_game') }}" class="game-card">
             <h2>New Game</h2>
-            <p>Coming soon!</p>
-        </div>
+            <p>Check out our latest game!</p>
+        </a>
     </div>
 </body>
 </html>
