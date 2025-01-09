@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Mixer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .color-picker {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .color-box {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #000;
+            margin: 10px;
+        }
+        #mixed-color {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border: 2px solid #000;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Color Mixer</h1>
+    <div class="color-picker">
+        <input type="color" id="color1" value="#ff0000">
+        <input type="color" id="color2" value="#0000ff">
+    </div>
+    <div class="color-box" id="color-box1" style="background-color: #ff0000;"></div>
+    <div class="color-box" id="color-box2" style="background-color: #0000ff;"></div>
+    <button onclick="mixColors()">Mix Colors</button>
+    <div id="mixed-color"></div>
+
+    <script>
+        const color1Input = document.getElementById('color1');
+        const color2Input = document.getElementById('color2');
+        const colorBox1 = document.getElementById('color-box1');
+        const colorBox2 = document.getElementById('color-box2');
+        const mixedColorBox = document.getElementById('mixed-color');
+
+        color1Input.addEventListener('input', () => {
+            colorBox1.style.backgroundColor = color1Input.value;
+        });
+
+        color2Input.addEventListener('input', () => {
+            colorBox2.style.backgroundColor = color2Input.value;
+        });
+
+        function mixColors() {
+            const color1 = color1Input.value;
+            const color2 = color2Input.value;
+            fetch('/mix-colors', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ color1, color2 }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                mixedColorBox.style.backgroundColor = data.mixed_color;
+            });
+        }
+    </script>
+</body>
+</html>

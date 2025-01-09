@@ -59,5 +59,19 @@ def save_mood():
     # Here you could save the mood and timestamp to a database
     return jsonify({'status': 'success', 'mood': mood, 'timestamp': timestamp})
 
+@app.route('/color-mixer')
+def color_mixer():
+    return render_template('color_mixer.html')
+
+@app.route('/mix-colors', methods=['POST'])
+def mix_colors():
+    color1 = request.json.get('color1')
+    color2 = request.json.get('color2')
+    # Simple color mixing logic (average RGB values)
+    r1, g1, b1 = int(color1[1:3], 16), int(color1[3:5], 16), int(color1[5:7], 16)
+    r2, g2, b2 = int(color2[1:3], 16), int(color2[3:5], 16), int(color2[5:7], 16)
+    mixed_color = f"#{((r1 + r2) // 2):02x}{((g1 + g2) // 2):02x}{((b1 + b2) // 2):02x}"
+    return jsonify({'mixed_color': mixed_color})
+
 if __name__ == '__main__':
     app.run(debug=True)
