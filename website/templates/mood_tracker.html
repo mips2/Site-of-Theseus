@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .mood-tracker {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .mood-options {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .mood-option {
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .mood-option:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .mood-option.selected {
+            transform: scale(1.2);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .mood-option i {
+            font-size: 2em;
+        }
+        .save-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.2s;
+        }
+        .save-button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="mood-tracker">
+        <h1>How are you feeling today?</h1>
+        <div class="mood-options">
+            <div class="mood-option" data-mood="happy">
+                <i class="fas fa-smile"></i>
+            </div>
+            <div class="mood-option" data-mood="neutral">
+                <i class="fas fa-meh"></i>
+            </div>
+            <div class="mood-option" data-mood="sad">
+                <i class="fas fa-frown"></i>
+            </div>
+        </div>
+        <button class="save-button" onclick="saveMood()">Save Mood</button>
+    </div>
+
+    <script>
+        const moodOptions = document.querySelectorAll('.mood-option');
+        let selectedMood = null;
+
+        moodOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                moodOptions.forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedMood = option.getAttribute('data-mood');
+            });
+        });
+
+        function saveMood() {
+            if (!selectedMood) {
+                alert('Please select a mood before saving.');
+                return;
+            }
+
+            const timestamp = new Date().toISOString();
+            fetch('/save-mood', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ mood: selectedMood, timestamp }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Mood saved successfully!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

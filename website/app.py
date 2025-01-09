@@ -48,5 +48,16 @@ def generate_story():
     story = " ".join(emojis)
     return jsonify({'story': story})
 
+@app.route('/mood-tracker')
+def mood_tracker():
+    return render_template('mood_tracker.html')
+
+@app.route('/save-mood', methods=['POST'])
+def save_mood():
+    mood = request.json.get('mood')
+    timestamp = request.json.get('timestamp')
+    # Here you could save the mood and timestamp to a database
+    return jsonify({'status': 'success', 'mood': mood, 'timestamp': timestamp})
+
 if __name__ == '__main__':
     app.run(debug=True)
