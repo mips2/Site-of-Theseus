@@ -1,37 +1,48 @@
 body {
     background-color: #0b3d91;
-    color: #ffffff;
+    color: white;
     font-family: 'Arial', sans-serif;
-    text-align: center;
     margin: 0;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .galaxy-container {
-    padding: 20px;
+    text-align: center;
 }
 
 .galaxy-map {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    margin-top: 20px;
+    position: relative;
+    width: 600px;
+    height: 400px;
+    background: url('/static/images/galaxy.jpg') no-repeat center center/cover;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    margin: 20px auto;
 }
 
 .star {
-    width: 100px;
-    height: 100px;
-    background-color: #ffd700;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: yellow;
     border-radius: 50%;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
 .star:hover {
-    transform: scale(1.1);
+    transform: scale(1.5);
 }
 
-#planet-info {
+.star-info {
     margin-top: 20px;
+}
+
+#star-details {
     font-size: 1.2em;
+    color: #ffcc00;
 }

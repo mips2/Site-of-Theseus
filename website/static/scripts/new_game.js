@@ -1,12 +1,22 @@
-function explorePlanet(starId) {
-    const planets = {
-        star1: { name: "Planet Zorblax", description: "A mysterious planet with glowing blue oceans." },
-        star2: { name: "Planet Luminos", description: "A bright planet with endless daylight." },
-        star3: { name: "Planet Cryos", description: "A frozen world with icy mountains." },
-        star4: { name: "Planet Pyros", description: "A fiery planet with active volcanoes." }
-    };
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.star');
+    const starDetails = document.getElementById('star-details');
 
-    const planet = planets[starId];
-    const planetInfo = document.getElementById('planet-info');
-    planetInfo.innerHTML = `<h2>${planet.name}</h2><p>${planet.description}</p>`;
-}
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const starId = this.getAttribute('data-star');
+            const starInfo = getStarInfo(starId);
+            starDetails.textContent = starInfo;
+        });
+    });
+
+    function getStarInfo(starId) {
+        const starData = {
+            1: "Star Alpha: A young star with a vibrant blue hue.",
+            2: "Star Beta: A red giant nearing the end of its life cycle.",
+            3: "Star Gamma: A binary star system with two stars orbiting each other.",
+            4: "Star Delta: A neutron star with an incredibly dense core."
+        };
+        return starData[starId] || "Unknown star.";
+    }
+});
