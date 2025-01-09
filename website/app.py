@@ -73,5 +73,16 @@ def mix_colors():
     mixed_color = f"#{((r1 + r2) // 2):02x}{((g1 + g2) // 2):02x}{((b1 + b2) // 2):02x}"
     return jsonify({'mixed_color': mixed_color})
 
+@app.route('/time-capsule')
+def time_capsule():
+    return render_template('time_capsule.html')
+
+@app.route('/save-capsule', methods=['POST'])
+def save_capsule():
+    message = request.json.get('message')
+    open_date = request.json.get('open_date')
+    # Here you could save the message and open_date to a database
+    return jsonify({'status': 'success', 'message': message, 'open_date': open_date})
+
 if __name__ == '__main__':
     app.run(debug=True)
