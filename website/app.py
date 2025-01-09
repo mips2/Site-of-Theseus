@@ -18,5 +18,9 @@ def puzzle_challenge():
 def emoji_mixer():
     return render_template('emoji_mixer.html')
 
+@app.route('/color-splash')
+def color_splash():
+    return render_template('color_splash.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

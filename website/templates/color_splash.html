@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Splash</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/color_splash.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Color Splash</h1>
+        <p>Click and drag to create colorful splashes on the canvas!</p>
+        <canvas id="splashCanvas" width="800" height="600"></canvas>
+        <button id="clearButton">Clear Canvas</button>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/color_splash.js') }}"></script>
+</body>
+</html>

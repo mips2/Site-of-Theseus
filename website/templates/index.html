@@ -3,15 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fun Interactive Website</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Fun Interactive Games</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the Fun Zone!</h1>
-        <div class="game-links">
-            <a href="{{ url_for('memory_game') }}" class="game-link">Memory Game</a>
-            <a href="{{ url_for('puzzle_challenge') }}" class="game-link">Puzzle Challenge</a>
+        <h1>Welcome to Fun Interactive Games!</h1>
+        <div class="games-grid">
+            <a href="{{ url_for('memory_game') }}" class="game-card">
+                <h2>Memory Game</h2>
+                <p>Test your memory with this fun card matching game.</p>
+            </a>
+            <a href="{{ url_for('puzzle_challenge') }}" class="game-card">
+                <h2>Puzzle Challenge</h2>
+                <p>Solve puzzles and unlock new levels.</p>
+            </a>
+            <a href="{{ url_for('emoji_mixer') }}" class="game-card">
+                <h2>Emoji Mixer</h2>
+                <p>Create your own unique emoji combinations.</p>
+            </a>
+            <a href="{{ url_for('color_splash') }}" class="game-card">
+                <h2>Color Splash</h2>
+                <p>Click and drag to create colorful splashes on the canvas!</p>
+            </a>
         </div>
     </div>
 </body>
