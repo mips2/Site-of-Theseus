@@ -3,19 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Hello World</title>
 </head>
 <body>
-    <h1>Welcome to the Ultimate Game Hub!</h1>
-    <p>Your current streak: {{ streak }}</p>
-    <a href="{{ url_for('start_game') }}">Play Rock, Paper, Scissors</a>
-    <a href="{{ url_for('streak_rewards') }}">View Streak Rewards</a>
-    {% if streak >= 3 %}
-        <a href="{{ url_for('emoji_roulette') }}">Try Emoji Roulette</a>
-    {% endif %}
-    {% if streak >= 10 %}
-        <a href="{{ url_for('secret_game_mode') }}">Access Secret Game Mode</a>
-    {% endif %}
+    <h1>Hello World</h1>
 </body>
 </html>
