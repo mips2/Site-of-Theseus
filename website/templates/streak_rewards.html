@@ -9,12 +9,18 @@
 <body>
     <h1>Streak Rewards 🏆</h1>
     <p>Your current streak: {{ streak }}</p>
-    <ul>
-        {% for streak_level, reward in rewards.items() %}
-            <li>{{ streak_level }} days: {{ reward }}</li>
-        {% endfor %}
-    </ul>
+    
+    <div id="rewards-list">
+        <h2>Unlockable Rewards:</h2>
+        <ul>
+            {% for threshold, reward in rewards.items() %}
+                <li>{{ threshold }} days: {{ reward }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
     <p>Keep playing daily to unlock more rewards!</p>
+
     <a href="{{ url_for('home') }}">Back to Home</a>
 </body>
 </html>

@@ -8,24 +8,24 @@
 </head>
 <body>
     <h1>Emoji Roulette 🎰</h1>
-    <p>You've unlocked this feature by maintaining a streak of 3 or more. Spin the wheel and see what you get!</p>
+    <p>You've unlocked the Emoji Roulette! Spin to see what emoji you get.</p>
+    
     <div id="roulette-container">
-        <div id="roulette-wheel">
-            <span id="emoji-display">{{ selected_emoji }}</span>
-        </div>
-        <button id="spin-button">Spin Again</button>
+        <p id="emoji-display">{{ selected_emoji }}</p>
+        <button id="spin-button">Spin Again!</button>
     </div>
-    <a href="{{ url_for('home') }}">Back to Home</a>
 
     <script>
         const emojis = ["🎉", "🎲", "🍀", "🌟", "💎", "🔥", "🌈", "🍕", "🚀", "🎁"];
-        const spinButton = document.getElementById('spin-button');
         const emojiDisplay = document.getElementById('emoji-display');
+        const spinButton = document.getElementById('spin-button');
 
         spinButton.addEventListener('click', () => {
             const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
             emojiDisplay.textContent = randomEmoji;
         });
     </script>
+
+    <a href="{{ url_for('home') }}">Back to Home</a>
 </body>
 </html>
