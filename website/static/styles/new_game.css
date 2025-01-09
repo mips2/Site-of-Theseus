@@ -11,23 +11,11 @@ body {
     padding: 20px;
 }
 
-h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-}
-
-p {
-    font-size: 1.2rem;
-    margin-bottom: 40px;
-}
-
 .galaxy-map {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-    justify-content: center;
-    margin: 0 auto;
-    width: 80%;
+    margin-top: 20px;
 }
 
 .star {
@@ -36,15 +24,14 @@ p {
     background-color: #ffd700;
     border-radius: 50%;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .star:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 20px #ffd700;
 }
 
 #planet-info {
-    margin-top: 40px;
-    font-size: 1.5rem;
+    margin-top: 20px;
+    font-size: 1.2em;
 }
