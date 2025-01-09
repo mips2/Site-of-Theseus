@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            margin: 20px auto;
+        }
+        .puzzle-piece {
+            width: 100px;
+            height: 100px;
+            background-color: #f0f0f0;
+            border: 2px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .puzzle-piece.empty {
+            background-color: transparent;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Puzzle Game</h1>
+        <p>Rearrange the pieces to solve the puzzle!</p>
+        <div class="puzzle-container">
+            <div class="puzzle-piece" data-index="0">1</div>
+            <div class="puzzle-piece" data-index="1">2</div>
+            <div class="puzzle-piece" data-index="2">3</div>
+            <div class="puzzle-piece" data-index="3">4</div>
+            <div class="puzzle-piece empty" data-index="4"></div>
+            <div class="puzzle-piece" data-index="5">5</div>
+            <div class="puzzle-piece" data-index="6">6</div>
+            <div class="puzzle-piece" data-index="7">7</div>
+            <div class="puzzle-piece" data-index="8">8</div>
+        </div>
+        <button id="shuffle-button">Shuffle</button>
+    </div>
+    <script>
+        const puzzleContainer = document.querySelector('.puzzle-container');
+        const shuffleButton = document.getElementById('shuffle-button');
+        const pieces = Array.from(document.querySelectorAll('.puzzle-piece:not(.empty)'));
+
+        function shufflePieces() {
+            pieces.sort(() => Math.random() - 0.5);
+            puzzleContainer.innerHTML = '';
+            pieces.forEach(piece => puzzleContainer.appendChild(piece));
+            puzzleContainer.appendChild(document.querySelector('.puzzle-piece.empty'));
+        }
+
+        function movePiece(piece) {
+            const emptyPiece = document.querySelector('.puzzle-piece.empty');
+            const pieceIndex = Array.from(puzzleContainer.children).indexOf(piece);
+            const emptyIndex = Array.from(puzzleContainer.children).indexOf(emptyPiece);
+
+            if (Math.abs(pieceIndex - emptyIndex) === 1 || Math.abs(pieceIndex - emptyIndex) === 3) {
+                puzzleContainer.insertBefore(piece, emptyPiece);
+            }
+        }
+
+        pieces.forEach(piece => {
+            piece.addEventListener('click', () => movePiece(piece));
+        });
+
+        shuffleButton.addEventListener('click', shufflePieces);
+    </script>
+</body>
+</html>
