@@ -26,5 +26,9 @@ def color_splash():
 def new_feature():
     return render_template('new_feature.html')
 
+@app.route('/galaxy-explorer')
+def galaxy_explorer():
+    return render_template('galaxy_explorer.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Explorer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/galaxy_explorer.css') }}">
+</head>
+<body>
+    <div class="galaxy-container">
+        <h1>Explore the Galaxy</h1>
+        <div class="star-map">
+            <div class="star" data-planet="mercury"></div>
+            <div class="star" data-planet="venus"></div>
+            <div class="star" data-planet="earth"></div>
+            <div class="star" data-planet="mars"></div>
+            <div class="star" data-planet="jupiter"></div>
+            <div class="star" data-planet="saturn"></div>
+            <div class="star" data-planet="uranus"></div>
+            <div class="star" data-planet="neptune"></div>
+        </div>
+        <div class="planet-info">
+            <h2 id="planet-name">Select a Planet</h2>
+            <p id="planet-description">Click on a star to learn more about the planet.</p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/galaxy_explorer.js') }}"></script>
+</body>
+</html>
