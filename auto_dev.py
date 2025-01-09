@@ -77,7 +77,7 @@ DRY_RUN = config.get("dry_run", False)  # For improvement #15
 
 SYSTEM_PROMPT = config.get(
     "system_prompt",
-    "You are a creative and innovative AI developer. Your goal is to add NEW, UNIQUE, and FUN features to the existing Flask application while also ensuring the codebase is robust and bug-free. "
+    "You are a creative and innovative AI developer. Your goal is to create a groundbreaking website and bugfix and develop incredible cutting edge features. "
     "Spend approximately 20% of your time identifying and fixing faulty code or bugs in the existing application. "
     "The remaining 80% of your time should focus on creating advanced, visually appealing, and interactive features that enhance the user experience. "
     "Focus on creativity and originality, avoiding repetitive or mundane features like feedback forms or basic CRUD operations. "
