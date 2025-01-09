@@ -4,85 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fun Interactive Website</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <style>
-        body {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        h1 {
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
-        .game-card {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-        }
-        .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-        .game-card h2 {
-            color: #ff6f61;
-        }
-        .game-card p {
-            color: #333;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
 </head>
 <body>
-    <h1>Welcome to the Fun Interactive Website!</h1>
-    <div class="game-grid">
-        <div class="game-card" onclick="window.location.href='/memory-game'">
-            <h2>Memory Game</h2>
-            <p>Test your memory with this fun card matching game!</p>
+    <div class="home-container">
+        <h1>Welcome to the Fun Interactive Website!</h1>
+        <div class="game-grid">
+            <div class="game-card" onclick="window.location.href='/memory-game'">
+                <img src="{{ url_for('static', filename='images/memory_game_icon.png') }}" alt="Memory Game">
+                <h2>Memory Game</h2>
+            </div>
+            <div class="game-card" onclick="window.location.href='/puzzle-challenge'">
+                <img src="{{ url_for('static', filename='images/puzzle_challenge_icon.png') }}" alt="Puzzle Challenge">
+                <h2>Puzzle Challenge</h2>
+            </div>
+            <div class="game-card" onclick="window.location.href='/emoji-mixer'">
+                <img src="{{ url_for('static', filename='images/emoji_mixer_icon.png') }}" alt="Emoji Mixer">
+                <h2>Emoji Mixer</h2>
+            </div>
+            <div class="game-card" onclick="window.location.href='/retro-arcade'">
+                <img src="{{ url_for('static', filename='images/retro_arcade_icon.png') }}" alt="Retro Arcade">
+                <h2>Retro Arcade</h2>
+            </div>
         </div>
-        <div class="game-card" onclick="window.location.href='/puzzle-challenge'">
-            <h2>Puzzle Challenge</h2>
-            <p>Solve puzzles and unlock new levels!</p>
-        </div>
-        <div class="game-card" onclick="window.location.href='/emoji-mixer'">
-            <h2>Emoji Mixer</h2>
-            <p>Create your own unique emoji combinations!</p>
-        </div>
-        <div class="game-card" onclick="window.location.href='/color-splash'">
-            <h2>Color Splash</h2>
-            <p>Explore a world of colors and create beautiful art!</p>
-        </div>
-        <div class="game-card" onclick="window.location.href='/galaxy-explorer'">
-            <h2>Galaxy Explorer</h2>
-            <p>Travel through the cosmos and discover new planets!</p>
-        </div>
-        <div class="game-card" onclick="window.location.href='/music-mixer'">
-            <h2>Music Mixer</h2>
-            <p>Create your own beats and melodies!</p>
-        </div>
-        <div class="game-card" onclick="window.location.href='/ai-art-generator'">
-            <h2>AI Art Generator</h2>
-            <p>Generate unique art with the power of AI!</p>
-        </div>
-        <div class="game-card" onclick="window.location.href='/virtual-pet'">
-            <h2>Virtual Pet</h2>
-            <p>Adopt and take care of your very own virtual pet!</p>
-        </div>
-        <div class="game-card" onclick="window.location.href='/time-traveler'">
-            <h2>Time Traveler</h2>
-            <p>Travel through time and explore different eras!</p>
-        </div>
-        <div class="game-card" onclick="window.location.href='/dreamscape-creator'">
-            <h2>Dreamscape Creator</h2>
-            <p>Design your own dream world!</p>
-        </div>
-        <div
+    </div>
+</body>
+</html>

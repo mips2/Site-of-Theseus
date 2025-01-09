@@ -82,5 +82,9 @@ def alien_language_decoder():
 def quantum_leap():
     return render_template('quantum_leap.html')
 
+@app.route('/retro-arcade')
+def retro_arcade():
+    return render_template('retro_arcade.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

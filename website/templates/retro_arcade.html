@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Arcade</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/retro_arcade.css') }}">
+</head>
+<body>
+    <div class="arcade-container">
+        <h1>Retro Arcade</h1>
+        <div class="game-grid">
+            <div class="game-card" onclick="window.location.href='/space-invaders'">
+                <img src="{{ url_for('static', filename='images/space_invaders_icon.png') }}" alt="Space Invaders">
+                <h2>Space Invaders</h2>
+            </div>
+            <div class="game-card" onclick="window.location.href='/maze-runner'">
+                <img src="{{ url_for('static', filename='images/maze_runner_icon.png') }}" alt="Maze Runner">
+                <h2>Maze Runner</h2>
+            </div>
+            <div class="game-card" onclick="window.location.href='/cosmic-race'">
+                <img src="{{ url_for('static', filename='images/cosmic_race_icon.png') }}" alt="Cosmic Race">
+                <h2>Cosmic Race</h2>
+            </div>
+        </div>
+        <div class="back-button" onclick="window.location.href='/'">Back to Home</div>
+    </div>
+</body>
+</html>
