@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Welcome to the Mood App</h1>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('mood_tracker') }}">Mood Tracker</a></li>
+            <li><a href="{{ url_for('mood_journal') }}">Mood Journal</a></li>
+            <li><a href="{{ url_for('mood_art') }}">Mood Art</a></li>
+            <li><a href="{{ url_for('mood_music') }}">Mood Music</a></li>
+            <li><a href="{{ url_for('mood_quiz') }}">Mood Quiz</a></li>
+            <li><a href="{{ url_for('mood_maze') }}">Mood Maze</a></li>
+            <li><a href="{{ url_for('mood_pet') }}">Mood Pet</a></li>
+            <li><a href="{{ url_for('mood_stories') }}">Mood Stories</a></li>
+            <li><a href="{{ url_for('mood_doodle') }}">Mood Doodle</a></li>
+            <li><a href="{{ url_for('mood_garden') }}">Mood Garden</a></li>
+        </ul>
+    </nav>
+</body>
+</html>
