@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alien Language Decoder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/alien_language_decoder.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Alien Language Decoder</h1>
+        <p>Translate mysterious alien symbols into human-readable text!</p>
+        <div class="decoder-box">
+            <textarea id="alien-text" placeholder="Enter alien symbols here..."></textarea>
+            <button id="decode-button">Decode</button>
+            <div id="translated-text"></div>
+        </div>
+        <div class="alien-symbols">
+            <h2>Alien Symbol Key</h2>
+            <div class="symbol-key">
+                <div class="symbol">👽</div>
+                <div class="symbol">🛸</div>
+                <div class="symbol">🌌</div>
+                <div class="symbol">🌟</div>
+                <div class="symbol">🌀</div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/alien_language_decoder.js') }}"></script>
+</body>
+</html>

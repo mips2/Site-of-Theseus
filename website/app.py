@@ -74,5 +74,9 @@ def space_invaders():
 def emoji_story_generator():
     return render_template('emoji_story_generator.html')
 
+@app.route('/alien-language-decoder')
+def alien_language_decoder():
+    return render_template('alien_language_decoder.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
