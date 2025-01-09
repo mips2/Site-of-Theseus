@@ -3,72 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxy Explorer Map</title>
+    <title>Galaxy Explorer - Map</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            color: #e0e0e0;
+            background: radial-gradient(circle, #000428, #004e92);
+            color: white;
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             overflow: hidden;
         }
         .galaxy-map {
             position: relative;
-            width: 80vw;
-            height: 80vh;
-            background: url('/static/images/galaxy_bg.jpg') no-repeat center center/cover;
-            border: 2px solid #00ffcc;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
         }
         .planet {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            background: radial-gradient(circle, #ff9f43, #ff6b6b);
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
+            background: #ffcc00;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
         }
         .planet:hover {
             transform: scale(1.2);
-            box-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
         }
-        .planet-info {
-            display: none;
-            position: absolute;
-            top: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px;
-            border-radius: 5px;
-            color: #fff;
-            font-size: 14px;
-            text-align: center;
-        }
-        .planet:hover .planet-info {
-            display: block;
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
     </style>
 </head>
 <body>
     <div class="galaxy-map">
-        <div class="planet" style="top: 20%; left: 30%;">
-            <div class="planet-info">Planet Alpha<br>Resources: High</div>
-        </div>
-        <div class="planet" style="top: 50%; left: 70%;">
-            <div class="planet-info">Planet Beta<br>Resources: Medium</div>
-        </div>
-        <div class="planet" style="top: 80%; left: 10%;">
-            <div class="planet-info">Planet Gamma<br>Resources: Low</div>
-        </div>
+        <!-- Randomly generated stars -->
+        {% for _ in range(200) %}
+            <div class="star" style="top: {{ range(0, 100)|random }}%; left: {{ range(0, 100)|random }}%;"></div>
+        {% endfor %}
+        <!-- Planets -->
+        <div class="planet" style="top: 30%; left: 20%;" onclick="explorePlanet('Alpha Centauri')"></div>
+        <div class="planet" style="top: 50%; left: 70%;" onclick="explorePlanet('Proxima B')"></div>
+        <div class="planet" style="top: 80%; left: 40%;" onclick="explorePlanet('Kepler-186f')"></div>
     </div>
+    <script>
+        function explorePlanet(planetName) {
+            alert(`You have discovered ${planetName}! Prepare for landing...`);
+            window.location.href = `/galaxy-explorer/planet/${planetName.toLowerCase().replace(' ', '-')}`;
+        }
+    </script>
 </body>
 </html>

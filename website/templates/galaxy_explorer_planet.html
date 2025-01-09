@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploring {{ planet_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background: radial-gradient(circle, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .planet-info {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        .planet-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .planet-info p {
+            font-size: 1.2rem;
+        }
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+        .back-button:hover {
+            background: #e6b800;
+        }
+    </style>
+</head>
+<body>
+    <div class="planet-info">
+        <h1>Welcome to {{ planet_name }}</h1>
+        <p>You have landed on a mysterious planet. Explore its secrets and uncover its wonders!</p>
+        <button class="back-button" onclick="window.location.href='/galaxy-explorer/map'">Return to Map</button>
+    </div>
+</body>
+</html>

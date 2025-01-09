@@ -38,5 +38,9 @@ def galaxy_explorer_start():
 def galaxy_explorer_map():
     return render_template('galaxy_explorer_map.html')
 
+@app.route('/galaxy-explorer/planet/')
+def galaxy_explorer_planet(planet_name):
+    return render_template('galaxy_explorer_planet.html', planet_name=planet_name)
+
 if __name__ == '__main__':
     app.run(debug=True)
