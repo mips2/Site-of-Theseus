@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Story Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .emoji-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .emoji {
+            font-size: 3rem;
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .emoji:hover {
+            transform: scale(1.2);
+        }
+        #story {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #333;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            max-width: 80%;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #ff3b2f;
+        }
+    </style>
+</head>
+<body>
+    <h1>Emoji Story Generator</h1>
+    <div class="emoji-container">
+        <span class="emoji" onclick="addEmoji('😀')">😀</span>
+        <span class="emoji" onclick="addEmoji('🚀')">🚀</span>
+        <span class="emoji" onclick="addEmoji('🌈')">🌈</span>
+        <span class="emoji" onclick="addEmoji('🐱')">🐱</span>
+        <span class="emoji" onclick="addEmoji('🍕')">🍕</span>
+        <span class="emoji" onclick="addEmoji('🎉')">🎉</span>
+        <span class="emoji" onclick="addEmoji('🌍')">🌍</span>
+        <span class="emoji" onclick="addEmoji('👑')">👑</span>
+        <span class="emoji" onclick="addEmoji('💡')">💡</span>
+        <span class="emoji" onclick="addEmoji('🎨')">🎨</span>
+    </div>
+    <div id="story"></div>
+    <button onclick="generateStory()">Generate Story</button>
+
+    <script>
+        let storyEmojis = [];
+
+        function addEmoji(emoji) {
+            storyEmojis.push(emoji);
+            document.getElementById('story').textContent = storyEmojis.join(' ');
+        }
+
+        function generateStory() {
+            const stories = [
+                "Once upon a time, there was a {emoji1} who loved to {emoji2}. One day, they found a {emoji3} and decided to {emoji4} with it. The end.",
+                "In a land far away, a {emoji1} met a {emoji2} and together they went on an adventure to {emoji3}. Along the way, they discovered {emoji4} and lived happily ever after.",
+                "A {emoji1} woke up one morning and decided to {emoji2}. They encountered a {emoji3} and together they {emoji4}. The end.",
+                "Once there was a {emoji1} who wanted to {emoji2}. They met a {emoji3} and together they {emoji4}. And they all lived happily ever after."
+            ];
+
+            const randomStory = stories[Math.floor(Math.random() * stories.length)];
+            const filledStory = randomStory
+                .replace('{emoji1}', storyEmojis[0] || '🌟')
+                .replace('{emoji2}', storyEmojis[1] || '✨')
+                .replace('{emoji3}', storyEmojis[2] || '🌠')
+                .replace('{emoji4}', storyEmojis[3] || '🎇');
+
+            document.getElementById('story').textContent = filledStory;
+            storyEmojis = [];
+        }
+    </script>
+</body>
+</html>

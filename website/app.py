@@ -70,5 +70,9 @@ def maze_runner():
 def space_invaders():
     return render_template('space_invaders.html')
 
+@app.route('/emoji-story-generator')
+def emoji_story_generator():
+    return render_template('emoji_story_generator.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
