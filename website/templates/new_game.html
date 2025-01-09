@@ -4,92 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galaxy Explorer</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <style>
-        body {
-            background: radial-gradient(circle, #000428, #004e92);
-            color: white;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-        .galaxy-container {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 2s infinite;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-        .planet {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #ff7e5f, #feb47b);
-            box-shadow: 0 0 20px rgba(255, 126, 95, 0.8);
-            animation: orbit 10s linear infinite;
-        }
-        @keyframes orbit {
-            from { transform: rotate(0deg) translateX(150px) rotate(0deg); }
-            to { transform: rotate(360deg) translateX(150px) rotate(360deg); }
-        }
-        .spaceship {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background: url("{{ url_for('static', filename='spaceship.png') }}") no-repeat center center;
-            background-size: contain;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        .spaceship:hover {
-            transform: scale(1.1);
-        }
-        .info-panel {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 14px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/new_game.css') }}">
 </head>
 <body>
     <div class="galaxy-container">
-        <div class="info-panel">
-            <p>Click on the spaceship to explore the galaxy!</p>
+        <h1>Galaxy Explorer</h1>
+        <p>Navigate through the galaxy and discover hidden planets!</p>
+        <div class="galaxy-map">
+            <div class="star" id="star1" onclick="explorePlanet('star1')"></div>
+            <div class="star" id="star2" onclick="explorePlanet('star2')"></div>
+            <div class="star" id="star3" onclick="explorePlanet('star3')"></div>
+            <div class="star" id="star4" onclick="explorePlanet('star4')"></div>
         </div>
-        <div class="spaceship" onclick="exploreGalaxy()"></div>
-        <div class="planet"></div>
-        <!-- Stars -->
-        <div class="star" style="top: 10%; left: 20%;"></div>
-        <div class="star" style="top: 30%; left: 50%;"></div>
-        <div class="star" style="top: 70%; left: 80%;"></div>
-        <div class="star" style="top: 50%; left: 10%;"></div>
-        <div class="star" style="top: 90%; left: 40%;"></div>
+        <div id="planet-info"></div>
     </div>
-
-    <script>
-        function exploreGalaxy() {
-            alert("You've discovered a new planet! Keep exploring to find more!");
-            const planet = document.querySelector('.planet');
-            planet.style.background = 'radial-gradient(circle, #00c6ff, #0072ff)';
-            planet.style.boxShadow = '0 0 20px rgba(0, 198, 255, 0.8)';
-        }
-    </script>
+    <script src="{{ url_for('static', filename='scripts/new_game.js') }}"></script>
 </body>
 </html>
