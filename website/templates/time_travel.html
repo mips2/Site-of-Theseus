@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adventure</title>
+    <title>Time Travel Adventure</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
-            background: url('/static/images/adventure_bg.jpg') no-repeat center center fixed;
+            background: url('/static/images/time_travel_bg.jpg') no-repeat center center fixed;
             background-size: cover;
             color: white;
             font-family: 'Arial', sans-serif;
@@ -28,23 +28,22 @@
         button {
             padding: 10px 20px;
             font-size: 1.2em;
-            background-color: #4caf50;
+            background-color: #ff5722;
             border: none;
             color: white;
             cursor: pointer;
             border-radius: 5px;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #e64a19;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to the Adventure, {{ username }}!</h1>
-    <p>Level: {{ level }} | Score: {{ score }}</p>
-    <p>Your challenge: {{ challenge }}</p>
-    <form action="{{ url_for('complete_challenge', username=username) }}" method="POST">
-        <button type="submit">Complete Challenge</button>
+    <h1>Welcome to the Time Travel Adventure, {{ username }}!</h1>
+    <p>You have traveled back to the <strong>{{ era }}</strong>. Explore this era and complete your mission to earn bonus points!</p>
+    <form action="{{ url_for('complete_time_travel') }}" method="POST">
+        <button type="submit">Complete Time Travel</button>
     </form>
 </body>
 </html>

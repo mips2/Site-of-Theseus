@@ -7,42 +7,42 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
+            background: url('/static/images/home_bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
             text-align: center;
             padding: 50px;
         }
-        .welcome-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-        }
-        .welcome-title {
-            font-size: 24px;
+        h1 {
+            font-size: 3em;
             margin-bottom: 20px;
         }
-        .start-button {
-            padding: 10px 20px;
-            font-size: 18px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        .nav-links {
+            margin-top: 40px;
         }
-        .start-button:hover {
-            background-color: #0056b3;
+        .nav-links a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #4caf50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .nav-links a:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <div class="welcome-container">
-        <div class="welcome-title">Welcome to the Adventure Game!</div>
-        <a href="{{ url_for('start_adventure') }}" class="start-button">Start Adventure</a>
+    <h1>Welcome to the Adventure Game!</h1>
+    <div class="nav-links">
+        <a href="{{ url_for('start_adventure') }}">Start Adventure</a>
+        <a href="{{ url_for('leaderboard') }}">Leaderboard</a>
+        <a href="{{ url_for('mini_game') }}">Mini Game</a>
+        <a href="{{ url_for('time_travel') }}">Time Travel</a>
     </div>
 </body>
 </html>

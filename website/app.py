@@ -79,5 +79,39 @@ def complete_mini_game():
     user_progress[username]['score'] += 5  # Bonus points for completing the mini-game
     return redirect(url_for('adventure', username=username))
 
+@app.route('/time-travel')
+def time_travel():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    # Generate a random historical era for the user to explore
+    eras = [
+        "Prehistoric Age",
+        "Ancient Egypt",
+        "Medieval Europe",
+        "Renaissance Italy",
+        "Wild West",
+        "Future World"
+    ]
+    era = random.choice(eras)
+    
+    return render_template('time_travel.html', username=username, era=era)
+
+@app.route('/time-travel/complete', methods=['POST'])
+def complete_time_travel():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    user_progress[username]['score'] += 15  # Bonus points for completing the time travel
+    return redirect(url_for('adventure', username=username))
+
 if __name__ == '__main__':
     app.run(debug=True)
