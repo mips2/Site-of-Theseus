@@ -30,5 +30,9 @@ def new_feature():
 def galaxy_explorer():
     return render_template('galaxy_explorer.html')
 
+@app.route('/music-mixer')
+def music_mixer():
+    return render_template('music_mixer.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
