@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Challenge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            margin: 20px auto;
+        }
+        .puzzle-piece {
+            width: 100px;
+            height: 100px;
+            background-color: #f0f0f0;
+            border: 2px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .puzzle-piece:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Puzzle Challenge</h1>
+        <div class="puzzle-container" id="puzzle-container">
+            <div class="puzzle-piece" data-value="1">1</div>
+            <div class="puzzle-piece" data-value="2">2</div>
+            <div class="puzzle-piece" data-value="3">3</div>
+            <div class="puzzle-piece" data-value="4">4</div>
+            <div class="puzzle-piece" data-value="5">5</div>
+            <div class="puzzle-piece" data-value="6">6</div>
+            <div class="puzzle-piece" data-value="7">7</div>
+            <div class="puzzle-piece" data-value="8">8</div>
+            <div class="puzzle-piece" data-value=""></div>
+        </div>
+        <button id="shuffle-button">Shuffle</button>
+        <p id="message"></p>
+    </div>
+    <script>
+        const puzzleContainer = document.getElementById('puzzle-container');
+        const shuffleButton = document.getElementById('shuffle-button');
+        const message = document.getElementById('message');
+        let pieces = Array.from(puzzleContainer.children);
+
+        function shufflePieces() {
+            pieces.sort(() => Math.random() - 0.5);
+            puzzleContainer.innerHTML = '';
+            pieces.forEach(piece => puzzleContainer.appendChild(piece));
+            message.textContent = '';
+        }
+
+        function checkWin() {
+            const currentOrder = pieces.map(piece => piece.getAttribute('data-value'));
+            const correctOrder = ['1', '2', '3', '4', '5', '6', '7', '8', ''];
+            if (currentOrder.join('') === correctOrder.join('')) {
+                message.textContent = 'Congratulations! You solved the puzzle!';
+            }
+        }
+
+        puzzleContainer.addEventListener('click', (e) => {
+            const clickedPiece = e.target;
+            const emptyPiece = pieces.find(piece => piece.getAttribute('data-value') === '');
+            const clickedIndex = pieces.indexOf(clickedPiece);
+            const emptyIndex = pieces.indexOf(emptyPiece);
+
+            if (Math.abs(clickedIndex - emptyIndex) === 1 || Math.abs(clickedIndex - emptyIndex) === 3) {
+                [pieces[clickedIndex], pieces[emptyIndex]] = [pieces[emptyIndex], pieces[clickedIndex]];
+                puzzleContainer.innerHTML = '';
+                pieces.forEach(piece => puzzleContainer.appendChild(piece));
+                checkWin();
+            }
+        });
+
+        shuffleButton.addEventListener('click', shufflePieces);
+    </script>
+</body>
+</html>
