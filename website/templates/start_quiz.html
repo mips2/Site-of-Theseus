@@ -8,8 +8,9 @@
 </head>
 <body>
     <div class="container">
-        <h1>Are you ready to start the quiz?</h1>
-        <form method="POST">
+        <h1>Ready to Start the Quiz?</h1>
+        <p>Click the button below to begin your challenge!</p>
+        <form action="{{ url_for('start_quiz') }}" method="post">
             <button type="submit" class="btn">Start Quiz</button>
         </form>
     </div>

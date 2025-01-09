@@ -16,6 +16,13 @@ game_state = {
     ]
 }
 
+# Memory game state
+memory_game_state = {
+    "cards": ["A", "B", "C", "D", "E", "F", "G", "H"],
+    "flipped": [],
+    "matched": []
+}
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -47,6 +54,25 @@ def end_quiz():
     game_state["score"] = 0
     game_state["current_question"] = None
     return render_template('end_quiz.html', final_score=final_score)
+
+@app.route('/memory-game')
+def memory_game():
+    memory_game_state["flipped"] = []
+    memory_game_state["matched"] = []
+    random.shuffle(memory_game_state["cards"])
+    return render_template('memory_game.html', cards=memory_game_state["cards"])
+
+@app.route('/flip-card/')
+def flip_card(index):
+    if index not in memory_game_state["flipped"] and index not in memory_game_state["matched"]:
+        memory_game_state["flipped"].append(index)
+        if len(memory_game_state["flipped"]) == 2:
+            if memory_game_state["cards"][memory_game_state["flipped"][0]] == memory_game_state["cards"][memory_game_state["flipped"][1]]:
+                memory_game_state["matched"].extend(memory_game_state["flipped"])
+                memory_game_state["flipped"] = []
+            else:
+                memory_game_state["flipped"] = []
+    return render_template('memory_game.html', cards=memory_game_state["cards"], flipped=memory_game_state["flipped"], matched=memory_game_state["matched"])
 
 if __name__ == '__main__':
     app.run(debug=True)

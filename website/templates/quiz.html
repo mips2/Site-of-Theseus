@@ -11,12 +11,12 @@
         <h1>Quiz Time!</h1>
         <p>Your current score: {{ score }}</p>
         <p>{{ question.question }}</p>
-        <form method="POST">
+        <form action="{{ url_for('quiz') }}" method="post">
             <input type="text" name="answer" placeholder="Your answer" required>
             <button type="submit" class="btn">Submit</button>
         </form>
         {% if message %}
-            <p>{{ message }}</p>
+            <p class="message">{{ message }}</p>
         {% endif %}
         <a href="{{ url_for('end_quiz') }}" class="btn">End Quiz</a>
     </div>
