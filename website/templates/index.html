@@ -4,17 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fun Interactive Games</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        .game-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .game-card h2 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+        .game-card p {
+            margin: 10px 0 0;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to Fun Interactive Games!</h1>
-        <div class="games-grid">
-            <a href="/puzzle-game" class="game-card">🧩 Puzzle Game</a>
-            <a href="/memory-game" class="game-card">🧠 Memory Game</a>
-            <a href="/emoji-story" class="game-card">📖 Emoji Story</a>
-            <a href="/color-mixer" class="game-card">🎨 Color Mixer</a>
-            <a href="/music-maker" class="game-card">🎵 Music Maker</a>
+    <div class="game-grid">
+        <div class="game-card" onclick="window.location.href='/puzzle-game'">
+            <h2>Puzzle Game</h2>
+            <p>Solve challenging puzzles!</p>
+        </div>
+        <div class="game-card" onclick="window.location.href='/memory-game'">
+            <h2>Memory Game</h2>
+            <p>Test your memory skills!</p>
+        </div>
+        <div class="game-card" onclick="window.location.href='/emoji-story'">
+            <h2>Emoji Story</h2>
+            <p>Create stories using emojis!</p>
+        </div>
+        <div class="game-card" onclick="window.location.href='/color-mixer'">
+            <h2>Color Mixer</h2>
+            <p>Mix colors to create new ones!</p>
+        </div>
+        <div class="game-card" onclick="window.location.href='/music-maker'">
+            <h2>Music Maker</h2>
+            <p>Compose your own music!</p>
+        </div>
+        <div class="game-card" onclick="window.location.href='/new-game'">
+            <h2>New Game</h2>
+            <p>Coming soon!</p>
         </div>
     </div>
 </body>

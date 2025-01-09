@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .game-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        .game-container h1 {
+            margin: 0 0 20px;
+            font-size: 2em;
+        }
+        .game-container p {
+            margin: 0 0 20px;
+            color: #666;
+        }
+        .game-container button {
+            background: #ff6f61;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s ease;
+        }
+        .game-container button:hover {
+            background: #ff3b2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>New Game Coming Soon!</h1>
+        <p>We're working on something exciting for you. Stay tuned!</p>
+        <button onclick="window.location.href='/'">Back to Home</button>
+    </div>
+</body>
+</html>

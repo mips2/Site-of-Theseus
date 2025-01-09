@@ -26,5 +26,9 @@ def color_mixer():
 def music_maker():
     return render_template('music_maker.html')
 
+@app.route('/new-game')
+def new_game():
+    return render_template('new_game.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
