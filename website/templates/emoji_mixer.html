@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Mixer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/emoji_mixer.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Emoji Mixer</h1>
+        <p>Combine two emojis to create something new!</p>
+        <div class="emoji-selector">
+            <select id="emoji1">
+                <option value="😀">😀</option>
+                <option value="🐱">🐱</option>
+                <option value="🌞">🌞</option>
+                <option value="🍕">🍕</option>
+                <option value="🚀">🚀</option>
+            </select>
+            <span>+</span>
+            <select id="emoji2">
+                <option value="😀">😀</option>
+                <option value="🐱">🐱</option>
+                <option value="🌞">🌞</option>
+                <option value="🍕">🍕</option>
+                <option value="🚀">🚀</option>
+            </select>
+            <button onclick="mixEmojis()">Mix!</button>
+        </div>
+        <div class="result">
+            <h2>Result:</h2>
+            <div id="mixedEmoji"></div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/emoji_mixer.js') }}"></script>
+</body>
+</html>

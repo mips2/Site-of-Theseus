@@ -14,5 +14,9 @@ def memory_game():
 def puzzle_challenge():
     return render_template('puzzle_challenge.html')
 
+@app.route('/emoji-mixer')
+def emoji_mixer():
+    return render_template('emoji_mixer.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
