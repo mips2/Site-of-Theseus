@@ -124,5 +124,22 @@ def get_music():
     recommendations = music.get(mood, ['No recommendations available for this mood.'])
     return jsonify({'recommendations': recommendations})
 
+@app.route('/virtual-pet')
+def virtual_pet():
+    return render_template('virtual_pet.html')
+
+@app.route('/feed-pet', methods=['POST'])
+def feed_pet():
+    food = request.json.get('food')
+    # Simple pet feeding logic
+    responses = {
+        'apple': 'Your pet loves apples! It looks happy.',
+        'carrot': 'Your pet nibbles on the carrot. It seems content.',
+        'meat': 'Your pet devours the meat. It looks very satisfied.',
+        'fish': 'Your pet enjoys the fish. It purrs happily.'
+    }
+    response = responses.get(food, 'Your pet is not interested in that food.')
+    return jsonify({'response': response})
+
 if __name__ == '__main__':
     app.run(debug=True)

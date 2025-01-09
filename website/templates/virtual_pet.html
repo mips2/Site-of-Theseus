@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Pet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .pet-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        .pet-image {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
+        }
+        .pet-response {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .food-options {
+            margin-top: 20px;
+        }
+        .food-option {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .food-option:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="pet-container">
+        <img src="{{ url_for('static', filename='pet.png') }}" alt="Virtual Pet" class="pet-image">
+        <div class="pet-response" id="pet-response">Your pet is waiting for food!</div>
+        <div class="food-options">
+            <div class="food-option" onclick="feedPet('apple')">🍎 Apple</div>
+            <div class="food-option" onclick="feedPet('carrot')">🥕 Carrot</div>
+            <div class="food-option" onclick="feedPet('meat')">🍖 Meat</div>
+            <div class="food-option" onclick="feedPet('fish')">🐟 Fish</div>
+        </div>
+    </div>
+
+    <script>
+        function feedPet(food) {
+            fetch('/feed-pet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ food: food }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('pet-response').innerText = data.response;
+            });
+        }
+    </script>
+</body>
+</html>
