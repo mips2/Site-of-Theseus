@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Game</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
             color: #333;
             margin: 0;
             padding: 0;
@@ -19,69 +19,128 @@
             text-align: center;
         }
         .container {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.8);
             padding: 2rem;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            color: #4a90e2;
         }
-        .memory-grid {
+        .game-board {
             display: grid;
             grid-template-columns: repeat(4, 100px);
-            gap: 10px;
+            grid-gap: 10px;
             margin: 2rem auto;
         }
-        .memory-card {
+        .card {
             width: 100px;
             height: 100px;
-            background: #ff6f61;
+            background: #4a90e2;
             border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 2rem;
-            color: #fff;
+            color: white;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.3s ease, background 0.3s ease;
         }
-        .memory-card:hover {
-            transform: scale(1.1);
+        .card.flipped {
+            background: #ff6f61;
+            transform: rotateY(180deg);
         }
         .btn {
-            display: inline-block;
-            margin: 0.5rem;
-            padding: 1rem 2rem;
-            font-size: 1.2rem;
-            color: #fff;
-            background: #ff6f61;
+            background: #4a90e2;
+            color: white;
+            padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 25px;
+            font-size: 1rem;
             cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
+            transition: background 0.3s ease;
         }
         .btn:hover {
-            transform: scale(1.1);
-            background: #ff3b2f;
+            background: #357abd;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container animate__animated animate__fadeIn">
         <h1>Memory Game</h1>
-        <div class="memory-grid">
-            <div class="memory-card">A</div>
-            <div class="memory-card">B</div>
-            <div class="memory-card">C</div>
-            <div class="memory-card">D</div>
-            <div class="memory-card">E</div>
-            <div class="memory-card">F</div>
-            <div class="memory-card">G</div>
-            <div class="memory-card">H</div>
+        <div class="game-board" id="game-board">
+            <!-- Cards will be dynamically generated here -->
         </div>
-        <a href="/" class="btn"><i class="fas fa-home"></i> Back to Home</a>
+        <button class="btn" onclick="resetGame()">Reset Game</button>
     </div>
+    <script>
+        const cards = ['A', 'B', 'C', 'D', 'A', 'B', 'C', 'D'];
+        let flippedCards = [];
+        let matchedCards = [];
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createGameBoard() {
+            const gameBoard = document.getElementById('game-board');
+            const shuffledCards = shuffle(cards);
+            shuffledCards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('card');
+                cardElement.dataset.value = card;
+                cardElement.dataset.index = index;
+                cardElement.addEventListener('click', flipCard);
+                gameBoard.appendChild(cardElement);
+            });
+        }
+
+        function flipCard(event) {
+            const card = event.target;
+            if (flippedCards.length < 2 && !flippedCards.includes(card) && !matchedCards.includes(card)) {
+                card.classList.add('flipped');
+                card.textContent = card.dataset.value;
+                flippedCards.push(card);
+                if (flippedCards.length === 2) {
+                    checkForMatch();
+                }
+            }
+        }
+
+        function checkForMatch() {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.value === card2.dataset.value) {
+                matchedCards.push(card1, card2);
+                flippedCards = [];
+                if (matchedCards.length === cards.length) {
+                    setTimeout(() => alert('Congratulations! You won!'), 500);
+                }
+            } else {
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    card1.textContent = '';
+                    card2.textContent = '';
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        function resetGame() {
+            const gameBoard = document.getElementById('game-board');
+            gameBoard.innerHTML = '';
+            flippedCards = [];
+            matchedCards = [];
+            createGameBoard();
+        }
+
+        createGameBoard();
+    </script>
 </body>
 </html>

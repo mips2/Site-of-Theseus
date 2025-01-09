@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 10px;
+            margin: 2rem auto;
+        }
+        .memory-card {
+            width: 100px;
+            height: 100px;
+            background: #ff6f61;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .memory-card:hover {
+            transform: scale(1.1);
+        }
+        .btn {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            color: #fff;
+            background: #ff6f61;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .btn:hover {
+            transform: scale(1.1);
+            background: #ff3b2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Memory Game</h1>
+        <div class="memory-grid">
+            <div class="memory-card">A</div>
+            <div class="memory-card">B</div>
+            <div class="memory-card">C</div>
+            <div class="memory-card">D</div>
+            <div class="memory-card">E</div>
+            <div class="memory-card">F</div>
+            <div class="memory-card">G</div>
+            <div class="memory-card">H</div>
+        </div>
+        <a href="/" class="btn"><i class="fas fa-home"></i> Back to Home</a>
+    </div>
+</body>
+</html>
