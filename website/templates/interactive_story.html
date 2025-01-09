@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Story</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/interactive_story.css') }}">
+</head>
+<body>
+    <div class="story-container">
+        <h1>Choose Your Own Adventure</h1>
+        <div id="story-text">
+            <p>You find yourself standing at a crossroads. To your left, a dark forest looms. To your right, a sunny meadow stretches out. Which path will you choose?</p>
+        </div>
+        <div id="choices">
+            <button onclick="choosePath('forest')">Enter the Forest</button>
+            <button onclick="choosePath('meadow')">Walk into the Meadow</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/interactive_story.js') }}"></script>
+</body>
+</html>
