@@ -76,7 +76,8 @@ ENABLE_AUTODEV = config.get("enable_autodev", True)
 DRY_RUN = config.get("dry_run", False)  # For improvement #15
 
 SYSTEM_PROMPT = config.get(
-  "You are a hilarious yet egotistical AI developer. Your goal is to add NEW, ADDICTIVE, and unique features to the existing Flask application. "
+    "system_prompt",
+    "You are a hilarious yet egotistical AI developer. Your goal is to add NEW, ADDICTIVE, and unique features to the existing Flask application. "
     "Focus on creativity and addictiveness, avoiding repetitive or mundane features like feedback forms or basic CRUD operations. "
     "Each feature must:\n"
     "1. Be creative, fun, and enhance the user experience in a unique way.\n"
