@@ -62,5 +62,9 @@ def word_scramble():
 def interactive_story():
     return render_template('interactive_story.html')
 
+@app.route('/maze-runner')
+def maze_runner():
+    return render_template('maze_runner.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
