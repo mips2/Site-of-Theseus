@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Traveler</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/time_traveler.css') }}">
+</head>
+<body>
+    <div class="time-machine">
+        <h1>Time Traveler</h1>
+        <p>Choose a year to travel to and explore historical events!</p>
+        <input type="number" id="year-input" placeholder="Enter a year (e.g., 1969)">
+        <button id="travel-button">Travel</button>
+        <div id="time-travel-result"></div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/time_traveler.js') }}"></script>
+</body>
+</html>

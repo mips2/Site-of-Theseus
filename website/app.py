@@ -42,5 +42,9 @@ def ai_art_generator():
 def virtual_pet():
     return render_template('virtual_pet.html')
 
+@app.route('/time-traveler')
+def time_traveler():
+    return render_template('time_traveler.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
