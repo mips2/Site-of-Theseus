@@ -178,5 +178,22 @@ def generate_art():
     ]
     return jsonify({'art_url': random.choice(art_images)})
 
+@app.route('/mind-reader')
+def mind_reader():
+    return render_template('mind_reader.html')
+
+@app.route('/predict-thought', methods=['POST'])
+def predict_thought():
+    thought = request.json.get('thought')
+    # Simple "mind reading" logic
+    predictions = [
+        "You are thinking about the future.",
+        "You are reflecting on a past memory.",
+        "You are considering a big decision.",
+        "You are daydreaming about a faraway place.",
+        "You are focused on a current challenge."
+    ]
+    return jsonify({'prediction': random.choice(predictions)})
+
 if __name__ == '__main__':
     app.run(debug=True)
