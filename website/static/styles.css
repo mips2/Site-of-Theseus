@@ -1,22 +1,10 @@
-/* Add new styles for the art gallery */
-.art-piece {
-    text-align: center;
+/* Add new styles for the music lab */
+.music-player {
     margin: 20px 0;
+    text-align: center;
 }
 
-.art-piece img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
+.music-player iframe {
+    border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.art-piece h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
-
-.art-piece p {
-    font-size: 1.2rem;
-    color: #555;
 }

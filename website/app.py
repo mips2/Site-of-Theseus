@@ -177,5 +177,39 @@ def complete_art_gallery():
     user_progress[username]['score'] += 10  # Bonus points for visiting the art gallery
     return redirect(url_for('adventure', username=username))
 
+@app.route('/music-lab')
+def music_lab():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    # Generate a random music genre for the user to explore
+    genres = [
+        "Classical",
+        "Jazz",
+        "Rock",
+        "Electronic",
+        "Hip-Hop",
+        "World Music"
+    ]
+    genre = random.choice(genres)
+    
+    return render_template('music_lab.html', username=username, genre=genre)
+
+@app.route('/music-lab/complete', methods=['POST'])
+def complete_music_lab():
+    if 'username' not in session:
+        return redirect(url_for('start_adventure'))
+    
+    username = session['username']
+    if username not in user_progress:
+        return redirect(url_for('start_adventure'))
+    
+    user_progress[username]['score'] += 10  # Bonus points for exploring the music lab
+    return redirect(url_for('adventure', username=username))
+
 if __name__ == '__main__':
     app.run(debug=True)

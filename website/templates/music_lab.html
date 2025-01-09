@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Lab</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Music Lab, {{ username }}!</h1>
+        <p>Explore the world of <strong>{{ genre }}</strong> music.</p>
+        <div class="music-player">
+            <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        </div>
+        <form action="{{ url_for('complete_music_lab') }}" method="POST">
+            <button type="submit">Continue Adventure</button>
+        </form>
+    </div>
+</body>
+</html>
