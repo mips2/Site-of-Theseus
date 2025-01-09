@@ -3,57 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxy Explorer Start</title>
+    <title>Galaxy Explorer</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            color: #e0e0e0;
+            background: radial-gradient(circle, #000428, #004e92);
+            color: white;
             font-family: 'Arial', sans-serif;
+            text-align: center;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             overflow: hidden;
         }
         .start-container {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
-        }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: #00ffcc;
-        }
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .start-button {
-            background: #00ffcc;
-            color: #16213e;
             padding: 15px 30px;
+            font-size: 1.5rem;
+            background: #ff7e5f;
             border: none;
             border-radius: 5px;
-            font-size: 1.2rem;
+            color: white;
             cursor: pointer;
             transition: background 0.3s ease;
         }
         .start-button:hover {
-            background: #00cc99;
+            background: #feb47b;
         }
     </style>
 </head>
 <body>
     <div class="start-container">
-        <h1>Galaxy Explorer</h1>
-        <p>Embark on an interstellar journey to discover new planets and gather resources. Click below to begin your adventure!</p>
-        <a href="{{ url_for('galaxy_explorer_map') }}"><button class="start-button">Start Exploring</button></a>
+        <button class="start-button" onclick="window.location.href='/galaxy-explorer/map'">Start Exploring</button>
     </div>
 </body>
 </html>

@@ -3,54 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exploring {{ planet_name }}</title>
+    <title>Planet {{ planet_name }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
-            background: radial-gradient(circle, #1a2a6c, #b21f1f, #fdbb2d);
+            background: radial-gradient(circle, #000428, #004e92);
             color: white;
             font-family: 'Arial', sans-serif;
+            text-align: center;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+        }
+        .planet-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            text-align: center;
+        }
+        .planet {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff7e5f, #feb47b);
+            box-shadow: 0 0 50px rgba(255, 126, 95, 0.8);
+            animation: rotatePlanet 20s linear infinite;
         }
         .planet-info {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-align: left;
         }
-        .planet-info h1 {
+        .planet-info h2 {
             font-size: 2.5rem;
-            margin-bottom: 10px;
+            margin: 0;
         }
         .planet-info p {
             font-size: 1.2rem;
+            margin: 10px 0;
         }
-        .back-button {
-            margin-top: 20px;
+        .explore-button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             padding: 10px 20px;
-            background: #ffcc00;
+            font-size: 1.2rem;
+            background: #ff7e5f;
             border: none;
             border-radius: 5px;
+            color: white;
             cursor: pointer;
-            font-size: 1rem;
             transition: background 0.3s ease;
         }
-        .back-button:hover {
-            background: #e6b800;
+        .explore-button:hover {
+            background: #feb47b;
+        }
+        @keyframes rotatePlanet {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="planet-info">
-        <h1>Welcome to {{ planet_name }}</h1>
-        <p>You have landed on a mysterious planet. Explore its secrets and uncover its wonders!</p>
-        <button class="back-button" onclick="window.location.href='/galaxy-explorer/map'">Return to Map</button>
+    <div class="planet-container">
+        <div class="planet"></div>
+        <div class="planet-info">
+            <h2>{{ planet_name }}</h2>
+            <p>Welcome to the mysterious planet {{ planet_name }}! Explore its unique terrain and uncover hidden secrets.</p>
+        </div>
+        <button class="explore-button" onclick="explorePlanet()">Explore</button>
     </div>
+    <script>
+        function explorePlanet() {
+            alert("You've discovered a hidden treasure on {{ planet_name }}!");
+        }
+    </script>
 </body>
 </html>

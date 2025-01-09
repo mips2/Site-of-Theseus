@@ -3,65 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxy Explorer - Map</title>
+    <title>Galaxy Map</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
             background: radial-gradient(circle, #000428, #004e92);
             color: white;
             font-family: 'Arial', sans-serif;
+            text-align: center;
             margin: 0;
             padding: 0;
             overflow: hidden;
         }
         .galaxy-map {
             position: relative;
-            width: 100vw;
+            width: 100%;
             height: 100vh;
-            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .star {
             position: absolute;
-            width: 2px;
-            height: 2px;
+            width: 10px;
+            height: 10px;
             background: white;
             border-radius: 50%;
             animation: twinkle 2s infinite;
         }
-        .planet {
+        .planet-link {
             position: absolute;
             width: 20px;
             height: 20px;
+            background: #ff7e5f;
             border-radius: 50%;
-            background: #ffcc00;
             cursor: pointer;
             transition: transform 0.3s ease;
         }
-        .planet:hover {
-            transform: scale(1.2);
+        .planet-link:hover {
+            transform: scale(1.5);
         }
         @keyframes twinkle {
-            0%, 100% { opacity: 1; }
+            0% { opacity: 1; }
             50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
 <body>
     <div class="galaxy-map">
-        <!-- Randomly generated stars -->
-        {% for _ in range(200) %}
-            <div class="star" style="top: {{ range(0, 100)|random }}%; left: {{ range(0, 100)|random }}%;"></div>
-        {% endfor %}
-        <!-- Planets -->
-        <div class="planet" style="top: 30%; left: 20%;" onclick="explorePlanet('Alpha Centauri')"></div>
-        <div class="planet" style="top: 50%; left: 70%;" onclick="explorePlanet('Proxima B')"></div>
-        <div class="planet" style="top: 80%; left: 40%;" onclick="explorePlanet('Kepler-186f')"></div>
+        <div class="star" style="top: 10%; left: 20%;"></div>
+        <div class="star" style="top: 30%; left: 50%;"></div>
+        <div class="star" style="top: 70%; left: 80%;"></div>
+        <div class="planet-link" style="top: 40%; left: 30%;" onclick="window.location.href='/galaxy-explorer/planet/Alpha-Centauri'"></div>
+        <div class="planet-link" style="top: 60%; left: 70%;" onclick="window.location.href='/galaxy-explorer/planet/Proxima-B'"></div>
     </div>
-    <script>
-        function explorePlanet(planetName) {
-            alert(`You have discovered ${planetName}! Prepare for landing...`);
-            window.location.href = `/galaxy-explorer/planet/${planetName.toLowerCase().replace(' ', '-')}`;
-        }
-    </script>
 </body>
 </html>
