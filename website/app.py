@@ -50,5 +50,9 @@ def time_traveler():
 def dreamscape_creator():
     return render_template('dreamscape_creator.html')
 
+@app.route('/cosmic-race')
+def cosmic_race():
+    return render_template('cosmic_race.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

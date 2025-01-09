@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Race</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cosmic_race.css') }}">
+</head>
+<body>
+    <div class="cosmic-container">
+        <h1>Cosmic Race</h1>
+        <p>Race through the stars! Click as fast as you can to win!</p>
+        <div class="race-track">
+            <div id="player" class="racer"></div>
+            <div id="opponent" class="racer"></div>
+        </div>
+        <button id="race-button">Click to Race!</button>
+        <p id="result"></p>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/cosmic_race.js') }}"></script>
+</body>
+</html>
