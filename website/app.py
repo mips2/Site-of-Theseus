@@ -30,5 +30,13 @@ def music_maker():
 def galaxy_explorer():
     return render_template('new_game.html')
 
+@app.route('/galaxy-explorer/start')
+def galaxy_explorer_start():
+    return render_template('galaxy_explorer_start.html')
+
+@app.route('/galaxy-explorer/map')
+def galaxy_explorer_map():
+    return render_template('galaxy_explorer_map.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

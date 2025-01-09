@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Explorer - Start</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background: linear-gradient(135deg, #000428, #004e92);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .galaxy-start-container {
+            text-align: center;
+        }
+        .galaxy-start-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+        }
+        .galaxy-start-description {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        .galaxy-start-button {
+            background: #00ffff;
+            color: #000;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .galaxy-start-button:hover {
+            background: #00b3b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="galaxy-start-container">
+        <h1 class="galaxy-start-title">Welcome to the Galaxy Explorer!</h1>
+        <p class="galaxy-start-description">Embark on a journey through the cosmos, discovering new planets and stars. Are you ready?</p>
+        <button class="galaxy-start-button" onclick="beginJourney()">Begin Journey</button>
+    </div>
+    <script>
+        function beginJourney() {
+            alert("Let's explore the galaxy together! 🌌");
+            window.location.href = "/galaxy-explorer/map";
+        }
+    </script>
+</body>
+</html>

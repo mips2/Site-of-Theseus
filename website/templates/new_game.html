@@ -4,24 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galaxy Explorer</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/new_game.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background: linear-gradient(135deg, #000428, #004e92);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .galaxy-container {
+            text-align: center;
+            position: relative;
+        }
+        .galaxy-title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+        }
+        .planet {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, #ff7e5f, #feb47b);
+            border-radius: 50%;
+            position: absolute;
+            animation: float 5s infinite ease-in-out;
+        }
+        .planet:nth-child(2) {
+            background: radial-gradient(circle, #6a11cb, #2575fc);
+            width: 80px;
+            height: 80px;
+            animation-delay: 1s;
+        }
+        .planet:nth-child(3) {
+            background: radial-gradient(circle, #ff9a9e, #fad0c4);
+            width: 60px;
+            height: 60px;
+            animation-delay: 2s;
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        .explore-button {
+            background: #00ffff;
+            color: #000;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .explore-button:hover {
+            background: #00b3b3;
+        }
+    </style>
 </head>
 <body>
     <div class="galaxy-container">
-        <h1>Galaxy Explorer</h1>
-        <p>Navigate through the stars and discover hidden planets!</p>
-        <div class="galaxy-map">
-            <div class="star" data-planet="1"></div>
-            <div class="star" data-planet="2"></div>
-            <div class="star" data-planet="3"></div>
-            <div class="star" data-planet="4"></div>
-            <div class="star" data-planet="5"></div>
-        </div>
-        <div class="planet-info">
-            <h2>Discovered Planet: <span id="planet-name">None</span></h2>
-            <p id="planet-description">Click on a star to explore a planet!</p>
-        </div>
+        <h1 class="galaxy-title">Galaxy Explorer</h1>
+        <div class="planet"></div>
+        <div class="planet" style="top: 150px; left: 200px;"></div>
+        <div class="planet" style="top: 300px; left: -100px;"></div>
+        <button class="explore-button" onclick="startExploration()">Start Exploration</button>
     </div>
-    <script src="{{ url_for('static', filename='scripts/new_game.js') }}"></script>
+    <script>
+        function startExploration() {
+            alert("Prepare for an interstellar adventure! 🚀");
+            window.location.href = "/galaxy-explorer/start";
+        }
+    </script>
 </body>
 </html>

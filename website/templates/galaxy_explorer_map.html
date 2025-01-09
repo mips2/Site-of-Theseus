@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Explorer - Map</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background: linear-gradient(135deg, #000428, #004e92);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .galaxy-map-container {
+            text-align: center;
+        }
+        .galaxy-map-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+        }
+        .galaxy-map {
+            width: 80%;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            position: relative;
+            margin: 0 auto;
+        }
+        .galaxy-map-point {
+            width: 20px;
+            height: 20px;
+            background: #00ffff;
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .galaxy-map-point:hover {
+            transform: scale(1.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="galaxy-map-container">
+        <h1 class="galaxy-map-title">Galaxy Map</h1>
+        <div class="galaxy-map">
+            <div class="galaxy-map-point" style="top: 50px; left: 100px;" onclick="explorePlanet('Alpha Centauri')"></div>
+            <div class="galaxy-map-point" style="top: 200px; left: 300px;" onclick="explorePlanet('Proxima Centauri')"></div>
+            <div class="galaxy-map-point" style="top: 350px; left: 500px;" onclick="explorePlanet('Kepler-186f')"></div>
+        </div>
+    </div>
+    <script>
+        function explorePlanet(planetName) {
+            alert(`You have discovered ${planetName}! 🪐`);
+        }
+    </script>
+</body>
+</html>
