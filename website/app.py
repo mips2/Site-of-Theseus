@@ -84,5 +84,28 @@ def save_capsule():
     # Here you could save the message and open_date to a database
     return jsonify({'status': 'success', 'message': message, 'open_date': open_date})
 
+@app.route('/dream-interpreter')
+def dream_interpreter():
+    return render_template('dream_interpreter.html')
+
+@app.route('/interpret-dream', methods=['POST'])
+def interpret_dream():
+    dream = request.json.get('dream')
+    # Simple dream interpretation logic
+    keywords = {
+        'water': 'You are experiencing emotional turbulence.',
+        'falling': 'You may be feeling a lack of control in your life.',
+        'flying': 'You are feeling free and liberated.',
+        'teeth': 'You might be worried about your appearance or health.',
+        'chase': 'You are avoiding a problem or responsibility.'
+    }
+    interpretation = []
+    for word, meaning in keywords.items():
+        if word in dream.lower():
+            interpretation.append(meaning)
+    if not interpretation:
+        interpretation.append("Your dream is unique and requires deeper introspection.")
+    return jsonify({'interpretation': interpretation})
+
 if __name__ == '__main__':
     app.run(debug=True)
