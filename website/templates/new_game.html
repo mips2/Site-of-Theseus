@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
-            background: linear-gradient(135deg, #000428, #004e92);
-            color: white;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #e0e0e0;
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
@@ -18,71 +18,42 @@
             height: 100vh;
             overflow: hidden;
         }
-        .galaxy-container {
+        .game-container {
             text-align: center;
-            position: relative;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
         }
-        .galaxy-title {
+        h1 {
             font-size: 3rem;
             margin-bottom: 20px;
-            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+            color: #00ffcc;
         }
-        .planet {
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #ff7e5f, #feb47b);
-            border-radius: 50%;
-            position: absolute;
-            animation: float 5s infinite ease-in-out;
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
         }
-        .planet:nth-child(2) {
-            background: radial-gradient(circle, #6a11cb, #2575fc);
-            width: 80px;
-            height: 80px;
-            animation-delay: 1s;
-        }
-        .planet:nth-child(3) {
-            background: radial-gradient(circle, #ff9a9e, #fad0c4);
-            width: 60px;
-            height: 60px;
-            animation-delay: 2s;
-        }
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-        }
-        .explore-button {
-            background: #00ffff;
-            color: #000;
+        .start-button {
+            background: #00ffcc;
+            color: #16213e;
             padding: 15px 30px;
             border: none;
-            border-radius: 25px;
+            border-radius: 5px;
             font-size: 1.2rem;
             cursor: pointer;
             transition: background 0.3s ease;
         }
-        .explore-button:hover {
-            background: #00b3b3;
+        .start-button:hover {
+            background: #00cc99;
         }
     </style>
 </head>
 <body>
-    <div class="galaxy-container">
-        <h1 class="galaxy-title">Galaxy Explorer</h1>
-        <div class="planet"></div>
-        <div class="planet" style="top: 150px; left: 200px;"></div>
-        <div class="planet" style="top: 300px; left: -100px;"></div>
-        <button class="explore-button" onclick="startExploration()">Start Exploration</button>
+    <div class="game-container">
+        <h1>Galaxy Explorer</h1>
+        <p>Welcome to the Galaxy Explorer! Begin your journey by clicking the button below.</p>
+        <a href="{{ url_for('galaxy_explorer_start') }}"><button class="start-button">Start Journey</button></a>
     </div>
-    <script>
-        function startExploration() {
-            alert("Prepare for an interstellar adventure! 🚀");
-            window.location.href = "/galaxy-explorer/start";
-        }
-    </script>
 </body>
 </html>

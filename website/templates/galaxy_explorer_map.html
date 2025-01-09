@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxy Explorer - Map</title>
+    <title>Galaxy Explorer Map</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
-            background: linear-gradient(135deg, #000428, #004e92);
-            color: white;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #e0e0e0;
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
@@ -18,50 +18,57 @@
             height: 100vh;
             overflow: hidden;
         }
-        .galaxy-map-container {
+        .galaxy-map {
+            position: relative;
+            width: 80vw;
+            height: 80vh;
+            background: url('/static/images/galaxy_bg.jpg') no-repeat center center/cover;
+            border: 2px solid #00ffcc;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+        .planet {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #ff9f43, #ff6b6b);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .planet:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+        }
+        .planet-info {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 14px;
             text-align: center;
         }
-        .galaxy-map-title {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
-        }
-        .galaxy-map {
-            width: 80%;
-            height: 400px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid #00ffff;
-            border-radius: 10px;
-            position: relative;
-            margin: 0 auto;
-        }
-        .galaxy-map-point {
-            width: 20px;
-            height: 20px;
-            background: #00ffff;
-            border-radius: 50%;
-            position: absolute;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .galaxy-map-point:hover {
-            transform: scale(1.5);
+        .planet:hover .planet-info {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="galaxy-map-container">
-        <h1 class="galaxy-map-title">Galaxy Map</h1>
-        <div class="galaxy-map">
-            <div class="galaxy-map-point" style="top: 50px; left: 100px;" onclick="explorePlanet('Alpha Centauri')"></div>
-            <div class="galaxy-map-point" style="top: 200px; left: 300px;" onclick="explorePlanet('Proxima Centauri')"></div>
-            <div class="galaxy-map-point" style="top: 350px; left: 500px;" onclick="explorePlanet('Kepler-186f')"></div>
+    <div class="galaxy-map">
+        <div class="planet" style="top: 20%; left: 30%;">
+            <div class="planet-info">Planet Alpha<br>Resources: High</div>
+        </div>
+        <div class="planet" style="top: 50%; left: 70%;">
+            <div class="planet-info">Planet Beta<br>Resources: Medium</div>
+        </div>
+        <div class="planet" style="top: 80%; left: 10%;">
+            <div class="planet-info">Planet Gamma<br>Resources: Low</div>
         </div>
     </div>
-    <script>
-        function explorePlanet(planetName) {
-            alert(`You have discovered ${planetName}! 🪐`);
-        }
-    </script>
 </body>
 </html>
