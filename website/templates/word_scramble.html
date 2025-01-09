@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Scramble Challenge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/word_scramble.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Word Scramble Challenge</h1>
+        <div id="scramble-container">
+            <p id="scrambled-word"></p>
+            <input type="text" id="user-input" placeholder="Unscramble the word...">
+            <button id="submit-btn">Submit</button>
+            <p id="result"></p>
+        </div>
+        <div id="score-container">
+            <p>Score: <span id="score">0</span></p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/word_scramble.js') }}"></script>
+</body>
+</html>

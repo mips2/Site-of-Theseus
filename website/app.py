@@ -54,5 +54,9 @@ def dreamscape_creator():
 def cosmic_race():
     return render_template('cosmic_race.html')
 
+@app.route('/word-scramble')
+def word_scramble():
+    return render_template('word_scramble.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
