@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreamscape Creator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dreamscape_creator.css') }}">
+</head>
+<body>
+    <div class="dreamscape-container">
+        <h1>Dreamscape Creator</h1>
+        <p>Design your own dream world! Drag and drop elements to create your unique dreamscape.</p>
+        <div class="canvas-container">
+            <canvas id="dreamscapeCanvas" width="800" height="600"></canvas>
+        </div>
+        <div class="toolbar">
+            <button id="addCloud">Add Cloud</button>
+            <button id="addTree">Add Tree</button>
+            <button id="addStar">Add Star</button>
+            <button id="clearCanvas">Clear Canvas</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/dreamscape_creator.js') }}"></script>
+</body>
+</html>

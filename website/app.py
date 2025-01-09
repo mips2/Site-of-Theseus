@@ -46,5 +46,9 @@ def virtual_pet():
 def time_traveler():
     return render_template('time_traveler.html')
 
+@app.route('/dreamscape-creator')
+def dreamscape_creator():
+    return render_template('dreamscape_creator.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
