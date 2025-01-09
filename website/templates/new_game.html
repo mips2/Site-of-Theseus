@@ -9,14 +9,18 @@
 <body>
     <div class="galaxy-container">
         <h1>Galaxy Explorer</h1>
-        <p>Navigate through the galaxy and discover hidden planets!</p>
+        <p>Navigate through the stars and discover hidden planets!</p>
         <div class="galaxy-map">
-            <div class="star" id="star1" onclick="explorePlanet('star1')"></div>
-            <div class="star" id="star2" onclick="explorePlanet('star2')"></div>
-            <div class="star" id="star3" onclick="explorePlanet('star3')"></div>
-            <div class="star" id="star4" onclick="explorePlanet('star4')"></div>
+            <div class="star" data-planet="1"></div>
+            <div class="star" data-planet="2"></div>
+            <div class="star" data-planet="3"></div>
+            <div class="star" data-planet="4"></div>
+            <div class="star" data-planet="5"></div>
         </div>
-        <div id="planet-info"></div>
+        <div class="planet-info">
+            <h2>Discovered Planet: <span id="planet-name">None</span></h2>
+            <p id="planet-description">Click on a star to explore a planet!</p>
+        </div>
     </div>
     <script src="{{ url_for('static', filename='scripts/new_game.js') }}"></script>
 </body>
