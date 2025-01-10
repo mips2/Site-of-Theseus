@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soundscape Creator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/soundscape_creator.css') }}">
+</head>
+<body>
+    <div class="soundscape-container">
+        <h1>Soundscape Creator</h1>
+        <p>Mix and match sounds to create your own unique soundscape!</p>
+        <div class="soundboard">
+            <div class="sound" data-sound="forest">
+                🌲 Forest
+            </div>
+            <div class="sound" data-sound="ocean">
+                🌊 Ocean
+            </div>
+            <div class="sound" data-sound="rain">
+                🌧️ Rain
+            </div>
+            <div class="sound" data-sound="city">
+                🏙️ City
+            </div>
+            <div class="sound" data-sound="fire">
+                🔥 Fire
+            </div>
+            <div class="sound" data-sound="birds">
+                🐦 Birds
+            </div>
+        </div>
+        <div class="controls">
+            <button id="play-all">Play All</button>
+            <button id="stop-all">Stop All</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/soundscape_creator.js') }}"></script>
+</body>
+</html>

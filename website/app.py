@@ -94,5 +94,9 @@ def neon_typer():
 def maze_runner():
     return render_template('maze_runner.html')
 
+@app.route('/soundscape-creator')
+def soundscape_creator():
+    return render_template('soundscape_creator.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
