@@ -26,5 +26,9 @@ def galaxy_explorer():
 def emoji_story():
     return render_template('emoji_story.html')
 
+@app.route('/ai-art-generator')
+def ai_art_generator():
+    return render_template('ai_art_generator.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

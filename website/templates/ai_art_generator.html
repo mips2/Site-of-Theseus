@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Art Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .art-generator {
+            text-align: center;
+            padding: 20px;
+        }
+        .art-generator h1 {
+            font-size: 2.5rem;
+            color: #ff6f61;
+        }
+        .art-generator p {
+            font-size: 1.2rem;
+            color: #333;
+        }
+        .art-generator canvas {
+            border: 2px solid #333;
+            margin-top: 20px;
+            background-color: #f0f0f0;
+        }
+        .art-generator button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .art-generator button:hover {
+            background-color: #ff3b2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="art-generator">
+        <h1>AI Art Generator</h1>
+        <p>Create unique art pieces with the help of AI! Click the button below to generate a new artwork.</p>
+        <canvas id="artCanvas" width="500" height="500"></canvas>
+        <button onclick="generateArt()">Generate Art</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('artCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function generateArt() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < 100; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const radius = Math.random() * 50;
+                const color = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, ${Math.random()})`;
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+            }
+        }
+    </script>
+</body>
+</html>

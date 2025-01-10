@@ -9,28 +9,15 @@
 <body>
     <div class="container">
         <h1>Welcome to the Fun Interactive Website!</h1>
-        <div class="game-grid">
-            <a href="{{ url_for('memory_game') }}" class="game-card">
-                <h2>Memory Game</h2>
-                <p>Test your memory with this fun card matching game!</p>
-            </a>
-            <a href="{{ url_for('puzzle_escape') }}" class="game-card">
-                <h2>Puzzle Escape</h2>
-                <p>Solve puzzles to escape the room!</p>
-            </a>
-            <a href="{{ url_for('color_mixer') }}" class="game-card">
-                <h2>Color Mixer</h2>
-                <p>Mix colors to create new ones!</p>
-            </a>
-            <a href="{{ url_for('galaxy_explorer') }}" class="game-card">
-                <h2>Galaxy Explorer</h2>
-                <p>Explore the galaxy and discover new planets!</p>
-            </a>
-            <a href="{{ url_for('emoji_story') }}" class="game-card">
-                <h2>Emoji Story</h2>
-                <p>Create your own story using emojis!</p>
-            </a>
-        </div>
+        <p>Explore a variety of interactive games and activities:</p>
+        <ul>
+            <li><a href="{{ url_for('memory_game') }}">Memory Game</a></li>
+            <li><a href="{{ url_for('puzzle_escape') }}">Puzzle Escape</a></li>
+            <li><a href="{{ url_for('color_mixer') }}">Color Mixer</a></li>
+            <li><a href="{{ url_for('galaxy_explorer') }}">Galaxy Explorer</a></li>
+            <li><a href="{{ url_for('emoji_story') }}">Emoji Story</a></li>
+            <li><a href="{{ url_for('ai_art_generator') }}">AI Art Generator</a></li>
+        </ul>
     </div>
 </body>
 </html>
