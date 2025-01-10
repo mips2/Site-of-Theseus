@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Leap Adventure</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/quantum_leap.css') }}">
+</head>
+<body>
+    <div class="quantum-container">
+        <h1>Quantum Leap Adventure</h1>
+        <p>Step into the quantum realm and leap through dimensions to solve puzzles and uncover mysteries!</p>
+        <div id="quantum-board">
+            <div class="dimension" id="dimension-1" onclick="leapToDimension(1)">
+                <h2>Dimension 1</h2>
+                <p>Solve the quantum puzzle to unlock the next leap.</p>
+            </div>
+            <div class="dimension" id="dimension-2" onclick="leapToDimension(2)">
+                <h2>Dimension 2</h2>
+                <p>Navigate through the quantum maze to find the hidden key.</p>
+            </div>
+            <div class="dimension" id="dimension-3" onclick="leapToDimension(3)">
+                <h2>Dimension 3</h2>
+                <p>Decipher the quantum code to escape the time loop.</p>
+            </div>
+        </div>
+        <div id="quantum-result"></div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/quantum_leap.js') }}"></script>
+</body>
+</html>

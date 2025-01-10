@@ -58,5 +58,9 @@ def word_weaver():
 def interactive_story():
     return render_template('interactive_story.html')
 
+@app.route('/quantum-leap')
+def quantum_leap():
+    return render_template('quantum_leap.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
