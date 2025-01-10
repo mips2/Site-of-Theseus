@@ -118,5 +118,9 @@ def alien_language_decoder():
 def crystal_cavern():
     return render_template('crystal_cavern.html')
 
+@app.route('/neon-dodge')
+def neon_dodge():
+    return render_template('neon_dodge.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
