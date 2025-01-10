@@ -3,9 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+    <title>Interactive Fun Zone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ff6f61;
+        }
+        .btn {
+            background: #ff6f61;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(255, 111, 97, 0.4);
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello World</h1>
+    <div class="container animate__animated animate__fadeIn">
+        <h1>Welcome to the Interactive Fun Zone!</h1>
+        <p>Explore a world of creativity and fun with our interactive games and activities.</p>
+        <button class="btn" onclick="window.location.href='/memory-game'">Play Memory Game</button>
+    </div>
 </body>
 </html>
