@@ -98,5 +98,9 @@ def maze_runner():
 def soundscape_creator():
     return render_template('soundscape_creator.html')
 
+@app.route('/space-invaders')
+def space_invaders():
+    return render_template('space_invaders.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
