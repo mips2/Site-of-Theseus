@@ -4,22 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fun Interactive Website</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
 </head>
 <body>
-    <h1>Welcome to the Fun Interactive Website!</h1>
-    <nav>
-        <ul>
-            <li><a href="/memory-game">Memory Game</a></li>
-            <li><a href="/puzzle-escape">Puzzle Escape</a></li>
-            <li><a href="/color-mixer">Color Mixer</a></li>
-            <li><a href="/galaxy-explorer">Galaxy Explorer</a></li>
-            <li><a href="/emoji-story">Emoji Story</a></li>
-            <li><a href="/ai-art-generator">AI Art Generator</a></li>
-            <li><a href="/music-mixer">Music Mixer</a></li>
-            <li><a href="/virtual-pet">Virtual Pet</a></li>
-            <li><a href="/time-traveler">Time Traveler</a></li>
-        </ul>
-    </nav>
+    <div class="container">
+        <h1>Welcome to the Fun Interactive Website!</h1>
+        <div class="game-grid">
+            <a href="{{ url_for('memory_game') }}" class="game-card">Memory Game</a>
+            <a href="{{ url_for('puzzle_escape') }}" class="game-card">Puzzle Escape</a>
+            <a href="{{ url_for('color_mixer') }}" class="game-card">Color Mixer</a>
+            <a href="{{ url_for('galaxy_explorer') }}" class="game-card">Galaxy Explorer</a>
+            <a href="{{ url_for('emoji_story') }}" class="game-card">Emoji Story</a>
+            <a href="{{ url_for('ai_art_generator') }}" class="game-card">AI Art Generator</a>
+            <a href="{{ url_for('music_mixer') }}" class="game-card">Music Mixer</a>
+            <a href="{{ url_for('virtual_pet') }}" class="game-card">Virtual Pet</a>
+            <a href="{{ url_for('time_traveler') }}" class="game-card">Time Traveler</a>
+            <a href="{{ url_for('dreamscape_builder') }}" class="game-card">Dreamscape Builder</a>
+            <a href="{{ url_for('cosmic_race') }}" class="game-card">Cosmic Race</a>
+        </div>
+    </div>
 </body>
 </html>
