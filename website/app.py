@@ -102,14 +102,6 @@ def soundscape_creator():
 def space_invaders():
     return render_template('space_invaders.html')
 
-@app.route('/neon-typer-2')
-def neon_typer_2():
-    return render_template('neon_typer_2.html')
-
-@app.route('/neon-typer-3')
-def neon_typer_3():
-    return render_template('neon_typer_3.html')
-
 @app.route('/alien-language-decoder')
 def alien_language_decoder():
     return render_template('alien_language_decoder.html')
@@ -126,25 +118,37 @@ def neon_dodge():
 def quantum_paint():
     return render_template('quantum_paint.html')
 
-@app.route('/neon-typer-4')
-def neon_typer_4():
-    return render_template('neon_typer_4.html')
-
 @app.route('/laser-maze')
 def laser_maze():
     return render_template('laser_maze.html')
-
-@app.route('/neon-typer-5')
-def neon_typer_5():
-    return render_template('neon_typer_5.html')
 
 @app.route('/time-capsule')
 def time_capsule():
     return render_template('time_capsule.html')
 
+@app.route('/neon-typer-2')
+def neon_typer_2():
+    return render_template('neon_typer_2.html')
+
+@app.route('/neon-typer-3')
+def neon_typer_3():
+    return render_template('neon_typer_3.html')
+
+@app.route('/neon-typer-4')
+def neon_typer_4():
+    return render_template('neon_typer_4.html')
+
+@app.route('/neon-typer-5')
+def neon_typer_5():
+    return render_template('neon_typer_5.html')
+
 @app.route('/neon-typer-6')
 def neon_typer_6():
     return render_template('neon_typer_6.html')
+
+@app.route('/star-forger')
+def star_forger():
+    return render_template('star_forger.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

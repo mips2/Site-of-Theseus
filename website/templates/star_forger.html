@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Forger</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/star_forger.css') }}">
+</head>
+<body>
+    <div class="star-forger-container">
+        <h1>Star Forger</h1>
+        <p>Create your own star systems! Drag and drop planets, stars, and moons to build a galaxy.</p>
+        <div id="star-forger-canvas"></div>
+        <button id="reset-button">Reset Galaxy</button>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/star_forger.js') }}"></script>
+</body>
+</html>
