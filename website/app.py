@@ -158,5 +158,9 @@ def neon_typer_7():
 def neon_typer_8():
     return render_template('neon_typer_8.html')
 
+@app.route('/neon-typer-9')
+def neon_typer_9():
+    return render_template('neon_typer_9.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

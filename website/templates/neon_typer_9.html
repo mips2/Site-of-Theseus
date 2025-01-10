@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Typer 9</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/neon_typer_9.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Neon Typer 9: Cosmic Typing Challenge</h1>
+        <div class="game-area">
+            <p id="typing-prompt">Type the text below as fast as you can!</p>
+            <div id="text-to-type" class="neon-text">The quick brown fox jumps over the lazy dog.</div>
+            <textarea id="typing-input" placeholder="Start typing here..."></textarea>
+            <div id="timer">Time: 0.00s</div>
+            <div id="result"></div>
+            <button id="restart-button">Restart</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/neon_typer_9.js') }}"></script>
+</body>
+</html>
