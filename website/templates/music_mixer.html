@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Mixer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/music_mixer.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Music Mixer</h1>
+        <div class="mixer">
+            <div class="track" id="track1">
+                <button class="play-btn">▶️</button>
+                <input type="range" class="volume" min="0" max="100" value="50">
+                <audio src="{{ url_for('static', filename='audio/track1.mp3') }}"></audio>
+            </div>
+            <div class="track" id="track2">
+                <button class="play-btn">▶️</button>
+                <input type="range" class="volume" min="0" max="100" value="50">
+                <audio src="{{ url_for('static', filename='audio/track2.mp3') }}"></audio>
+            </div>
+            <div class="track" id="track3">
+                <button class="play-btn">▶️</button>
+                <input type="range" class="volume" min="0" max="100" value="50">
+                <audio src="{{ url_for('static', filename='audio/track3.mp3') }}"></audio>
+            </div>
+        </div>
+        <div class="controls">
+            <button id="play-all">Play All</button>
+            <button id="stop-all">Stop All</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/music_mixer.js') }}"></script>
+</body>
+</html>

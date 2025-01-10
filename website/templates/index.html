@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fun Interactive Website</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
 </head>
 <body>
     <div class="container">
         <h1>Welcome to the Fun Interactive Website!</h1>
-        <p>Explore a variety of interactive games and activities:</p>
-        <ul>
-            <li><a href="{{ url_for('memory_game') }}">Memory Game</a></li>
-            <li><a href="{{ url_for('puzzle_escape') }}">Puzzle Escape</a></li>
-            <li><a href="{{ url_for('color_mixer') }}">Color Mixer</a></li>
-            <li><a href="{{ url_for('galaxy_explorer') }}">Galaxy Explorer</a></li>
-            <li><a href="{{ url_for('emoji_story') }}">Emoji Story</a></li>
-            <li><a href="{{ url_for('ai_art_generator') }}">AI Art Generator</a></li>
-        </ul>
+        <div class="games">
+            <a href="{{ url_for('memory_game') }}" class="game-card">Memory Game</a>
+            <a href="{{ url_for('puzzle_escape') }}" class="game-card">Puzzle Escape</a>
+            <a href="{{ url_for('color_mixer') }}" class="game-card">Color Mixer</a>
+            <a href="{{ url_for('galaxy_explorer') }}" class="game-card">Galaxy Explorer</a>
+            <a href="{{ url_for('emoji_story') }}" class="game-card">Emoji Story</a>
+            <a href="{{ url_for('ai_art_generator') }}" class="game-card">AI Art Generator</a>
+            <a href="{{ url_for('music_mixer') }}" class="game-card">Music Mixer</a>
+        </div>
     </div>
 </body>
 </html>

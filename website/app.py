@@ -30,5 +30,9 @@ def emoji_story():
 def ai_art_generator():
     return render_template('ai_art_generator.html')
 
+@app.route('/music-mixer')
+def music_mixer():
+    return render_template('music_mixer.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
