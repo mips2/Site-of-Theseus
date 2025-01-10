@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Runner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/maze_runner.css') }}">
+</head>
+<body>
+    <div class="maze-container">
+        <h1>Maze Runner</h1>
+        <div class="maze">
+            <div class="player"></div>
+        </div>
+        <div class="controls">
+            <button id="up">↑</button>
+            <button id="left">←</button>
+            <button id="down">↓</button>
+            <button id="right">→</button>
+        </div>
+        <p>Navigate the maze and reach the exit!</p>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/maze_runner.js') }}"></script>
+</body>
+</html>

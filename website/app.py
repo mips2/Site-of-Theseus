@@ -90,5 +90,9 @@ def gravity_simulator():
 def neon_typer():
     return render_template('neon_typer.html')
 
+@app.route('/maze-runner')
+def maze_runner():
+    return render_template('maze_runner.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
