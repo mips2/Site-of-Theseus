@@ -82,5 +82,9 @@ def retro_arcade():
 def hologram_chat():
     return render_template('hologram_chat.html')
 
+@app.route('/gravity-simulator')
+def gravity_simulator():
+    return render_template('gravity_simulator.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

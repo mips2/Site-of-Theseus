@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravity Simulator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/gravity_simulator.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Gravity Simulator</h1>
+        <p>Click and drag to create planets. Watch them interact with gravity!</p>
+        <canvas id="gravityCanvas"></canvas>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/gravity_simulator.js') }}"></script>
+</body>
+</html>
