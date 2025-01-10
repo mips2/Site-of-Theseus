@@ -34,5 +34,9 @@ def ai_art_generator():
 def music_mixer():
     return render_template('music_mixer.html')
 
+@app.route('/virtual-pet')
+def virtual_pet():
+    return render_template('virtual_pet.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
