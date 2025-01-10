@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Arcade</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/retro_arcade.css') }}">
+</head>
+<body>
+    <div class="arcade-container">
+        <h1>Welcome to the Retro Arcade!</h1>
+        <div class="game-grid">
+            <div class="game-card" onclick="window.location.href='/neon-pong'">
+                <h2>Neon Pong</h2>
+                <p>Classic Pong with a neon twist!</p>
+            </div>
+            <div class="game-card" onclick="window.location.href='/cosmic-race'">
+                <h2>Cosmic Race</h2>
+                <p>Race through the stars!</p>
+            </div>
+            <div class="game-card" onclick="window.location.href='/mystery-island'">
+                <h2>Mystery Island</h2>
+                <p>Explore the unknown!</p>
+            </div>
+        </div>
+        <div class="back-button" onclick="window.location.href='/'">Back to Home</div>
+    </div>
+</body>
+</html>

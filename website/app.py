@@ -74,5 +74,9 @@ def neon_pong():
 def cyberpunk_city():
     return render_template('cyberpunk_city.html')
 
+@app.route('/retro-arcade')
+def retro_arcade():
+    return render_template('retro_arcade.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
