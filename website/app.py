@@ -126,6 +126,10 @@ def laser_maze():
 def time_capsule():
     return render_template('time_capsule.html')
 
+@app.route('/star-forger')
+def star_forger():
+    return render_template('star_forger.html')
+
 @app.route('/neon-typer-2')
 def neon_typer_2():
     return render_template('neon_typer_2.html')
@@ -146,10 +150,6 @@ def neon_typer_5():
 def neon_typer_6():
     return render_template('neon_typer_6.html')
 
-@app.route('/star-forger')
-def star_forger():
-    return render_template('star_forger.html')
-
 @app.route('/neon-typer-7')
 def neon_typer_7():
     return render_template('neon_typer_7.html')
@@ -161,6 +161,10 @@ def neon_typer_8():
 @app.route('/neon-typer-9')
 def neon_typer_9():
     return render_template('neon_typer_9.html')
+
+@app.route('/dreamscape-builder-2')
+def dreamscape_builder_2():
+    return render_template('dreamscape_builder_2.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

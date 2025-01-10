@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreamscape Builder 2.0</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dreamscape_builder_2.css') }}">
+</head>
+<body>
+    <div class="dreamscape-container">
+        <h1>Dreamscape Builder 2.0</h1>
+        <p>Create your own surreal dream world with interactive elements!</p>
+        <div class="canvas-container">
+            <canvas id="dreamCanvas"></canvas>
+        </div>
+        <div class="controls">
+            <button id="addCloud">Add Cloud</button>
+            <button id="addTree">Add Tree</button>
+            <button id="addRiver">Add River</button>
+            <button id="clearCanvas">Clear Canvas</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/dreamscape_builder_2.js') }}"></script>
+</body>
+</html>
