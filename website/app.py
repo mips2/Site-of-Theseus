@@ -126,5 +126,9 @@ def neon_dodge():
 def quantum_paint():
     return render_template('quantum_paint.html')
 
+@app.route('/neon-typer-4')
+def neon_typer_4():
+    return render_template('neon_typer_4.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
