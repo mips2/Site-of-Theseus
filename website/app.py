@@ -22,5 +22,9 @@ def color_mixer():
 def galaxy_explorer():
     return render_template('galaxy_explorer.html')
 
+@app.route('/emoji-story')
+def emoji_story():
+    return render_template('emoji_story.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

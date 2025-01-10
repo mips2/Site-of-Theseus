@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Story</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .emoji-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .emoji {
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        .story-display {
+            border: 2px solid #ccc;
+            padding: 20px;
+            min-height: 100px;
+            margin-top: 20px;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Emoji Story</h1>
+        <p>Click on emojis to add them to your story!</p>
+        <div class="emoji-container">
+            <span class="emoji" onclick="addEmoji('😀')">😀</span>
+            <span class="emoji" onclick="addEmoji('🚀')">🚀</span>
+            <span class="emoji" onclick="addEmoji('🌈')">🌈</span>
+            <span class="emoji" onclick="addEmoji('🐱')">🐱</span>
+            <span class="emoji" onclick="addEmoji('🍕')">🍕</span>
+            <span class="emoji" onclick="addEmoji('🎉')">🎉</span>
+            <span class="emoji" onclick="addEmoji('🌍')">🌍</span>
+            <span class="emoji" onclick="addEmoji('📚')">📚</span>
+        </div>
+        <div class="story-display" id="story-display"></div>
+        <button onclick="clearStory()">Clear Story</button>
+    </div>
+    <script>
+        function addEmoji(emoji) {
+            const storyDisplay = document.getElementById('story-display');
+            storyDisplay.textContent += emoji;
+        }
+
+        function clearStory() {
+            const storyDisplay = document.getElementById('story-display');
+            storyDisplay.textContent = '';
+        }
+    </script>
+</body>
+</html>
