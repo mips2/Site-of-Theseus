@@ -110,5 +110,9 @@ def neon_typer_2():
 def neon_typer_3():
     return render_template('neon_typer_3.html')
 
+@app.route('/alien-language-decoder')
+def alien_language_decoder():
+    return render_template('alien_language_decoder.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
