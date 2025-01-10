@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fun Website</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
+    <title>Fun Interactive Website</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to the Fun Website!</h1>
-        <div class="games">
-            <a href="{{ url_for('memory_game') }}" class="game-link">Memory Game</a>
-            <a href="{{ url_for('puzzle_escape') }}" class="game-link">Puzzle Escape</a>
-            <a href="{{ url_for('color_mixer') }}" class="game-link">Color Mixer</a>
-            <a href="{{ url_for('galaxy_explorer') }}" class="game-link">Galaxy Explorer</a>
-            <a href="{{ url_for('emoji_story') }}" class="game-link">Emoji Story</a>
-            <a href="{{ url_for('ai_art_generator') }}" class="game-link">AI Art Generator</a>
-            <a href="{{ url_for('music_mixer') }}" class="game-link">Music Mixer</a>
-            <a href="{{ url_for('virtual_pet') }}" class="game-link">Virtual Pet</a>
-        </div>
-    </div>
+    <h1>Welcome to the Fun Interactive Website!</h1>
+    <nav>
+        <ul>
+            <li><a href="/memory-game">Memory Game</a></li>
+            <li><a href="/puzzle-escape">Puzzle Escape</a></li>
+            <li><a href="/color-mixer">Color Mixer</a></li>
+            <li><a href="/galaxy-explorer">Galaxy Explorer</a></li>
+            <li><a href="/emoji-story">Emoji Story</a></li>
+            <li><a href="/ai-art-generator">AI Art Generator</a></li>
+            <li><a href="/music-mixer">Music Mixer</a></li>
+            <li><a href="/virtual-pet">Virtual Pet</a></li>
+            <li><a href="/time-traveler">Time Traveler</a></li>
+        </ul>
+    </nav>
 </body>
 </html>

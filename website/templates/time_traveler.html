@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Traveler</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .time-machine {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+        .time-machine h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .time-machine input {
+            padding: 10px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            width: 80%;
+        }
+        .time-machine button {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            background: #ff6f61;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .time-machine button:hover {
+            background: #ff3b2f;
+        }
+        .time-machine .result {
+            margin-top: 20px;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="time-machine">
+        <h1>Time Traveler</h1>
+        <input type="number" id="yearInput" placeholder="Enter a year to travel to...">
+        <button onclick="travelInTime()">Travel</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function travelInTime() {
+            const year = document.getElementById('yearInput').value;
+            const resultDiv = document.getElementById('result');
+            if (year < 1900 || year > 2100) {
+                resultDiv.textContent = "Invalid year! Please enter a year between 1900 and 2100.";
+            } else {
+                resultDiv.textContent = `Whoosh! You've traveled to the year ${year}.`;
+            }
+        }
+    </script>
+</body>
+</html>
