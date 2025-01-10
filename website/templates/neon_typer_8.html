@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Typer 8</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/neon_typer_8.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Neon Typer 8: Cosmic Typing Challenge</h1>
+        <div class="game-area">
+            <div class="typing-box">
+                <p id="quote">Loading cosmic quote...</p>
+                <input type="text" id="input-box" placeholder="Start typing here..." autocomplete="off">
+            </div>
+            <div class="stats">
+                <p>Time: <span id="timer">0</span>s</p>
+                <p>Accuracy: <span id="accuracy">100</span>%</p>
+                <p>Score: <span id="score">0</span></p>
+            </div>
+        </div>
+        <button id="restart-btn">Restart</button>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/neon_typer_8.js') }}"></script>
+</body>
+</html>

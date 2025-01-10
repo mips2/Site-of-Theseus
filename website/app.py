@@ -154,5 +154,9 @@ def star_forger():
 def neon_typer_7():
     return render_template('neon_typer_7.html')
 
+@app.route('/neon-typer-8')
+def neon_typer_8():
+    return render_template('neon_typer_8.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
