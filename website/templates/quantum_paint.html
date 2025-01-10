@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Paint</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/quantum_paint.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Quantum Paint</h1>
+        <p>Create stunning, interactive art with quantum-inspired effects!</p>
+        <canvas id="quantumCanvas" width="800" height="600"></canvas>
+        <div class="controls">
+            <button id="clearCanvas">Clear Canvas</button>
+            <input type="color" id="colorPicker" value="#ff0000">
+            <input type="range" id="brushSize" min="1" max="50" value="10">
+            <button id="quantumEffect">Apply Quantum Effect</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/quantum_paint.js') }}"></script>
+</body>
+</html>

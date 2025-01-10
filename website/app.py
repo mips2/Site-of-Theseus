@@ -122,5 +122,9 @@ def crystal_cavern():
 def neon_dodge():
     return render_template('neon_dodge.html')
 
+@app.route('/quantum-paint')
+def quantum_paint():
+    return render_template('quantum_paint.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
