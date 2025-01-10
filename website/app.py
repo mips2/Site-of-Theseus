@@ -130,5 +130,9 @@ def quantum_paint():
 def neon_typer_4():
     return render_template('neon_typer_4.html')
 
+@app.route('/laser-maze')
+def laser_maze():
+    return render_template('laser_maze.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
