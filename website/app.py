@@ -166,5 +166,9 @@ def neon_typer_9():
 def dreamscape_builder_2():
     return render_template('dreamscape_builder_2.html')
 
+@app.route('/neon-typer-10')
+def neon_typer_10():
+    return render_template('neon_typer_10.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
