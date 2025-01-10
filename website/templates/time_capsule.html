@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Capsule</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/time_capsule.css') }}">
+</head>
+<body>
+    <div class="time-capsule-container">
+        <h1>Time Capsule</h1>
+        <p>Write a message to your future self or someone else. Set a date for when it should be revealed!</p>
+        <form id="time-capsule-form">
+            <textarea id="message" placeholder="Write your message here..." required></textarea>
+            <input type="date" id="reveal-date" required>
+            <button type="submit">Seal the Capsule</button>
+        </form>
+        <div id="countdown"></div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/time_capsule.js') }}"></script>
+</body>
+</html>

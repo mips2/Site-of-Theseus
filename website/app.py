@@ -138,5 +138,9 @@ def laser_maze():
 def neon_typer_5():
     return render_template('neon_typer_5.html')
 
+@app.route('/time-capsule')
+def time_capsule():
+    return render_template('time_capsule.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
