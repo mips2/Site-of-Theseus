@@ -134,5 +134,9 @@ def neon_typer_4():
 def laser_maze():
     return render_template('laser_maze.html')
 
+@app.route('/neon-typer-5')
+def neon_typer_5():
+    return render_template('neon_typer_5.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
