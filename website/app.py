@@ -70,5 +70,9 @@ def mystery_island():
 def neon_pong():
     return render_template('neon_pong.html')
 
+@app.route('/cyberpunk-city')
+def cyberpunk_city():
+    return render_template('cyberpunk_city.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

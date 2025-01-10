@@ -1,0 +1,65 @@
+body {
+    background-color: #0d0d0d;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.cyberpunk-city {
+    text-align: center;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #00ff00;
+}
+
+.city-map {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.district {
+    background-color: #262626;
+    padding: 15px;
+    border-radius: 10px;
+    width: 30%;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+.district h2 {
+    color: #00ff00;
+}
+
+.district p {
+    color: #00ff99;
+}
+
+button {
+    background-color: #00ff00;
+    color: #0d0d0d;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #00cc00;
+}
+
+#district-info {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #262626;
+    border-radius: 10px;
+    width: 80%;
+    box-shadow: 0 0 10px #00ff00;
+}
