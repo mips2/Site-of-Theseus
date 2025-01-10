@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Story</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/interactive_story.css') }}">
+</head>
+<body>
+    <div class="story-container">
+        <h1>Interactive Story Adventure</h1>
+        <div id="story-text">
+            <p>Once upon a time, in a land far, far away...</p>
+        </div>
+        <div id="choices">
+            <button onclick="chooseOption(1)">Explore the forest</button>
+            <button onclick="chooseOption(2)">Visit the castle</button>
+            <button onclick="chooseOption(3)">Talk to the villagers</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/interactive_story.js') }}"></script>
+</body>
+</html>

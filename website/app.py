@@ -54,5 +54,9 @@ def cosmic_race():
 def word_weaver():
     return render_template('word_weaver.html')
 
+@app.route('/interactive-story')
+def interactive_story():
+    return render_template('interactive_story.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
