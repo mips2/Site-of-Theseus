@@ -4,84 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Game</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
             color: #333;
+            text-align: center;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
         }
-        .container {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #4a90e2;
-        }
-        .game-board {
+        .memory-game {
             display: grid;
             grid-template-columns: repeat(4, 100px);
             grid-gap: 10px;
-            margin: 2rem auto;
+            justify-content: center;
+            margin-top: 20px;
         }
         .card {
             width: 100px;
             height: 100px;
-            background: #4a90e2;
+            background-color: #fff;
             border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2rem;
-            color: white;
+            font-size: 24px;
             cursor: pointer;
-            transition: transform 0.3s, background 0.3s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .card.flipped {
-            background: #ff6f61;
             transform: rotateY(180deg);
         }
         .card.matched {
-            background: #50c878;
-            pointer-events: none;
-        }
-        .btn {
-            background: #4a90e2;
+            background-color: #4caf50;
             color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: default;
         }
-        .btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
-        }
-        .btn:active {
-            transform: scale(0.95);
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 <body>
-    <div class="container animate__animated animate__fadeIn">
-        <h1>Memory Game</h1>
-        <div class="game-board" id="game-board">
-            <!-- Cards will be dynamically generated here -->
-        </div>
-        <button class="btn" onclick="resetGame()">Reset Game</button>
+    <h1>Memory Game</h1>
+    <div class="memory-game" id="memory-game">
+        <!-- Cards will be dynamically generated here -->
     </div>
     <script>
         const cards = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
@@ -93,7 +63,6 @@
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
             }
-            return array;
         }
 
         function createCard(value) {
@@ -132,24 +101,17 @@
             flippedCards = [];
         }
 
-        function resetGame() {
-            const gameBoard = document.getElementById('game-board');
-            gameBoard.innerHTML = '';
-            matchedCards = [];
-            flippedCards = [];
-            initializeGame();
-        }
-
-        function initializeGame() {
-            const gameBoard = document.getElementById('game-board');
-            const shuffledCards = shuffle(cards);
-            shuffledCards.forEach(value => {
+        function initGame() {
+            shuffle(cards);
+            const gameContainer = document.getElementById('memory-game');
+            gameContainer.innerHTML = '';
+            cards.forEach(value => {
                 const card = createCard(value);
-                gameBoard.appendChild(card);
+                gameContainer.appendChild(card);
             });
         }
 
-        initializeGame();
+        initGame();
     </script>
 </body>
 </html>
