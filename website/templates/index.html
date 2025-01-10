@@ -3,30 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fun Interactive Website</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
+    <title>Hello World</title>
 </head>
 <body>
-    <div class="home-container">
-        <h1>Welcome to the Fun Interactive Website!</h1>
-        <div class="game-grid">
-            <div class="game-card" onclick="window.location.href='/memory-game'">
-                <img src="{{ url_for('static', filename='images/memory_game_icon.png') }}" alt="Memory Game">
-                <h2>Memory Game</h2>
-            </div>
-            <div class="game-card" onclick="window.location.href='/puzzle-challenge'">
-                <img src="{{ url_for('static', filename='images/puzzle_challenge_icon.png') }}" alt="Puzzle Challenge">
-                <h2>Puzzle Challenge</h2>
-            </div>
-            <div class="game-card" onclick="window.location.href='/emoji-mixer'">
-                <img src="{{ url_for('static', filename='images/emoji_mixer_icon.png') }}" alt="Emoji Mixer">
-                <h2>Emoji Mixer</h2>
-            </div>
-            <div class="game-card" onclick="window.location.href='/retro-arcade'">
-                <img src="{{ url_for('static', filename='images/retro_arcade_icon.png') }}" alt="Retro Arcade">
-                <h2>Retro Arcade</h2>
-            </div>
-        </div>
-    </div>
+    <h1>Hello World</h1>
 </body>
 </html>
