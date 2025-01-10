@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Typer 6</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/neon_typer_6.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Neon Typer 6: Cosmic Challenge</h1>
+        <div class="game-area">
+            <div class="typer-display">
+                <p id="typer-text">Type the words below as fast as you can!</p>
+                <div id="word-display"></div>
+                <input type="text" id="typer-input" autofocus>
+            </div>
+            <div class="score-display">
+                <p>Score: <span id="score">0</span></p>
+                <p>Time Left: <span id="timer">60</span>s</p>
+            </div>
+        </div>
+        <div class="controls">
+            <button id="start-button">Start Game</button>
+            <button id="reset-button">Reset Game</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/neon_typer_6.js') }}"></script>
+</body>
+</html>

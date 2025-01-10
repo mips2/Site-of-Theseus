@@ -142,5 +142,9 @@ def neon_typer_5():
 def time_capsule():
     return render_template('time_capsule.html')
 
+@app.route('/neon-typer-6')
+def neon_typer_6():
+    return render_template('neon_typer_6.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
