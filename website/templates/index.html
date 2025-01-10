@@ -5,69 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fun Interactive Games</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            color: #333;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        .game-container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            padding: 20px;
-        }
-        .game-card {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin: 20px;
-            padding: 20px;
-            width: 300px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-        }
-        .game-card h2 {
-            margin: 0 0 10px;
-            font-size: 24px;
-        }
-        .game-card p {
-            font-size: 16px;
-            color: #666;
-        }
-        .game-card a {
-            text-decoration: none;
-            color: #ff6f61;
-            font-weight: bold;
-        }
-        .game-card a:hover {
-            color: #ff3b2f;
-        }
-    </style>
 </head>
 <body>
-    <h1>Welcome to the Fun Interactive Games Hub!</h1>
-    <div class="game-container">
-        <div class="game-card">
-            <h2>Memory Game</h2>
-            <p>Test your memory with this fun and challenging game!</p>
-            <a href="{{ url_for('memory_game') }}">Play Now</a>
-        </div>
-        <div class="game-card">
-            <h2>Puzzle Escape</h2>
-            <p>Solve puzzles to escape the room before time runs out!</p>
-            <a href="{{ url_for('puzzle_escape') }}">Play Now</a>
-        </div>
-        <div class="game-card">
-            <h2>Color Mixer</h2>
-            <p>Mix colors to create new ones and unlock hidden patterns!</p>
-            <a href="{{ url_for('color_mixer') }}">Play Now</a>
+    <div class="home-container">
+        <h1>Welcome to the Fun Zone!</h1>
+        <div class="game-grid">
+            <a href="{{ url_for('memory_game') }}" class="game-card">
+                <div class="game-icon">🧠</div>
+                <h2>Memory Game</h2>
+            </a>
+            <a href="{{ url_for('puzzle_escape') }}" class="game-card">
+                <div class="game-icon">🧩</div>
+                <h2>Puzzle Escape</h2>
+            </a>
+            <a href="{{ url_for('color_mixer') }}" class="game-card">
+                <div class="game-icon">🎨</div>
+                <h2>Color Mixer</h2>
+            </a>
+            <a href="{{ url_for('galaxy_explorer') }}" class="game-card">
+                <div class="game-icon">🚀</div>
+                <h2>Galaxy Explorer</h2>
+            </a>
         </div>
     </div>
 </body>

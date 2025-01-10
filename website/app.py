@@ -18,5 +18,9 @@ def puzzle_escape():
 def color_mixer():
     return render_template('color_mixer.html')
 
+@app.route('/galaxy-explorer')
+def galaxy_explorer():
+    return render_template('galaxy_explorer.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
