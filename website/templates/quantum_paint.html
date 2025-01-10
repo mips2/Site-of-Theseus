@@ -7,15 +7,21 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/quantum_paint.css') }}">
 </head>
 <body>
-    <div class="container">
+    <div class="quantum-paint-container">
         <h1>Quantum Paint</h1>
-        <p>Create stunning, interactive art with quantum-inspired effects!</p>
-        <canvas id="quantumCanvas" width="800" height="600"></canvas>
+        <p>Create art that transcends dimensions! Use the tools below to paint in 4D space.</p>
+        <div class="canvas-container">
+            <canvas id="quantumCanvas"></canvas>
+        </div>
         <div class="controls">
             <button id="clearCanvas">Clear Canvas</button>
             <input type="color" id="colorPicker" value="#ff0000">
             <input type="range" id="brushSize" min="1" max="50" value="10">
-            <button id="quantumEffect">Apply Quantum Effect</button>
+            <button id="saveArt">Save Art</button>
+        </div>
+        <div class="gallery">
+            <h2>Gallery</h2>
+            <div id="artGallery"></div>
         </div>
     </div>
     <script src="{{ url_for('static', filename='scripts/quantum_paint.js') }}"></script>

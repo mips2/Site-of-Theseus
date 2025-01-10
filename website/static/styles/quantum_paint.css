@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(135deg, #1a1a1a, #333);
+    background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
     color: #fff;
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -8,21 +8,19 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    overflow: hidden;
 }
 
-.container {
+.quantum-paint-container {
     text-align: center;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 h1 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 20px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 p {
@@ -30,9 +28,14 @@ p {
     margin-bottom: 30px;
 }
 
-canvas {
+.canvas-container {
+    margin: 20px auto;
     border: 2px solid #fff;
     border-radius: 10px;
+    overflow: hidden;
+}
+
+canvas {
     background: #000;
     cursor: crosshair;
 }
@@ -41,22 +44,34 @@ canvas {
     margin-top: 20px;
 }
 
-button, input {
+button, input[type="color"], input[type="range"] {
     margin: 5px;
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background: #444;
+    background: #333;
     color: #fff;
-    font-size: 1rem;
     cursor: pointer;
 }
 
-button:hover, input:hover {
-    background: #555;
+button:hover, input[type="color"]:hover, input[type="range"]:hover {
+    background: #444;
 }
 
-#quantumEffect {
-    background: linear-gradient(135deg, #ff00cc, #3333ff);
-    font-weight: bold;
+.gallery {
+    margin-top: 30px;
+}
+
+#artGallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+#artGallery img {
+    border: 2px solid #fff;
+    border-radius: 5px;
+    max-width: 100px;
+    cursor: pointer;
 }
