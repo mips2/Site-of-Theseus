@@ -78,5 +78,9 @@ def cyberpunk_city():
 def retro_arcade():
     return render_template('retro_arcade.html')
 
+@app.route('/hologram-chat')
+def hologram_chat():
+    return render_template('hologram_chat.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

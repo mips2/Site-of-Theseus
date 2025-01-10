@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hologram Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/hologram_chat.css') }}">
+</head>
+<body>
+    <div class="hologram-container">
+        <div class="hologram-display">
+            <div class="hologram-message" id="hologram-message">
+                <p>Welcome to the Hologram Chat! Type a message below to interact with the hologram.</p>
+            </div>
+        </div>
+        <div class="input-container">
+            <input type="text" id="chat-input" placeholder="Type your message here...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/hologram_chat.js') }}"></script>
+</body>
+</html>
