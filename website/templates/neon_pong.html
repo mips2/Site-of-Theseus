@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Pong</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a1a, #000);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas {
+            border: 2px solid #00ffcc;
+            box-shadow: 0 0 20px #00ffcc;
+        }
+        .game-over {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            color: #ff0066;
+            text-shadow: 0 0 10px #ff0066;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="pongCanvas" width="800" height="600"></canvas>
+    <div class="game-over" id="gameOver">Game Over!</div>
+
+    <script>
+        const canvas = document.getElementById('pongCanvas');
+        const ctx = canvas.getContext('2d');
+        const gameOverText = document.getElementById('gameOver');
+
+        const paddleWidth = 10, paddleHeight = 100;
+        const ballRadius = 10;
+        let paddle1Y = 250, paddle2Y = 250;
+        let ballX = 400, ballY = 300;
+        let ballSpeedX = 5, ballSpeedY = 5;
+        let player1Score = 0, player2Score = 0;
+        let gameActive = true;
+
+        function drawPaddle(x, y) {
+            ctx.fillStyle = '#00ffcc';
+            ctx.fillRect(x, y, paddleWidth, paddleHeight);
+        }
+
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = '#ff0066';
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawScore() {
+            ctx.font = '30px Arial';
+            ctx.fillStyle = '#00ffcc';
+            ctx.fillText(player1Score, 350, 50);
+            ctx.fillText(player2Score, 450, 50);
+        }
+
+        function resetBall() {
+            ballX = 400;
+            ballY = 300;
+            ballSpeedX = -ballSpeedX;
+        }
+
+        function update() {
+            if (!gameActive) return;
+
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            if (ballY + ballRadius > canvas.height || ballY - ballRadius < 0) {
+                ballSpeedY = -ballSpeedY;
+            }
+
+            if (ballX - ballRadius < paddleWidth && ballY > paddle1Y && ballY < paddle1Y + paddleHeight) {
+                ballSpeedX = -ballSpeedX;
+            }
+
+            if (ballX + ballRadius > canvas.width - paddleWidth && ballY > paddle2Y && ballY < paddle2Y + paddleHeight) {
+                ballSpeedX = -ballSpeedX;
+            }
+
+            if (ballX - ballRadius < 0) {
+                player2Score++;
+                resetBall();
+            }
+
+            if (ballX + ballRadius > canvas.width) {
+                player1Score++;
+                resetBall();
+            }
+
+            if (player1Score >= 5 || player2Score >= 5) {
+                gameActive = false;
+                gameOverText.style.display = 'block';
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPaddle(0, paddle1Y);
+            drawPaddle(canvas.width - paddleWidth, paddle2Y);
+            drawBall();
+            drawScore();
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            if (gameActive) {
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            paddle1Y = e.clientY - rect.top - paddleHeight / 2;
+        });
+
+        gameLoop();
+    </script>
+</body>
+</html>

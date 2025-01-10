@@ -66,5 +66,9 @@ def quantum_leap():
 def mystery_island():
     return render_template('mystery_island.html')
 
+@app.route('/neon-pong')
+def neon_pong():
+    return render_template('neon_pong.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

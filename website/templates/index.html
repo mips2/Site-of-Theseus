@@ -3,24 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fun Interactive Website</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
+    <title>Fun Interactive Games</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1a1a1a, #000);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .game-card {
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .game-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #00ffcc;
+        }
+        .game-card a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.2em;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to the Fun Interactive Website!</h1>
-        <div class="game-grid">
-            <a href="{{ url_for('memory_game') }}" class="game-card">Memory Game</a>
-            <a href="{{ url_for('puzzle_escape') }}" class="game-card">Puzzle Escape</a>
-            <a href="{{ url_for('color_mixer') }}" class="game-card">Color Mixer</a>
-            <a href="{{ url_for('galaxy_explorer') }}" class="game-card">Galaxy Explorer</a>
-            <a href="{{ url_for('emoji_story') }}" class="game-card">Emoji Story</a>
-            <a href="{{ url_for('ai_art_generator') }}" class="game-card">AI Art Generator</a>
-            <a href="{{ url_for('music_mixer') }}" class="game-card">Music Mixer</a>
-            <a href="{{ url_for('virtual_pet') }}" class="game-card">Virtual Pet</a>
-            <a href="{{ url_for('time_traveler') }}" class="game-card">Time Traveler</a>
-            <a href="{{ url_for('dreamscape_builder') }}" class="game-card">Dreamscape Builder</a>
-            <a href="{{ url_for('cosmic_race') }}" class="game-card">Cosmic Race</a>
+    <h1>Welcome to Fun Interactive Games!</h1>
+    <div class="game-grid">
+        <div class="game-card">
+            <a href="/memory-game">Memory Game</a>
+        </div>
+        <div class="game-card">
+            <a href="/puzzle-escape">Puzzle Escape</a>
+        </div>
+        <div class="game-card">
+            <a href="/color-mixer">Color Mixer</a>
+        </div>
+        <div class="game-card">
+            <a href="/galaxy-explorer">Galaxy Explorer</a>
+        </div>
+        <div class="game-card">
+            <a href="/emoji-story">Emoji Story</a>
+        </div>
+        <div class="game-card">
+            <a href="/ai-art-generator">AI Art Generator</a>
+        </div>
+        <div class="game-card">
+            <a href="/music-mixer">Music Mixer</a>
+        </div>
+        <div class="game-card">
+            <a href="/virtual-pet">Virtual Pet</a>
+        </div>
+        <div class="game-card">
+            <a href="/time-traveler">Time Traveler</a>
+        </div>
+        <div class="game-card">
+            <a href="/dreamscape-builder">Dreamscape Builder</a>
+        </div>
+        <div class="game-card">
+            <a href="/cosmic-race">Cosmic Race</a>
+        </div>
+        <div class="game-card">
+            <a href="/word-weaver">Word Weaver</a>
+        </div>
+        <div class="game-card">
+            <a href="/interactive-story">Interactive Story</a>
+        </div>
+        <div class="game-card">
+            <a href="/quantum-leap">Quantum Leap</a>
+        </div>
+        <div class="game-card">
+            <a href="/mystery-island">Mystery Island</a>
+        </div>
+        <div class="game-card">
+            <a href="/neon-pong">Neon Pong</a>
         </div>
     </div>
 </body>
