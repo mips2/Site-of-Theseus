@@ -106,5 +106,9 @@ def space_invaders():
 def neon_typer_2():
     return render_template('neon_typer_2.html')
 
+@app.route('/neon-typer-3')
+def neon_typer_3():
+    return render_template('neon_typer_3.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
