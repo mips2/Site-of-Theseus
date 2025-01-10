@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Escape</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 10px;
+            margin: 20px auto;
+        }
+        .puzzle-piece {
+            width: 100px;
+            height: 100px;
+            background-color: #ffcc00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            border: 2px solid #000;
+        }
+        .puzzle-piece.correct {
+            background-color: #00cc00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Puzzle Escape</h1>
+        <p>Arrange the pieces in the correct order to escape!</p>
+        <div class="puzzle-container">
+            <div class="puzzle-piece" data-order="1">1</div>
+            <div class="puzzle-piece" data-order="2">2</div>
+            <div class="puzzle-piece" data-order="3">3</div>
+            <div class="puzzle-piece" data-order="4">4</div>
+            <div class="puzzle-piece" data-order="5">5</div>
+            <div class="puzzle-piece" data-order="6">6</div>
+            <div class="puzzle-piece" data-order="7">7</div>
+            <div class="puzzle-piece" data-order="8">8</div>
+            <div class="puzzle-piece" data-order="9">9</div>
+        </div>
+        <button id="check-solution">Check Solution</button>
+        <p id="result-message"></p>
+    </div>
+    <script>
+        const pieces = document.querySelectorAll('.puzzle-piece');
+        const checkButton = document.getElementById('check-solution');
+        const resultMessage = document.getElementById('result-message');
+
+        pieces.forEach(piece => {
+            piece.addEventListener('click', () => {
+                const currentOrder = piece.getAttribute('data-order');
+                const newOrder = prompt('Enter new position (1-9):');
+                if (newOrder >= 1 && newOrder <= 9) {
+                    piece.setAttribute('data-order', newOrder);
+                    piece.textContent = newOrder;
+                }
+            });
+        });
+
+        checkButton.addEventListener('click', () => {
+            let isCorrect = true;
+            pieces.forEach((piece, index) => {
+                if (piece.getAttribute('data-order') != (index + 1).toString()) {
+                    isCorrect = false;
+                }
+            });
+            if (isCorrect) {
+                resultMessage.textContent = 'Congratulations! You escaped!';
+                resultMessage.style.color = 'green';
+            } else {
+                resultMessage.textContent = 'Not quite right. Keep trying!';
+                resultMessage.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>
