@@ -114,5 +114,9 @@ def neon_typer_3():
 def alien_language_decoder():
     return render_template('alien_language_decoder.html')
 
+@app.route('/crystal-cavern')
+def crystal_cavern():
+    return render_template('crystal_cavern.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

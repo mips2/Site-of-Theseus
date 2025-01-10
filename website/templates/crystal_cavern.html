@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal Cavern Adventure</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/crystal_cavern.css') }}">
+</head>
+<body>
+    <div class="cavern-container">
+        <h1>Welcome to the Crystal Cavern!</h1>
+        <p>Navigate through the glowing crystals to find the hidden treasure.</p>
+        <div class="crystal-grid">
+            <div class="crystal" data-value="1"></div>
+            <div class="crystal" data-value="2"></div>
+            <div class="crystal" data-value="3"></div>
+            <div class="crystal" data-value="4"></div>
+            <div class="crystal" data-value="5"></div>
+            <div class="crystal" data-value="6"></div>
+            <div class="crystal" data-value="7"></div>
+            <div class="crystal" data-value="8"></div>
+            <div class="crystal" data-value="9"></div>
+        </div>
+        <div class="treasure-chest hidden">
+            <p>You found the treasure! 🎉</p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/crystal_cavern.js') }}"></script>
+</body>
+</html>
