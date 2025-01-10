@@ -62,5 +62,9 @@ def interactive_story():
 def quantum_leap():
     return render_template('quantum_leap.html')
 
+@app.route('/mystery-island')
+def mystery_island():
+    return render_template('mystery_island.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

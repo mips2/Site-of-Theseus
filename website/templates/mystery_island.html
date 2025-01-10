@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Island Adventure</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/mystery_island.css') }}">
+</head>
+<body>
+    <div class="island-container">
+        <h1>Welcome to Mystery Island!</h1>
+        <p>Explore the island, solve puzzles, and uncover hidden treasures.</p>
+        <div class="island-map">
+            <div class="location" id="beach" onclick="exploreLocation('beach')">🏖️ Beach</div>
+            <div class="location" id="jungle" onclick="exploreLocation('jungle')">🌴 Jungle</div>
+            <div class="location" id="cave" onclick="exploreLocation('cave')">🕳️ Cave</div>
+            <div class="location" id="mountain" onclick="exploreLocation('mountain')">⛰️ Mountain</div>
+        </div>
+        <div id="result"></div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/mystery_island.js') }}"></script>
+</body>
+</html>
