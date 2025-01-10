@@ -3,15 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fun Interactive Website</title>
+    <title>Fun Interactive Games</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to the Fun Zone!</h1>
-        <div class="game-links">
-            <a href="/memory-game" class="game-link">Memory Game</a>
-            <a href="/puzzle-escape" class="game-link">Puzzle Escape</a>
+        <h1>Welcome to Fun Interactive Games!</h1>
+        <div class="game-grid">
+            <a href="{{ url_for('memory_game') }}" class="game-card">
+                <h2>Memory Game</h2>
+                <p>Test your memory with this fun card-matching game!</p>
+            </a>
+            <a href="{{ url_for('puzzle_escape') }}" class="game-card">
+                <h2>Puzzle Escape</h2>
+                <p>Solve puzzles to escape the room!</p>
+            </a>
+            <a href="{{ url_for('color_mixer') }}" class="game-card">
+                <h2>Color Mixer</h2>
+                <p>Mix colors to create new ones in this interactive game!</p>
+            </a>
         </div>
     </div>
 </body>

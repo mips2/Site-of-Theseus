@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Mixer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .color-mixer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 50px;
+        }
+        .color-display {
+            width: 200px;
+            height: 200px;
+            border: 2px solid #000;
+            margin-bottom: 20px;
+        }
+        .sliders {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .sliders input {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Color Mixer</h1>
+        <div class="color-mixer">
+            <div class="color-display" id="colorDisplay"></div>
+            <div class="sliders">
+                <label for="red">Red:</label>
+                <input type="range" id="red" min="0" max="255" value="0">
+                <label for="green">Green:</label>
+                <input type="range" id="green" min="0" max="255" value="0">
+                <label for="blue">Blue:</label>
+                <input type="range" id="blue" min="0" max="255" value="0">
+            </div>
+        </div>
+    </div>
+    <script>
+        const redSlider = document.getElementById('red');
+        const greenSlider = document.getElementById('green');
+        const blueSlider = document.getElementById('blue');
+        const colorDisplay = document.getElementById('colorDisplay');
+
+        function updateColor() {
+            const red = redSlider.value;
+            const green = greenSlider.value;
+            const blue = blueSlider.value;
+            colorDisplay.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+        }
+
+        redSlider.addEventListener('input', updateColor);
+        greenSlider.addEventListener('input', updateColor);
+        blueSlider.addEventListener('input', updateColor);
+
+        updateColor();
+    </script>
+</body>
+</html>
