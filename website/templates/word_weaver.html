@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Weaver</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/word_weaver.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Word Weaver</h1>
+        <p>Create a story by weaving words together! Type a word and see it appear in the story below.</p>
+        <input type="text" id="wordInput" placeholder="Enter a word...">
+        <button id="addWordBtn">Add Word</button>
+        <div id="storyDisplay" class="story-display"></div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/word_weaver.js') }}"></script>
+</body>
+</html>
