@@ -86,5 +86,9 @@ def hologram_chat():
 def gravity_simulator():
     return render_template('gravity_simulator.html')
 
+@app.route('/neon-typer')
+def neon_typer():
+    return render_template('neon_typer.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,59 @@
+body {
+    background-color: #0a0a0a;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.neon-container {
+    text-align: center;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.neon-title {
+    font-size: 3rem;
+    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+}
+
+.neon-text {
+    margin: 20px 0;
+    font-size: 1.2rem;
+}
+
+.neon-game {
+    margin-top: 20px;
+}
+
+.neon-word {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+}
+
+.neon-input {
+    width: 300px;
+    padding: 10px;
+    font-size: 1.2rem;
+    background-color: #1a1a1a;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    border-radius: 5px;
+    outline: none;
+}
+
+.neon-input:focus {
+    box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+}
+
+.neon-score {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+}

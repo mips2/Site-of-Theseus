@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Typer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/neon_typer.css') }}">
+</head>
+<body>
+    <div class="neon-container">
+        <h1 class="neon-title">Neon Typer</h1>
+        <div class="neon-text">
+            <p>Type the words as fast as you can!</p>
+        </div>
+        <div class="neon-game">
+            <div id="word-display" class="neon-word"></div>
+            <input type="text" id="word-input" class="neon-input" autocomplete="off" placeholder="Start typing...">
+            <div id="score-display" class="neon-score">Score: 0</div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/neon_typer.js') }}"></script>
+</body>
+</html>
