@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Typer 2.0</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/neon_typer_2.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Neon Typer 2.0</h1>
+        <p>Type the words as fast as you can! Each correct word lights up the neon sign.</p>
+        <div id="neon-sign">
+            <span class="neon-letter">N</span>
+            <span class="neon-letter">E</span>
+            <span class="neon-letter">O</span>
+            <span class="neon-letter">N</span>
+        </div>
+        <input type="text" id="word-input" placeholder="Start typing...">
+        <div id="score">Score: 0</div>
+        <div id="timer">Time: 60</div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/neon_typer_2.js') }}"></script>
+</body>
+</html>

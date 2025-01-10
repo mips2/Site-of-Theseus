@@ -102,5 +102,9 @@ def soundscape_creator():
 def space_invaders():
     return render_template('space_invaders.html')
 
+@app.route('/neon-typer-2')
+def neon_typer_2():
+    return render_template('neon_typer_2.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

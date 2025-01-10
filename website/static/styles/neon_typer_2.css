@@ -1,0 +1,57 @@
+body {
+    background-color: #0a0a0a;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+}
+
+h1 {
+    font-size: 3rem;
+    color: #ff00ff;
+    text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+}
+
+#neon-sign {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.neon-letter {
+    font-size: 4rem;
+    margin: 0 10px;
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.neon-letter.active {
+    opacity: 1;
+}
+
+#word-input {
+    padding: 10px;
+    font-size: 1.5rem;
+    width: 300px;
+    margin-top: 20px;
+    background-color: #222;
+    border: 2px solid #00ffff;
+    color: #fff;
+    text-align: center;
+}
+
+#score, #timer {
+    font-size: 1.5rem;
+    margin-top: 20px;
+    color: #ff00ff;
+    text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+}
