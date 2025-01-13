@@ -178,5 +178,9 @@ def cosmic_race_2():
 def mystery_island_2():
     return render_template('mystery_island_2.html')
 
+@app.route('/ai-dungeon-master')
+def ai_dungeon_master():
+    return render_template('ai_dungeon_master.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

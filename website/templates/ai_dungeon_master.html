@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Dungeon Master</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/ai_dungeon_master.css') }}">
+</head>
+<body>
+    <div class="dungeon-container">
+        <h1>AI Dungeon Master</h1>
+        <div class="story-display" id="story-display">
+            <p>Welcome to the AI Dungeon Master! Start your adventure by typing your actions below.</p>
+        </div>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="What do you do?">
+            <button id="submit-action">Submit</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/ai_dungeon_master.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+body {
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.dungeon-container {
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.story-display {
+    background-color: #3a3a3a;
+    padding: 15px;
+    border-radius: 5px;
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+#user-input {
+    width: 75%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4a4a4a;
+    color: #f5f5f5;
+}
+
+#submit-action {
+    width: 20%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5a5a5a;
+    color: #f5f5f5;
+    cursor: pointer;
+}
+
+#submit-action:hover {
+    background-color: #6a6a6a;
+}
