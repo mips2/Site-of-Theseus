@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Island 2</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/mystery_island_2.css') }}">
+</head>
+<body>
+    <div class="island-container">
+        <h1>Welcome to Mystery Island 2!</h1>
+        <p>Explore the island, solve puzzles, and uncover hidden treasures.</p>
+        <div class="puzzle-section">
+            <h2>Puzzle 1: The Ancient Riddle</h2>
+            <p>What has keys but can't open locks?</p>
+            <input type="text" id="riddle-answer" placeholder="Your answer...">
+            <button onclick="checkRiddle()">Submit</button>
+            <p id="riddle-feedback"></p>
+        </div>
+        <div class="treasure-map">
+            <h2>Treasure Map</h2>
+            <canvas id="treasure-map-canvas"></canvas>
+            <p>Follow the clues to find the treasure!</p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/mystery_island_2.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+body {
+    background-color: #1a1a2e;
+    color: #e94560;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.island-container {
+    padding: 20px;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.puzzle-section {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #16213e;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    margin-top: 10px;
+    width: 80%;
+    max-width: 300px;
+    border: 2px solid #e94560;
+    border-radius: 5px;
+    background-color: #0f3460;
+    color: #e94560;
+}
+
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background-color: #e94560;
+    color: #1a1a2e;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ff6b6b;
+}
+
+#riddle-feedback {
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+
+.treasure-map {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #16213e;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+}
+
+canvas {
+    background-color: #0f3460;
+    border-radius: 10px;
+    margin-top: 10px;
+}

@@ -174,5 +174,9 @@ def neon_typer_10():
 def cosmic_race_2():
     return render_template('cosmic_race_2.html')
 
+@app.route('/mystery-island-2')
+def mystery_island_2():
+    return render_template('mystery_island_2.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
