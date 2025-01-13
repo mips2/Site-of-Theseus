@@ -1,0 +1,59 @@
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.neon-container {
+    text-align: center;
+    background-color: #111;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.neon-title {
+    font-size: 3rem;
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+}
+
+.neon-text-container {
+    margin: 20px 0;
+}
+
+.neon-text {
+    font-size: 1.5rem;
+    color: #0ff;
+    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+}
+
+.neon-input-container {
+    margin: 20px 0;
+}
+
+.neon-input {
+    width: 300px;
+    padding: 10px;
+    font-size: 1.2rem;
+    border: 2px solid #0ff;
+    border-radius: 5px;
+    background-color: #222;
+    color: #0ff;
+    text-align: center;
+}
+
+.neon-score-container, .neon-timer-container {
+    margin: 10px 0;
+}
+
+.neon-score, .neon-timer {
+    font-size: 1.2rem;
+    color: #0ff;
+    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+}

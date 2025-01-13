@@ -182,5 +182,9 @@ def mystery_island_2():
 def ai_dungeon_master():
     return render_template('ai_dungeon_master.html')
 
+@app.route('/neon-typer-11')
+def neon_typer_11():
+    return render_template('neon_typer_11.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
