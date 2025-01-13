@@ -186,5 +186,9 @@ def ai_dungeon_master():
 def neon_typer_11():
     return render_template('neon_typer_11.html')
 
+@app.route('/neon-typer-12')
+def neon_typer_12():
+    return render_template('neon_typer_12.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

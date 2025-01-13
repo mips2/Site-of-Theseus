@@ -139,7 +139,7 @@ SUCCESSFUL_COMMITS = 0
 # -------------------------------------------------------------------------
 DEESEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"
 DEESEEK_MODEL = "deepseek-chat"
-MAX_TOKENS = 5000
+MAX_TOKENS = 4000
 DEESEEK_RETRIES = 3
 
 def call_deepseek_api(payload):

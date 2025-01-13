@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Typer 12</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/neon_typer_12.css') }}">
+</head>
+<body>
+    <div class="neon-container">
+        <h1 class="neon-title">Neon Typer 12</h1>
+        <div class="neon-text-container">
+            <p class="neon-text">Type the text below as fast as you can!</p>
+            <div class="neon-target-text" id="targetText">The quick brown fox jumps over the lazy dog.</div>
+            <textarea class="neon-input" id="userInput" placeholder="Start typing here..."></textarea>
+            <div class="neon-stats">
+                <p>Time: <span id="time">0</span>s</p>
+                <p>Accuracy: <span id="accuracy">100</span>%</p>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/neon_typer_12.js') }}"></script>
+</body>
+</html>
