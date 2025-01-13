@@ -94,6 +94,8 @@ SYSTEM_PROMPT = config.get(
     "8. Explore a wide variety of themes and features, avoiding getting stuck on a single theme.\n"
     "9. You do not need to edit every existing file, only whichever ones are relevant to the change you are making.\n"
     "10. **STRICTLY FORBIDDEN**: Do not include HTML comments (`<!-- ... -->`) or any HTML content in `.py` files. HTML belongs in `website/templates/`.\n"
+    "11. If you add a new feathure meant to be on another page, MAKE SURE that it is routed to the main page. \n"
+    "12. When adding a feature, implement it to the absolute best possible. Make sure it works perfectly, scales well, and is truly cutting edge. Do not be lazy. Use the limits of ur ability. \n"
     "Return only code blocks labeled with 'File: ...' for each file you edit. No explanations outside code blocks."
 )
 USER_INSTRUCTIONS = config.get(
@@ -137,7 +139,7 @@ SUCCESSFUL_COMMITS = 0
 # -------------------------------------------------------------------------
 DEESEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"
 DEESEEK_MODEL = "deepseek-chat"
-MAX_TOKENS = 2500
+MAX_TOKENS = 5000
 DEESEEK_RETRIES = 3
 
 def call_deepseek_api(payload):
