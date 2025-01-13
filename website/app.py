@@ -170,5 +170,9 @@ def dreamscape_builder_2():
 def neon_typer_10():
     return render_template('neon_typer_10.html')
 
+@app.route('/cosmic-race-2')
+def cosmic_race_2():
+    return render_template('cosmic_race_2.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
