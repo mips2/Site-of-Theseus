@@ -7,6 +7,13 @@ website_dir = 'website'
 templates_dir = os.path.join(website_dir, 'templates')
 static_dir = os.path.join(website_dir, 'static')
 archive_root_dir = 'archive'
+app_file = os.path.join(website_dir, 'app.py')  # Define app_file here
+
+# Debug: Print paths to verify they are correct
+print(f"Website directory: {website_dir}")
+print(f"Templates directory: {templates_dir}")
+print(f"Static directory: {static_dir}")
+print(f"App file: {app_file}")
 
 # Create archive root directory if it doesn't exist
 os.makedirs(archive_root_dir, exist_ok=True)
@@ -21,16 +28,27 @@ while True:
 
 # Create the archive directory
 os.makedirs(archive_dir)
+print(f"Created archive directory: {archive_dir}")
 
 # Export templates and static to archive
 if os.path.exists(templates_dir):
+    print(f"Moving templates to {archive_dir}")
     shutil.move(templates_dir, os.path.join(archive_dir, 'templates'))
+else:
+    print(f"Templates directory not found: {templates_dir}")
+
 if os.path.exists(static_dir):
+    print(f"Moving static to {archive_dir}")
     shutil.move(static_dir, os.path.join(archive_dir, 'static'))
+else:
+    print(f"Static directory not found: {static_dir}")
 
 if os.path.exists(app_file):
+    print(f"Moving app.py to {archive_dir}")
     shutil.move(app_file, os.path.join(archive_dir, 'app.py'))
-    
+else:
+    print(f"App file not found: {app_file}")
+
 # Create new base Flask template
 os.makedirs(templates_dir, exist_ok=True)
 os.makedirs(static_dir, exist_ok=True)
