@@ -3,26 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to ConnectHub</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Home</title>
 </head>
 <body>
-    <header>
-        <h1>ConnectHub</h1>
-        <nav>
-            {% if 'username' in session %}
-                <a href="{{ url_for('profile', username=session['username']) }}">Profile</a>
-                <a href="{{ url_for('logout') }}">Logout</a>
-            {% else %}
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{ url_for('register') }}">Register</a>
-            {% endif %}
-        </nav>
-    </header>
-    <main>
-        <h2>Welcome to ConnectHub!</h2>
-        <p>Join our community to connect with others and share your thoughts.</p>
-    </main>
+    <h1>Welcome to the Social Media Platform</h1>
+    {% if current_user.is_authenticated %}
+        <p>Hello, {{ current_user.id }}! <a href="{{ url_for('logout') }}">Logout</a></p>
+        <a href="{{ url_for('profile', username=current_user.id) }}">View Profile</a>
+    {% else %}
+        <p><a href="{{ url_for('login') }}">Login</a></p>
+    {% endif %}
+    <p>{{ get_flashed_messages()[0] }}</p>
 </body>
 </html>
 
