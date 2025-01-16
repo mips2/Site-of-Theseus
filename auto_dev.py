@@ -123,7 +123,7 @@ USER_INSTRUCTIONS = config.get(
     "10. **Make It Interactive**: Add engaging features that are lightweight and performant. Use static or user-generated data to make the experience dynamic.\n"
     "11. **Follow Standards**: Adhere to PEP 8 and W3C guidelines.\n"
     "12. **Provide Feedback**: If you encounter issues, suggest improvements clearly.\n"
-    "Return only code blocks labeled with 'File: ...' for each file you edit. No explanations outside code blocks."
+    "Return only code blocks labeled with 'File: path/to/file' for each file you edit. No explanations outside code blocks."
 )
 # -------------------------------------------------------------------------
 #  Environment Variables
@@ -244,7 +244,7 @@ def generate_code_change(full_codebase, failure_reason=""):
         return "# [DeepSeek ERROR] Could not generate new code.\n"
     try:
         ai_message = result["choices"][0]["message"]["content"].strip()
-        logger.debug(f"RAW AI RESPONSE:\n{ai_message}\n")  # Debug-level log
+        logger.debug(f"RAW AI RESPONSE:\n{ai_message}\n")
         return ai_message
     except (KeyError, IndexError) as e:
         logger.error(f"Invalid DeepSeek response structure: {e}")
@@ -314,11 +314,10 @@ def parse_ai_response_into_files(ai_response):
 
     temp_files = {}
     for match in matches:
-        filename_line = match[0]  # e.g., "File: website/app.py"
+        filename_line = match[0]
         file_path = match[1].strip()
         code_block = match[2].strip()
 
-        # Remove trailing --> if AI appended it
         if file_path.endswith("-->"):
             file_path = file_path.replace("-->", "").strip()
 
@@ -333,15 +332,12 @@ def parse_ai_response_into_files(ai_response):
 
         # If referencing a .py file, remove HTML comments and blocks
         if file_path.endswith(".py"):
-            # Remove HTML comments
             code_block = re.sub(r"<!--.*?-->", "", code_block, flags=re.DOTALL)
-            # Remove HTML blocks
             code_block = re.sub(r"<[^>]+>", "", code_block)
 
         temp_files[file_path] = code_block
 
     return temp_files
-
 
 # -------------------------------------------------------------------------
 #  Template Handling Checks
@@ -367,6 +363,32 @@ def template_references_check(files_dict):
                 f"Template '{html_file}' not referenced in any .py update. Potential orphan template."
             )
     return True
+
+# -------------------------------------------------------------------------
+#  Requirements Check
+# -------------------------------------------------------------------------
+def ensure_requirements_installed(req_file="website/requirements.txt"):
+    """
+    Verify requirements from the file are installed; if not, install them.
+    """
+    if not os.path.exists(req_file):
+        logger.warning("No requirements.txt found. Skipping check.")
+        return
+
+    try:
+        logger.info("Verifying all requirements are installed...")
+        with open(req_file, "r", encoding="utf-8") as f:
+            lines = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+        for requirement in lines:
+            logger.debug(f"Checking if '{requirement}' is installed...")
+            check_proc = subprocess.run(["pip", "show", requirement], capture_output=True, text=True)
+            if check_proc.returncode != 0:
+                logger.info(f"Requirement '{requirement}' not found. Installing...")
+                install_proc = subprocess.run(["pip", "install", requirement], capture_output=True, text=True)
+                if install_proc.returncode != 0:
+                    logger.error(f"Failed to install '{requirement}': {install_proc.stderr}")
+    except Exception as e:
+        logger.error(f"Error ensuring requirements installed: {e}")
 
 # -------------------------------------------------------------------------
 #  Testing
@@ -401,7 +423,6 @@ def run_test_commands():
 
     check_tests_exist()
 
-    # Attempt a bandit scan if available
     bandit_installed = False
     try:
         subprocess.run(["bandit", "--version"], check=True, capture_output=True, text=True)
@@ -410,6 +431,7 @@ def run_test_commands():
         logger.info("bandit not found, skipping security scan.")
     except subprocess.CalledProcessError:
         logger.info("bandit found but returned an error; skipping.")
+
     if bandit_installed:
         try:
             logger.info("Running security scan with bandit...")
@@ -420,7 +442,6 @@ def run_test_commands():
         except Exception as e:
             logger.error(f"Error running bandit: {e}")
 
-    # Finally, run tests
     try:
         subprocess.check_call(["pytest", "website/tests/", "--maxfail=1"])
         return True
@@ -462,14 +483,12 @@ def revert_to_latest_remote_commit():
     else:
         logger.info("Successfully reverted to the latest remote commit.")
 
-    # Now clean untracked files/folders:
     logger.info("Running git clean -fd to remove untracked files/directories...")
     clean_result = git_command("clean", "-fd")
     if clean_result.returncode != 0:
         logger.error("Failed to clean untracked files/directories.")
     else:
         logger.info("Successfully cleaned untracked files/directories.")
-
 
 # -------------------------------------------------------------------------
 #  Main Automated Loop
@@ -479,27 +498,22 @@ def main_loop():
         logger.info("AUTO-DEV is disabled in config.yaml. Exiting.")
         return
 
-    logger.addHandler(console_handler)  # Ensure console output for auto runs
+    logger.addHandler(console_handler)
 
-    # 1. Pull latest code
+    ensure_requirements_installed()
+
     git_command("pull", "origin", BRANCH_NAME)
-
-    # 2. Gather full codebase context
     full_codebase = gather_codebase()
-
     if not full_codebase.strip():
         logger.error("No code files found to provide context to AI. Aborting.")
         return
 
-    # We'll capture old_app_code if we specifically want to generate a summary
-    # for app.py changes. Otherwise, just read from disk if app.py exists.
     app_path = "website/app.py"
     old_app_code = ""
     if os.path.exists(app_path):
         with open(app_path, "r", encoding="utf-8") as f:
             old_app_code = f.read()
 
-    # Single AI request (no loop)
     ai_response = generate_code_change(full_codebase)
     files_dict = parse_ai_response_into_files(ai_response)
 
@@ -508,15 +522,12 @@ def main_loop():
         revert_to_latest_remote_commit()
         return
 
-    # Check references (templates, etc.)
     template_references_check(files_dict)
 
-    # If DRY_RUN, skip actual writes and tests
     if DRY_RUN:
         logger.info("[DRY RUN] Would update files, but skipping actual writes/tests.")
         return
 
-    # Write changes (only once)
     for filepath, code_str in files_dict.items():
         dir_path = os.path.dirname(filepath)
         if dir_path:
@@ -525,16 +536,13 @@ def main_loop():
             fw.write(code_str)
         logger.info(f"Updated file: {filepath}")
 
-    # Generate a change summary if app.py was updated
     if "website/app.py" in files_dict and old_app_code:
         new_app_code = files_dict["website/app.py"]
         change_summary = generate_change_summary(old_app_code, new_app_code)
     else:
         change_summary = "Changes made to non-app.py files."
 
-    # Run tests once
     if run_test_commands():
-        # Commit & push
         git_command("add", ".")
         commit_msg = f"Auto-update from AI on {datetime.now().isoformat()}\n\n{change_summary}"
         git_command("commit", "-m", commit_msg)
@@ -554,17 +562,18 @@ def main_loop():
             logger.error("Failed to push revert. Local is reverted, remote may be out of sync.")
 
     logger.info("Done with single-attempt auto-dev run.")
+    subprocess.run(["systemctl", "restart", "gunicorn-theseus"])
 
 # -------------------------------------------------------------------------
 #  Manual Run (One-Off Iteration)
 # -------------------------------------------------------------------------
 def manual_run():
-    logger.addHandler(console_handler)  # Real-time console output
+    logger.addHandler(console_handler)
 
     logger.info("Starting MANUAL RUN of AI code update process.")
-    git_command("pull", "origin", BRANCH_NAME)
+    ensure_requirements_installed()
 
-    # Gather codebase
+    git_command("pull", "origin", BRANCH_NAME)
     full_codebase = gather_codebase()
     if not full_codebase.strip():
         logger.error("No code files found to provide context. Aborting manual run.")
@@ -588,7 +597,6 @@ def manual_run():
         logger.info("[DRY RUN] Would update files, but skipping actual writes.")
         return
 
-    # Write changes
     for filepath, code_str in files_dict.items():
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
         with open(filepath, "w", encoding="utf-8") as fw:
@@ -601,7 +609,6 @@ def manual_run():
     else:
         change_summary = "Changes made to non-app.py files."
 
-    # Test
     if run_test_commands():
         logger.info("Tests passed.")
         git_command("add", ".")
@@ -626,10 +633,11 @@ def manual_run():
         else:
             logger.error("Failed to push revert. Local is reverted, remote may differ.")
 
+    subprocess.run(["systemctl", "restart", "gunicorn-theseus"])
+
 # -------------------------------------------------------------------------
 #  Run Forever
 # -------------------------------------------------------------------------
-
 def run_forever(interval_minutes=10):
     """
     Continuously runs main_loop() every 'interval_minutes' minutes,
@@ -643,22 +651,17 @@ def run_forever(interval_minutes=10):
     except KeyboardInterrupt:
         logger.info("Received KeyboardInterrupt; exiting run_forever loop.")
 
-
 # -------------------------------------------------------------------------
 #  Entry Point
 # -------------------------------------------------------------------------
 if __name__ == "__main__":
-    # Default interval in minutes
     interval_minutes = 10
-
-    # Parse command-line arguments
     if len(sys.argv) > 1:
         if sys.argv[1] == "manual-run":
             manual_run()
             sys.exit(0)
         else:
             try:
-                # Attempt to parse the interval from the command line
                 interval_minutes = int(sys.argv[1])
                 if interval_minutes <= 0:
                     logger.error("Interval must be a positive integer. Using default (10 minutes).")
@@ -666,5 +669,4 @@ if __name__ == "__main__":
             except ValueError:
                 logger.error("Invalid interval provided. Using default (10 minutes).")
 
-    # Run the main loop with the specified interval
     run_forever(interval_minutes=interval_minutes)
