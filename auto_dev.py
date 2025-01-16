@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 auto_dev.py
 
@@ -91,7 +90,7 @@ SYSTEM_PROMPT = config.get(
     "   - **Weather Data**: OpenWeatherMap (free tier), WeatherAPI.\n"
     "   - **Maps & Geolocation**: OpenStreetMap, Leaflet.js.\n"
     "   - **Quizzes & Trivia**: Open Trivia Database.\n"
-    "   - **Games**: Public game APIs like PokéAPI.\n"
+    "   - **Games**: Public game APIs like PokeAPI.\n"
     "   - **News & Articles**: NewsAPI (if API key is known).\n"
     "   - **Finance**: Alpha Vantage (if API key is known).\n"
     "   - **Other**: Use only APIs listed in public API directories like Public APIs (public-apis.io).\n"
