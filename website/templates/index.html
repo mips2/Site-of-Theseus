@@ -10,9 +10,22 @@
     {% if current_user.is_authenticated %}
         <p>Hello, {{ current_user.id }}! <a href="{{ url_for('logout') }}">Logout</a></p>
         <a href="{{ url_for('profile', username=current_user.id) }}">View Profile</a>
+        <h2>Create a Post</h2>
+        <form method="POST" action="{{ url_for('create_post') }}">
+            <textarea name="content" placeholder="What's on your mind?" required></textarea>
+            <br>
+            <button type="submit">Post</button>
+        </form>
     {% else %}
         <p><a href="{{ url_for('login') }}">Login</a></p>
     {% endif %}
+    <h2>Recent Posts</h2>
+    {% for post in posts %}
+        <div>
+            <strong>{{ post.username }}</strong>
+            <p>{{ post.content }}</p>
+        </div>
+    {% endfor %}
     <p>{{ get_flashed_messages()[0] }}</p>
 </body>
 </html>

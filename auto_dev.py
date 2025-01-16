@@ -649,10 +649,40 @@ def manual_run():
         else:
             logger.error("Failed to push revert. Local is reverted, remote may differ.")
 
+# -------------------------------------------------------------------------
+#  Run Forever
+# -------------------------------------------------------------------------
+def run_forever(interval_minutes=10):
+    try:
+        while True:
+            main_loop()
+            logger.info(f"Sleeping for {interval_minutes} minutes before next run...")
+            time.sleep(interval_minutes * 60)
+    except KeyboardInterrupt:
+        logger.info("Received KeyboardInterrupt; exiting run_forever loop.")
     # Restart Gunicorn Service
     restart_gunicorn_service()
-
     logger.info("Done with manual auto-dev run.")
+
+
+# -------------------------------------------------------------------------
+#  Entry Point
+# -------------------------------------------------------------------------
+if __name__ == "__main__":
+    interval_minutes = 10
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "manual-run":
+            manual_run()
+            sys.exit(0)
+        else:
+            try:
+                interval_minutes = int(sys.argv[1])
+                if interval_minutes <= 0:
+                    logger.error("Interval must be a positive integer. Using default (10 minutes).")
+                    interval_minutes = 10
+            except ValueError:
+            
+            
 
                     logger.error("Interval must be a positive integer. Using default (10 minutes).")
                     interval_minutes = 10
