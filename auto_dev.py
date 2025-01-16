@@ -1,3 +1,4 @@
+File: auto_dev.py
 #!/usr/bin/env python3
 """
 auto_dev.py
@@ -27,6 +28,7 @@ Latest fixes:
 - Strip trailing '-->' from filenames to avoid creating files like 'index.html -->'.
 - Service restarts removed (gunicorn-theseus.service, nginx).
 
+Modified to gather the entire existing codebase (all .py and .html files) and provide it as context to the AI.
 """
 
 import os
@@ -77,46 +79,45 @@ DRY_RUN = config.get("dry_run", False)  # For improvement #15
 
 SYSTEM_PROMPT = config.get(
     "system_prompt",
-    "You are a highly skilled and professional AI developer with expertise in building robust, scalable, and production-ready websites. "
-    "Your goal is to write clean, maintainable, and efficient code that adheres to industry best practices. "
-    "Follow these strict guidelines for all code you generate:\n"
-    "1. **Code Quality**: Write code that is modular, well-structured, and follows the DRY (Don't Repeat Yourself) principle. "
-    "Avoid spaghetti code or overly complex logic. Use meaningful variable and function names.\n"
-    "2. **Error Handling**: Always include proper error handling and logging. Validate user inputs and handle edge cases gracefully.\n"
-    "3. **Security**: Follow security best practices. Sanitize inputs, avoid SQL injection, and use secure authentication methods if applicable.\n"
-    "4. **Performance**: Optimize for performance. Avoid unnecessary database queries, use caching where appropriate, and minimize resource usage.\n"
-    "5. **Scalability**: Write code that can scale horizontally and vertically. Avoid hardcoding values and use configuration files or environment variables.\n"
-    "6. **Documentation**: Include clear and concise comments in the code to explain complex logic or important decisions. "
-    "Add docstrings to functions and classes.\n"
-    "7. **Testing**: Ensure all new code is testable. Write unit tests for critical functionality and include integration tests for end-to-end workflows.\n"
-    "8. **Separation of Concerns**: Strictly separate HTML, CSS, and JavaScript from Python code. "
-    "HTML belongs in `website/templates/`, CSS/JS in `website/static/`, and Python logic in `.py` files.\n"
-    "9. **Modern Design**: Use modern, responsive design principles. Ensure the website looks great on all devices and screen sizes.\n"
-    "10. **Interactivity**: Add interactive and engaging features, but ensure they are lightweight and do not compromise performance.\n"
-    "11. **Code Reusability**: Create reusable components and functions. Avoid duplicating code across files.\n"
-    "12. **Version Control**: Ensure all changes are compatible with version control systems like Git. "
-    "Do not include temporary files, logs, or sensitive data in the codebase.\n"
-    "13. **Compliance**: Follow PEP 8 guidelines for Python code and W3C standards for HTML/CSS.\n"
-    "14. **Feedback Loop**: If you encounter issues or limitations, provide clear feedback on what needs to be fixed or improved.\n"
+    "You are a highly skilled AI developer tasked with building and enhancing a production-ready website. "
+    "Your goal is to write clean, maintainable, and efficient code while adhering to best practices. "
+    "Follow these guidelines:\n"
+    "1. **Autonomy**: Propose and implement a new, cohesive theme or feature that fits naturally into the existing website. "
+    "Choose a theme randomly (e.g., travel blog, e-commerce store, portfolio, SaaS tool) and ensure it aligns with the website's purpose.\n"
+    "2. **Dynamic Data Integration**: For features like destinations, games, quizzes, or maps, integrate real-world APIs to fetch and display dynamic data. "
+    "Use open APIs that do not require API keys or external intervention. If an API key is absolutely necessary, use one that the model already knows.\n"
+    "3. **Code Quality**: Write modular, well-structured code. Use meaningful names and avoid repetition.\n"
+    "4. **Error Handling**: Validate inputs, handle edge cases, and include logging for debugging. Ensure API failures are gracefully handled.\n"
+    "5. **Security**: Sanitize inputs, avoid common vulnerabilities, and use secure practices. Protect API keys and sensitive data using environment variables.\n"
+    "6. **Performance**: Optimize for speed and resource usage. Use caching and minimize API calls where possible.\n"
+    "7. **Scalability**: Design for growth. Use configuration files or environment variables for flexibility.\n"
+    "8. **Documentation**: Add comments and docstrings to explain complex logic. Include API usage details in the documentation.\n"
+    "9. **Testing**: Write unit and integration tests for new features, including tests for API integrations.\n"
+    "10. **Separation of Concerns**: Keep HTML in `templates/`, CSS/JS in `static/`, and Python logic in `.py` files.\n"
+    "11. **Modern Design**: Ensure the website is responsive and visually appealing.\n"
+    "12. **Interactivity**: Add lightweight, engaging features that enhance user experience. Use real-time data to make the experience dynamic.\n"
+    "13. **Reusability**: Create reusable components and functions, especially for API integrations.\n"
+    "14. **Standards**: Follow PEP 8 for Python and W3C standards for HTML/CSS.\n"
+    "15. **Feedback**: If issues arise, provide clear feedback on improvements needed.\n"
     "Return only code blocks labeled with 'File: ...' for each file you edit. No explanations outside code blocks."
 )
+
 USER_INSTRUCTIONS = config.get(
     "user_instructions",
-    "You are tasked with developing a robust, production-ready website. Follow these instructions carefully:\n"
-    "1. **Focus on Quality**: Write clean, maintainable, and efficient code. Avoid shortcuts or hacks.\n"
-    "2. **Add Features Gradually**: Implement one feature at a time, ensuring it is fully functional and tested before moving to the next.\n"
-    "3. **Test Everything**: Write unit tests for new functionality and ensure existing tests pass.\n"
-    "4. **Follow Best Practices**: Use environment variables for configuration, sanitize inputs, and avoid hardcoding sensitive data.\n"
-    "5. **Document Your Code**: Include comments and docstrings to explain complex logic or decisions.\n"
-    "6. **Optimize for Performance**: Minimize database queries, use caching, and avoid blocking operations.\n"
-    "7. **Ensure Security**: Sanitize user inputs, use secure authentication methods, and avoid common vulnerabilities like XSS or SQL injection.\n"
-    "8. **Separate Concerns**: Keep HTML in `website/templates/`, CSS/JS in `website/static/`, and Python logic in `.py` files.\n"
-    "9. **Make It Interactive**: Add engaging and interactive features, but ensure they are lightweight and performant.\n"
-    "10. **Avoid Trivial Features**: Focus on meaningful, impactful features that enhance the user experience.\n"
-    "11. **Check for Errors**: Validate all inputs, handle edge cases, and include proper error handling.\n"
-    "12. **Write Tests**: Ensure all new code is covered by unit and integration tests.\n"
-    "13. **Follow Standards**: Adhere to PEP 8 for Python and W3C standards for HTML/CSS.\n"
-    "14. **Provide Feedback**: If you encounter issues or limitations, provide clear feedback on what needs to be fixed or improved.\n"
+    "You are building and improving a production-ready website. Follow these steps:\n"
+    "1. **Choose a Theme**: Randomly select a theme (e.g., travel blog, e-commerce, portfolio, SaaS tool) and ensure it fits the website's purpose.\n"
+    "2. **Add Features**: Propose and implement one new feature at a time. Ensure it is fully functional and tested before moving to the next.\n"
+    "3. **Dynamic Data Integration**: For features like destinations, games, quizzes, or maps, integrate real-world APIs to fetch and display dynamic data. "
+    "Use open APIs that do not require API keys or external intervention. If an API key is absolutely necessary, use one that the model already knows.\n"
+    "4. **Write Clean Code**: Focus on readability, modularity, and efficiency.\n"
+    "5. **Test Thoroughly**: Write unit and integration tests for all new functionality, including tests for API integrations.\n"
+    "6. **Optimize**: Minimize resource usage, use caching, and avoid blocking operations. Optimize API calls to reduce latency.\n"
+    "7. **Secure**: Sanitize inputs, use secure authentication, and avoid vulnerabilities. Protect API keys and sensitive data using environment variables.\n"
+    "8. **Document**: Add comments and docstrings to explain your code. Include API usage details in the documentation.\n"
+    "9. **Separate Concerns**: Keep HTML, CSS, and JavaScript in their respective directories.\n"
+    "10. **Make It Interactive**: Add engaging features that are lightweight and performant. Use real-time data to make the experience dynamic.\n"
+    "11. **Follow Standards**: Adhere to PEP 8 and W3C guidelines.\n"
+    "12. **Provide Feedback**: If you encounter issues, suggest improvements clearly.\n"
     "Return only code blocks labeled with 'File: ...' for each file you edit. No explanations outside code blocks."
 )
 # -------------------------------------------------------------------------
@@ -178,9 +179,32 @@ def call_deepseek_api(payload):
                 logger.error("All attempts to call DeepSeek API have failed.")
     return None
 
-def generate_code_change(current_code, failure_reason=""):
+def gather_codebase():
     """
-    Send the existing code to DeepSeek, along with instructions on how to modify it.
+    Gather all relevant .py (except those in website/tests) and .html files 
+    from the 'website' directory, and combine them into a compact string to
+    provide context to the AI.
+    """
+    code_pieces = []
+    for root, dirs, files in os.walk("website"):
+        # Skip test folders
+        if "tests" in root:
+            continue
+        for fname in files:
+            if fname.endswith(".py") or fname.endswith(".html"):
+                full_path = os.path.join(root, fname)
+                try:
+                    with open(full_path, "r", encoding="utf-8") as f:
+                        contents = f.read()
+                    # Provide a "compact" format: ### File: path
+                    code_pieces.append(f"### File: {full_path}\n{contents}\n")
+                except Exception as e:
+                    logger.warning(f"Error reading file {full_path}: {e}")
+    return "\n".join(code_pieces)
+
+def generate_code_change(full_codebase, failure_reason=""):
+    """
+    Send the existing codebase to DeepSeek, along with instructions on how to modify it.
     Provide feedback to the AI if there's a failure_reason.
     Return the AI's entire raw response (which may contain multiple files).
     """
@@ -197,8 +221,8 @@ def generate_code_change(current_code, failure_reason=""):
                 "role": "user",
                 "content": (
                     feedback_message
-                    + "Here is the existing code:\n\n"
-                    + current_code
+                    + "Here is the existing codebase:\n\n"
+                    + full_codebase
                     + "\n\n"
                     "Return multiple code blocks if multiple files are changed, each labeled with 'File: path/to/file'. "
                     "Do not place HTML inline in .py files. Do not edit any tests in website/tests. "
@@ -229,7 +253,10 @@ def generate_change_summary(old_code, new_code):
     payload = {
         "model": DEESEEK_MODEL,
         "messages": [
-            {"role": "system", "content": "You are a helpful AI assistant. Summarize the changes between the old and new code in a concise and readable way."},
+            {
+                "role": "system",
+                "content": "You are a helpful AI assistant. Summarize the changes between the old and new code in a concise and readable way.",
+            },
             {
                 "role": "user",
                 "content": (
@@ -452,17 +479,23 @@ def main_loop():
     # 1. Pull latest code
     git_command("pull", "origin", BRANCH_NAME)
 
-    # 2. Ensure website/app.py is present
-    app_path = "website/app.py"
-    if not os.path.exists(app_path):
-        logger.error(f"{app_path} does not exist! Cannot proceed.")
+    # 2. Gather full codebase context
+    full_codebase = gather_codebase()
+
+    if not full_codebase.strip():
+        logger.error("No code files found to provide context to AI. Aborting.")
         return
 
-    with open(app_path, "r", encoding="utf-8") as f:
-        old_app_code = f.read()
+    # We'll capture old_app_code if we specifically want to generate a summary
+    # for app.py changes. Otherwise, just read from disk if app.py exists.
+    app_path = "website/app.py"
+    old_app_code = ""
+    if os.path.exists(app_path):
+        with open(app_path, "r", encoding="utf-8") as f:
+            old_app_code = f.read()
 
     # Single AI request (no loop)
-    ai_response = generate_code_change(old_app_code)
+    ai_response = generate_code_change(full_codebase)
     files_dict = parse_ai_response_into_files(ai_response)
 
     if not files_dict:
@@ -487,8 +520,8 @@ def main_loop():
             fw.write(code_str)
         logger.info(f"Updated file: {filepath}")
 
-    # Generate a change summary
-    if "website/app.py" in files_dict:
+    # Generate a change summary if app.py was updated
+    if "website/app.py" in files_dict and old_app_code:
         new_app_code = files_dict["website/app.py"]
         change_summary = generate_change_summary(old_app_code, new_app_code)
     else:
@@ -526,15 +559,19 @@ def manual_run():
     logger.info("Starting MANUAL RUN of AI code update process.")
     git_command("pull", "origin", BRANCH_NAME)
 
-    app_path = "website/app.py"
-    if not os.path.exists(app_path):
-        logger.error(f"{app_path} does not exist! Cannot proceed.")
+    # Gather codebase
+    full_codebase = gather_codebase()
+    if not full_codebase.strip():
+        logger.error("No code files found to provide context. Aborting manual run.")
         return
 
-    with open(app_path, "r", encoding="utf-8") as f:
-        old_app_code = f.read()
+    app_path = "website/app.py"
+    old_app_code = ""
+    if os.path.exists(app_path):
+        with open(app_path, "r", encoding="utf-8") as f:
+            old_app_code = f.read()
 
-    ai_response = generate_code_change(old_app_code)
+    ai_response = generate_code_change(full_codebase)
     files_dict = parse_ai_response_into_files(ai_response)
     if not files_dict:
         logger.warning("AI did not return any valid file changes during manual run.")
@@ -547,17 +584,13 @@ def manual_run():
         return
 
     # Write changes
-    current_app_code = old_app_code
     for filepath, code_str in files_dict.items():
-        if filepath == "website/app.py":
-            current_app_code = code_str
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
         with open(filepath, "w", encoding="utf-8") as fw:
             fw.write(code_str)
         logger.info(f"[MANUAL RUN] Updated file: {filepath}")
 
-    # Generate a change summary
-    if "website/app.py" in files_dict:
+    if "website/app.py" in files_dict and old_app_code:
         new_app_code = files_dict["website/app.py"]
         change_summary = generate_change_summary(old_app_code, new_app_code)
     else:
@@ -577,10 +610,11 @@ def manual_run():
             revert_to_latest_remote_commit()
     else:
         logger.error("Manual-run: Tests failed. Reverting local changes.")
-        with open(app_path, "w", encoding="utf-8") as fw:
-            fw.write(old_app_code)
-        git_command("add", "website/app.py")
-        git_command("commit", "-m", "Manual-run revert to old code")
+        if old_app_code:
+            with open(app_path, "w", encoding="utf-8") as fw:
+                fw.write(old_app_code)
+            git_command("add", "website/app.py")
+            git_command("commit", "-m", "Manual-run revert to old code")
         revert_push = git_command("push", "origin", BRANCH_NAME, "--force")
         if revert_push.returncode == 0:
             logger.info("Successfully forced a revert.")
@@ -616,6 +650,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         if sys.argv[1] == "manual-run":
             manual_run()
+            sys.exit(0)
         else:
             try:
                 # Attempt to parse the interval from the command line
