@@ -13,8 +13,14 @@
         <div>
             <p>{{ post.content }}</p>
             <p>Likes: {{ post.likes }}</p>
+            <form method="POST" action="{{ url_for('like_post', post_id=post.id) }}">
+                <button type="submit">Like</button>
+            </form>
         </div>
     {% endfor %}
     <p>{{ get_flashed_messages()[0] }}</p>
 </body>
 </html>
+
+
+###
