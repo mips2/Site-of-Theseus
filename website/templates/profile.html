@@ -12,11 +12,9 @@
     {% for post in posts %}
         <div>
             <p>{{ post.content }}</p>
+            <p>Likes: {{ post.likes }}</p>
         </div>
     {% endfor %}
     <p>{{ get_flashed_messages()[0] }}</p>
 </body>
 </html>
-
-
-###

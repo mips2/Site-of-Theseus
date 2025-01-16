@@ -13,8 +13,8 @@ users = {
 
 # Static post data for initial development
 posts = [
-    {'id': 1, 'username': 'user1', 'content': 'Hello, this is my first post!'},
-    {'id': 2, 'username': 'user2', 'content': 'Just joined this platform!'}
+    {'id': 1, 'username': 'user1', 'content': 'Hello, this is my first post!', 'likes': 0},
+    {'id': 2, 'username': 'user2', 'content': 'Just joined this platform!', 'likes': 0}
 ]
 
 # Flask-Login setup
@@ -70,11 +70,22 @@ def profile(username):
 def create_post():
     content = request.form['content']
     if content:
-        new_post = {'id': len(posts) + 1, 'username': current_user.id, 'content': content}
+        new_post = {'id': len(posts) + 1, 'username': current_user.id, 'content': content, 'likes': 0}
         posts.append(new_post)
         flash('Post created successfully!')
     else:
         flash('Post content cannot be empty')
+    return redirect(url_for('home'))
+
+@app.route('/like/', methods=['POST'])
+@login_required
+def like_post(post_id):
+    post = next((post for post in posts if post['id'] == post_id), None)
+    if post:
+        post['likes'] += 1
+        flash('Post liked!')
+    else:
+        flash('Post not found')
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
