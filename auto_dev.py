@@ -1,4 +1,3 @@
-File: auto_dev.py
 #!/usr/bin/env python3
 """
 auto_dev.py
