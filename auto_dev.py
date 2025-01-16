@@ -483,6 +483,26 @@ def revert_to_latest_remote_commit():
         logger.error("Failed to clean untracked files/directories.")
     else:
         logger.info("Successfully cleaned untracked files/directories.")
+# -------------------------------------------------------------------------
+#  Restart Gunicorn Service
+# -------------------------------------------------------------------------
+def restart_gunicorn_service():
+    """
+    Restarts the gunicorn-theseus service.
+    """
+    logger.info("Restarting gunicorn-theseus service...")
+    try:
+        result = subprocess.run(
+            ["systemctl", "restart", "gunicorn-theseus"],
+            check=True,
+            capture_output=True,
+            text=True
+        )
+        logger.info(f"Gunicorn service restarted successfully: {result.stdout}")
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Failed to restart gunicorn-theseus service: {e.stderr}")
+    except FileNotFoundError:
+        logger.error("Systemctl not found. Ensure you are running this on a system with systemctl support.")
 
 # -------------------------------------------------------------------------
 #  Main Automated Loop
@@ -555,6 +575,9 @@ def main_loop():
         else:
             logger.error("Failed to push revert. Local is reverted, remote may be out of sync.")
 
+    # Restart Gunicorn Service
+    restart_gunicorn_service()
+
     logger.info("Done with single-attempt auto-dev run.")
 
 # -------------------------------------------------------------------------
@@ -626,31 +649,11 @@ def manual_run():
         else:
             logger.error("Failed to push revert. Local is reverted, remote may differ.")
 
-# -------------------------------------------------------------------------
-#  Run Forever
-# -------------------------------------------------------------------------
-def run_forever(interval_minutes=10):
-    try:
-        while True:
-            main_loop()
-            logger.info(f"Sleeping for {interval_minutes} minutes before next run...")
-            time.sleep(interval_minutes * 60)
-    except KeyboardInterrupt:
-        logger.info("Received KeyboardInterrupt; exiting run_forever loop.")
+    # Restart Gunicorn Service
+    restart_gunicorn_service()
 
-# -------------------------------------------------------------------------
-#  Entry Point
-# -------------------------------------------------------------------------
-if __name__ == "__main__":
-    interval_minutes = 10
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "manual-run":
-            manual_run()
-            sys.exit(0)
-        else:
-            try:
-                interval_minutes = int(sys.argv[1])
-                if interval_minutes <= 0:
+    logger.info("Done with manual auto-dev run.")
+
                     logger.error("Interval must be a positive integer. Using default (10 minutes).")
                     interval_minutes = 10
             except ValueError:
