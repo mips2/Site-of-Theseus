@@ -192,7 +192,6 @@ def gather_codebase():
     """
     code_pieces = []
     for root, dirs, files in os.walk("website"):
-        # Skip test folders
         if "tests" in root:
             continue
         for fname in files:
@@ -201,7 +200,6 @@ def gather_codebase():
                 try:
                     with open(full_path, "r", encoding="utf-8") as f:
                         contents = f.read()
-                    # Provide a "compact" format: ### File: path
                     code_pieces.append(f"### File: {full_path}\n{contents}\n")
                 except Exception as e:
                     logger.warning(f"Error reading file {full_path}: {e}")
@@ -293,10 +291,6 @@ def generate_change_summary(old_code, new_code):
 #  Multi-File Parsing & Basic Syntax Validation
 # -------------------------------------------------------------------------
 def is_valid_python_syntax(code_str):
-    """
-    Basic syntax validation for Python code using ast.parse.
-    Returns True if syntax is valid, False otherwise.
-    """
     try:
         ast.parse(code_str)
         return True
@@ -305,36 +299,25 @@ def is_valid_python_syntax(code_str):
         return False
 
 def parse_ai_response_into_files(ai_response):
-    # Remove triple backticks
     cleaned_response = re.sub(r"```[a-zA-Z]*", "", ai_response)
     cleaned_response = cleaned_response.replace("```", "")
-
     pattern = r"(File:\s*([^\n]+))(.*?)(?=File:|$)"
     matches = re.findall(pattern, cleaned_response, flags=re.DOTALL)
-
     temp_files = {}
+
     for match in matches:
-        filename_line = match[0]
         file_path = match[1].strip()
         code_block = match[2].strip()
-
         if file_path.endswith("-->"):
             file_path = file_path.replace("-->", "").strip()
-
-        # Skip tests
         if file_path.startswith("website/tests"):
             logger.warning(f"AI attempted to modify tests file '{file_path}'. Skipping.")
             continue
-
-        # Force everything else to be in `website/`
         if not file_path.startswith("website/"):
             file_path = f"website/{file_path.lstrip('/')}"
-
-        # If referencing a .py file, remove HTML comments and blocks
         if file_path.endswith(".py"):
             code_block = re.sub(r"<!--.*?-->", "", code_block, flags=re.DOTALL)
             code_block = re.sub(r"<[^>]+>", "", code_block)
-
         temp_files[file_path] = code_block
 
     return temp_files
@@ -343,19 +326,13 @@ def parse_ai_response_into_files(ai_response):
 #  Template Handling Checks
 # -------------------------------------------------------------------------
 def template_references_check(files_dict):
-    """
-    Ensure any new templates have at least one referencing route in .py updates.
-    Very simple approach: if a .html file is introduced, see if any .py code references that filename.
-    """
     html_files = [fp for fp in files_dict if fp.endswith(".html")]
     if not html_files:
         return True
-
     all_python_updates = ""
     for fp, code in files_dict.items():
         if fp.endswith(".py"):
             all_python_updates += code.lower()
-
     for html_file in html_files:
         base_name = os.path.basename(html_file).lower()
         if base_name not in all_python_updates:
@@ -365,30 +342,59 @@ def template_references_check(files_dict):
     return True
 
 # -------------------------------------------------------------------------
-#  Requirements Check
+#  Detect and Add New Requirements
 # -------------------------------------------------------------------------
-def ensure_requirements_installed(req_file="website/requirements.txt"):
-    """
-    Verify requirements from the file are installed; if not, install them.
-    """
-    if not os.path.exists(req_file):
-        logger.warning("No requirements.txt found. Skipping check.")
-        return
+COMMON_PYPI_MAP = {
+    "flask_bcrypt": "Flask-Bcrypt",
+    "flask_sqlalchemy": "Flask-SQLAlchemy",
+    "flask_login": "Flask-Login",
+    "pytest": "pytest",
+    "requests": "requests",
+    "bcrypt": "bcrypt"
+}
 
-    try:
-        logger.info("Verifying all requirements are installed...")
-        with open(req_file, "r", encoding="utf-8") as f:
-            lines = [line.strip() for line in f if line.strip() and not line.startswith("#")]
-        for requirement in lines:
-            logger.debug(f"Checking if '{requirement}' is installed...")
-            check_proc = subprocess.run(["pip", "show", requirement], capture_output=True, text=True)
-            if check_proc.returncode != 0:
-                logger.info(f"Requirement '{requirement}' not found. Installing...")
-                install_proc = subprocess.run(["pip", "install", requirement], capture_output=True, text=True)
-                if install_proc.returncode != 0:
-                    logger.error(f"Failed to install '{requirement}': {install_proc.stderr}")
-    except Exception as e:
-        logger.error(f"Error ensuring requirements installed: {e}")
+def detect_and_add_new_requirements(files_dict, req_file="website/requirements.txt"):
+    existing_deps = set()
+    if os.path.exists(req_file):
+        with open(req_file, "r", encoding="utf-8") as rf:
+            for line in rf:
+                line_stripped = line.strip().lower()
+                if line_stripped and not line_stripped.startswith("#"):
+                    # Just split on '==' to handle pinned version or anything else
+                    existing_deps.add(line_stripped.split("==")[0].strip())
+
+    new_deps_found = False
+    for fp, content in files_dict.items():
+        if fp.endswith(".py"):
+            for line in content.splitlines():
+                line_stripped = line.strip()
+                if line_stripped.startswith("import "):
+                    # e.g. "import flask_bcrypt"
+                    parts = line_stripped.replace("import ", "").split(",")
+                    for p in parts:
+                        mod = p.strip().split(" as ")[0]
+                        if "." in mod:
+                            mod = mod.split(".")[0]
+                        pkg = COMMON_PYPI_MAP.get(mod.lower(), mod)
+                        if pkg.lower() not in existing_deps:
+                            new_deps_found = True
+                            existing_deps.add(pkg.lower())
+                elif line_stripped.startswith("from "):
+                    # e.g. "from flask_bcrypt import Bcrypt"
+                    segs = line_stripped.split()
+                    if len(segs) > 1:
+                        mod = segs[1].strip().split(".")[0]
+                        pkg = COMMON_PYPI_MAP.get(mod.lower(), mod)
+                        if pkg.lower() not in existing_deps:
+                            new_deps_found = True
+                            existing_deps.add(pkg.lower())
+
+    if new_deps_found:
+        with open(req_file, "w", encoding="utf-8") as wf:
+            for dep in sorted(existing_deps):
+                wf.write(f"{dep}\n")
+        logger.info("New requirements added. Installing them now...")
+        subprocess.run(["pip", "install", "-r", req_file], check=False)
 
 # -------------------------------------------------------------------------
 #  Testing
@@ -400,15 +406,8 @@ def check_tests_exist(test_path="website/tests/"):
         logger.warning("Test directory is empty. Tests may be incomplete.")
 
 def run_test_commands():
-    """
-    Install dependencies from website/requirements.txt, then run pytest.
-    Run basic security scan with bandit if installed.
-    Return True if tests pass, False otherwise.
-    """
     req_file = "website/requirements.txt"
-    if not os.path.exists(req_file):
-        logger.warning("requirements.txt not found. Dependencies may be incomplete.")
-    else:
+    if os.path.exists(req_file):
         try:
             proc_install = subprocess.run(
                 ["pip", "install", "-r", req_file],
@@ -464,11 +463,6 @@ def git_command(*args):
     return result
 
 def revert_to_latest_remote_commit():
-    """
-    Revert to the latest commit on the remote repository.
-    This ensures the local repository matches the remote state,
-    including removing any untracked files or directories.
-    """
     logger.info("Fetching latest changes from remote...")
     fetch_result = git_command("fetch", "origin")
     if fetch_result.returncode != 0:
@@ -499,10 +493,8 @@ def main_loop():
         return
 
     logger.addHandler(console_handler)
-
-    ensure_requirements_installed()
-
     git_command("pull", "origin", BRANCH_NAME)
+
     full_codebase = gather_codebase()
     if not full_codebase.strip():
         logger.error("No code files found to provide context to AI. Aborting.")
@@ -536,6 +528,8 @@ def main_loop():
             fw.write(code_str)
         logger.info(f"Updated file: {filepath}")
 
+    detect_and_add_new_requirements(files_dict)
+
     if "website/app.py" in files_dict and old_app_code:
         new_app_code = files_dict["website/app.py"]
         change_summary = generate_change_summary(old_app_code, new_app_code)
@@ -562,16 +556,13 @@ def main_loop():
             logger.error("Failed to push revert. Local is reverted, remote may be out of sync.")
 
     logger.info("Done with single-attempt auto-dev run.")
-    subprocess.run(["systemctl", "restart", "gunicorn-theseus"])
 
 # -------------------------------------------------------------------------
-#  Manual Run (One-Off Iteration)
+#  Manual Run
 # -------------------------------------------------------------------------
 def manual_run():
     logger.addHandler(console_handler)
-
     logger.info("Starting MANUAL RUN of AI code update process.")
-    ensure_requirements_installed()
 
     git_command("pull", "origin", BRANCH_NAME)
     full_codebase = gather_codebase()
@@ -603,6 +594,8 @@ def manual_run():
             fw.write(code_str)
         logger.info(f"[MANUAL RUN] Updated file: {filepath}")
 
+    detect_and_add_new_requirements(files_dict)
+
     if "website/app.py" in files_dict and old_app_code:
         new_app_code = files_dict["website/app.py"]
         change_summary = generate_change_summary(old_app_code, new_app_code)
@@ -633,16 +626,10 @@ def manual_run():
         else:
             logger.error("Failed to push revert. Local is reverted, remote may differ.")
 
-    subprocess.run(["systemctl", "restart", "gunicorn-theseus"])
-
 # -------------------------------------------------------------------------
 #  Run Forever
 # -------------------------------------------------------------------------
 def run_forever(interval_minutes=10):
-    """
-    Continuously runs main_loop() every 'interval_minutes' minutes,
-    allowing the service manager to keep this script alive.
-    """
     try:
         while True:
             main_loop()
