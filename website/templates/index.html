@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+    <title>Inspirational Quotes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Hello World</h1>
+    <div class="container">
+        <h1>Daily Inspiration</h1>
+        <div class="quote-box">
+            <p class="quote">"{{ quote }}"</p>
+            <p class="author">- {{ author }}</p>
+        </div>
+        <button onclick="window.location.reload()">Get Another Quote</button>
+    </div>
 </body>
 </html>
+
+
+###
