@@ -8,6 +8,7 @@
 <body>
     <h1>Welcome, {{ username }}!</h1>
     <a href="{{ url_for('logout') }}">Logout</a>
+    <a href="{{ url_for('home') }}">Home</a>
     <h2>Your Posts</h2>
     {% for post in posts %}
         <div>
