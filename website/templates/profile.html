@@ -19,6 +19,12 @@
             </form>
         </div>
     {% endfor %}
+    <h2>Create a Post</h2>
+    <form method="POST" action="{{ url_for('create_post') }}">
+        <textarea name="content" placeholder="What's on your mind?" required></textarea>
+        <br>
+        <button type="submit">Post</button>
+    </form>
     <p>{{ get_flashed_messages()[0] }}</p>
 </body>
 </html>
