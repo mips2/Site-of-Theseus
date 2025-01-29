@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Welcome to the Social Media Platform</h1>
@@ -21,7 +22,7 @@
     {% endif %}
     <h2>Recent Posts</h2>
     {% for post in posts %}
-        <div>
+        <div class="post">
             <strong>{{ post.username }}</strong>
             <p>{{ post.content }}</p>
             <p>Likes: {{ post.likes }}</p>
@@ -35,3 +36,6 @@
     <p>{{ get_flashed_messages()[0] }}</p>
 </body>
 </html>
+
+
+###

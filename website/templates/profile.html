@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - {{ username }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Welcome, {{ username }}!</h1>
@@ -11,7 +12,7 @@
     <a href="{{ url_for('home') }}">Home</a>
     <h2>Your Posts</h2>
     {% for post in posts %}
-        <div>
+        <div class="post">
             <p>{{ post.content }}</p>
             <p>Likes: {{ post.likes }}</p>
             <form method="POST" action="{{ url_for('like_post', post_id=post.id) }}">
