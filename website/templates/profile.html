@@ -10,6 +10,19 @@
     <h1>Welcome, {{ username }}!</h1>
     <a href="{{ url_for('logout') }}">Logout</a>
     <a href="{{ url_for('home') }}">Home</a>
+    <h2>Followers: {{ followers|length }}</h2>
+    <h2>Following: {{ following|length }}</h2>
+    {% if current_user.id != username %}
+        {% if username in follows[current_user.id] %}
+            <form method="POST" action="{{ url_for('unfollow_user', username=username) }}">
+                <button type="submit">Unfollow</button>
+            </form>
+        {% else %}
+            <form method="POST" action="{{ url_for('follow_user', username=username) }}">
+                <button type="submit">Follow</button>
+            </form>
+        {% endif %}
+    {% endif %}
     <h2>Your Posts</h2>
     {% for post in posts %}
         <div class="post">

@@ -17,6 +17,12 @@ posts = [
     {'id': 2, 'username': 'user2', 'content': 'Just joined this platform!', 'likes': 0}
 ]
 
+# Static follow data for initial development
+follows = {
+    'user1': ['user2'],
+    'user2': []
+}
+
 # Flask-Login setup
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -61,7 +67,9 @@ def logout():
 def profile(username):
     if username in users:
         user_posts = [post for post in posts if post['username'] == username]
-        return render_template('profile.html', username=username, posts=user_posts)
+        followers = [user for user, following in follows.items() if username in following]
+        following = follows.get(username, [])
+        return render_template('profile.html', username=username, posts=user_posts, followers=followers, following=following)
     flash('User not found')
     return redirect(url_for('home'))
 
@@ -87,6 +95,32 @@ def like_post(post_id):
     else:
         flash('Post not found')
     return redirect(url_for('home'))
+
+@app.route('/follow/', methods=['POST'])
+@login_required
+def follow_user(username):
+    if username in users and username != current_user.id:
+        if username not in follows[current_user.id]:
+            follows[current_user.id].append(username)
+            flash(f'You are now following {username}!')
+        else:
+            flash(f'You are already following {username}')
+    else:
+        flash('User not found or cannot follow yourself')
+    return redirect(url_for('profile', username=username))
+
+@app.route('/unfollow/', methods=['POST'])
+@login_required
+def unfollow_user(username):
+    if username in users and username != current_user.id:
+        if username in follows[current_user.id]:
+            follows[current_user.id].remove(username)
+            flash(f'You have unfollowed {username}!')
+        else:
+            flash(f'You are not following {username}')
+    else:
+        flash('User not found or cannot unfollow yourself')
+    return redirect(url_for('profile', username=username))
 
 if __name__ == '__main__':
     app.run(debug=True)
